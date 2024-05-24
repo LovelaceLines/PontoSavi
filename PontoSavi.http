@@ -1,0 +1,6 @@
+@PontoSavi_HostAddress = http://localhost:5178
+
+GET {{PontoSavi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
