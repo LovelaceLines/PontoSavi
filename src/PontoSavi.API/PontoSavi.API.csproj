@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Controllers\" />
+    <Folder Include="InputModels\" />
+    <Folder Include="ServiceFilters\" />
+    <Folder Include="Utils\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PontoSavi.Application\PontoSavi.Application.csproj" />
+    <ProjectReference Include="..\PontoSavi.Domain\PontoSavi.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
