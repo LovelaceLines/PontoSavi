@@ -47,28 +47,28 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                         new
                         {
                             Id = "1",
-                            ConcurrencyStamp = "43c8c0a0-b970-40f7-be86-05ec12c29c09",
+                            ConcurrencyStamp = "4501829c-1c20-4994-bce2-312474d0664e",
                             Name = "Desenvolvedor",
                             NormalizedName = "DESENVOLVEDOR"
                         },
                         new
                         {
                             Id = "2",
-                            ConcurrencyStamp = "33c52ba6-2412-4a84-8e92-a855c3527233",
+                            ConcurrencyStamp = "1145357f-4e31-41f4-98d7-107f76f049b1",
                             Name = "Administrador",
                             NormalizedName = "ADMINISTRADOR"
                         },
                         new
                         {
                             Id = "3",
-                            ConcurrencyStamp = "812f1477-27ba-4c29-982b-c28c245f0b1b",
+                            ConcurrencyStamp = "5223b9e2-4ab6-415e-9851-809cfbb4b73a",
                             Name = "Supervisor",
                             NormalizedName = "SUPERVISOR"
                         },
                         new
                         {
                             Id = "4",
-                            ConcurrencyStamp = "bde8ad31-b1a3-45f9-bab7-b30d28674d5f",
+                            ConcurrencyStamp = "f69896ef-2637-4e80-8667-eb8c1b910ca7",
                             Name = "Colaborador",
                             NormalizedName = "COLABORADOR"
                         });
@@ -166,16 +166,16 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                         {
                             Id = "1",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "6abd2f91-e7ff-4667-86ae-6f817d2562b7",
+                            ConcurrencyStamp = "17220432-3b79-4261-80af-9713e08457da",
                             Email = "dev@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "DEV@GMAIL.COM",
                             NormalizedUserName = "DEV",
-                            PasswordHash = "AQAAAAIAAYagAAAAEI+JPNwUe7gUgkQTNXG535FqIoIAaB45KzGn97xfNPWltdXFWivLBxPmO60cFhSbKQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDM978gz9qTLGOKDaoOHxC7pd8jUVqngnlsyoMVQQBfbUOWOUJODO0SciQV7vjtCZg==",
                             PhoneNumber = "(55) 85 9 9999-9999",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e0bb70fa-5a0e-4cdf-bd28-2399063771bc",
+                            SecurityStamp = "11394ab2-fe5a-43fd-bb77-01670116066b",
                             TwoFactorEnabled = false,
                             UserName = "dev"
                         },
@@ -183,16 +183,16 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                         {
                             Id = "2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "fddaa4c7-5e68-476a-a29f-b886de3290f0",
+                            ConcurrencyStamp = "09b9d811-99ba-463f-8ec0-bd2e33364cec",
                             Email = "admin@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDMPvcapkvz7fAIZiKgkymNKqQk5LszHpv2owuRoKq4oT/yhjukXpJik9xn/m+PiUg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEAlu2ZAMBuw7W29KYk22jASwh7CvbLBB2S+Ai4QctefPMvMh/R8Oko9iEXhjrwAoLg==",
                             PhoneNumber = "(55) 85 9 9999-9998",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d9b2a08c-02a9-4ba4-bf52-8934ac7e8628",
+                            SecurityStamp = "e95199b2-c69d-476c-afc4-11455c7e9252",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
@@ -200,16 +200,16 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                         {
                             Id = "3",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "105169ee-5e00-4320-b715-551819edd5db",
+                            ConcurrencyStamp = "133d1108-8b35-448a-bb08-734432541e35",
                             Email = "super@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedEmail = "SUPER@GMAIL.COM",
                             NormalizedUserName = "SUPER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMfUdVR1NnLu/xM71QPOw0+15v6ZJLOlfGxihcQw3oXloq1jcZ2gbd9Bcdrp6NRZtQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEp8rM3A8EheZYoLouhrROjZwa2oIL27p/unNLfrp2OJzS7/4s0V+uOAi2WOPa6NcQ==",
                             PhoneNumber = "(55) 85 9 9999-9997",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "553e8d2a-d728-4e1f-8412-6b8061c12769",
+                            SecurityStamp = "88d563a5-2029-47aa-9bec-540e5bf87895",
                             TwoFactorEnabled = false,
                             UserName = "super"
                         });

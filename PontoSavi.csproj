@@ -4,8 +4,8 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
-    <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute>
+    <!-- <GenerateAssemblyInfo>false</GenerateAssemblyInfo> -->
+    <!-- <GenerateTargetFrameworkAttribute>false</GenerateTargetFrameworkAttribute> -->
     <!-- Swagger documentation .xml file -->
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <NoWarn>$(NoWarn);1591</NoWarn>

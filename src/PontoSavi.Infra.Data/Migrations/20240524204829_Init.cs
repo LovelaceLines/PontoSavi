@@ -163,10 +163,10 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1", "43c8c0a0-b970-40f7-be86-05ec12c29c09", "Desenvolvedor", "DESENVOLVEDOR" },
-                    { "2", "33c52ba6-2412-4a84-8e92-a855c3527233", "Administrador", "ADMINISTRADOR" },
-                    { "3", "812f1477-27ba-4c29-982b-c28c245f0b1b", "Supervisor", "SUPERVISOR" },
-                    { "4", "bde8ad31-b1a3-45f9-bab7-b30d28674d5f", "Colaborador", "COLABORADOR" }
+                    { "1", "4501829c-1c20-4994-bce2-312474d0664e", "Desenvolvedor", "DESENVOLVEDOR" },
+                    { "2", "1145357f-4e31-41f4-98d7-107f76f049b1", "Administrador", "ADMINISTRADOR" },
+                    { "3", "5223b9e2-4ab6-415e-9851-809cfbb4b73a", "Supervisor", "SUPERVISOR" },
+                    { "4", "f69896ef-2637-4e80-8667-eb8c1b910ca7", "Colaborador", "COLABORADOR" }
                 });
 
             migrationBuilder.InsertData(
@@ -174,9 +174,9 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "6abd2f91-e7ff-4667-86ae-6f817d2562b7", "dev@gmail.com", false, false, null, "DEV@GMAIL.COM", "DEV", "AQAAAAIAAYagAAAAEI+JPNwUe7gUgkQTNXG535FqIoIAaB45KzGn97xfNPWltdXFWivLBxPmO60cFhSbKQ==", "(55) 85 9 9999-9999", false, "e0bb70fa-5a0e-4cdf-bd28-2399063771bc", false, "dev" },
-                    { "2", 0, "fddaa4c7-5e68-476a-a29f-b886de3290f0", "admin@gmail.com", false, false, null, "ADMIN@GMAIL.COM", "ADMIN", "AQAAAAIAAYagAAAAEDMPvcapkvz7fAIZiKgkymNKqQk5LszHpv2owuRoKq4oT/yhjukXpJik9xn/m+PiUg==", "(55) 85 9 9999-9998", false, "d9b2a08c-02a9-4ba4-bf52-8934ac7e8628", false, "admin" },
-                    { "3", 0, "105169ee-5e00-4320-b715-551819edd5db", "super@gmail.com", false, false, null, "SUPER@GMAIL.COM", "SUPER", "AQAAAAIAAYagAAAAEMfUdVR1NnLu/xM71QPOw0+15v6ZJLOlfGxihcQw3oXloq1jcZ2gbd9Bcdrp6NRZtQ==", "(55) 85 9 9999-9997", false, "553e8d2a-d728-4e1f-8412-6b8061c12769", false, "super" }
+                    { "1", 0, "17220432-3b79-4261-80af-9713e08457da", "dev@gmail.com", false, false, null, "DEV@GMAIL.COM", "DEV", "AQAAAAIAAYagAAAAEDM978gz9qTLGOKDaoOHxC7pd8jUVqngnlsyoMVQQBfbUOWOUJODO0SciQV7vjtCZg==", "(55) 85 9 9999-9999", false, "11394ab2-fe5a-43fd-bb77-01670116066b", false, "dev" },
+                    { "2", 0, "09b9d811-99ba-463f-8ec0-bd2e33364cec", "admin@gmail.com", false, false, null, "ADMIN@GMAIL.COM", "ADMIN", "AQAAAAIAAYagAAAAEAlu2ZAMBuw7W29KYk22jASwh7CvbLBB2S+Ai4QctefPMvMh/R8Oko9iEXhjrwAoLg==", "(55) 85 9 9999-9998", false, "e95199b2-c69d-476c-afc4-11455c7e9252", false, "admin" },
+                    { "3", 0, "133d1108-8b35-448a-bb08-734432541e35", "super@gmail.com", false, false, null, "SUPER@GMAIL.COM", "SUPER", "AQAAAAIAAYagAAAAEEp8rM3A8EheZYoLouhrROjZwa2oIL27p/unNLfrp2OJzS7/4s0V+uOAi2WOPa6NcQ==", "(55) 85 9 9999-9997", false, "88d563a5-2029-47aa-9bec-540e5bf87895", false, "super" }
                 });
 
             migrationBuilder.InsertData(
