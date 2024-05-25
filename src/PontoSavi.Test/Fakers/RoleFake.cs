@@ -1,4 +1,5 @@
 ﻿using Bogus;
+
 using PontoSavi.Domain.DTOs;
 
 namespace PontoSavi.Test.Fakers;

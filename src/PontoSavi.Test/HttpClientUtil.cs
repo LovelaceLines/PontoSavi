@@ -12,7 +12,7 @@ namespace PontoSavi.Test.Utils;
 
 public class HttpClientUtil
 {
-    public string _acessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6ImF0K2p3dCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJkZXYiLCJyb2xlIjpbIkRlc2Vudm9sdmVkb3IiLCJDb2xhYm9yYWRvciJdLCJuYmYiOjE3MTE4NDM5NjMsImV4cCI6MTcxMTg1MTE2MywiaWF0IjoxNzExODQzOTYzLCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUxNTUiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUxNTUifQ.kt2QxCywld_3oZVfo9Wfln8RVLPMxAWl5RroNNuuBoU";
+    public string _accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6ImF0K2p3dCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJkZXYiLCJyb2xlIjpbIkRlc2Vudm9sdmVkb3IiLCJDb2xhYm9yYWRvciJdLCJuYmYiOjE3MTY1ODk2MTQsImV4cCI6MTcxNzE5NDQxNCwiaWF0IjoxNzE2NTg5NjE0LCJpc3MiOiJodHRwOi8vbG9jYWxob3N0OjUxNzgiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjUxNzgifQ.Mgwu-iSj1aUU-LWjf8c5deKMWHm2_Tcqkl4pM31wFtc";
     public string _refreshToken = string.Empty;
 
     /// <summary>
@@ -175,7 +175,7 @@ public class HttpClientUtil
 
     private HttpClient AddAuthorization(HttpClient client)
     {
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _acessToken);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _accessToken);
         return client;
     }
 }
