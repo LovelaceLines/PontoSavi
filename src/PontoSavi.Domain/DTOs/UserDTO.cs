@@ -13,6 +13,14 @@ public class UserDTO
 
     public UserDTO() { }
 
+    public UserDTO(IdentityUser user)
+    {
+        Id = user.Id;
+        UserName = user.UserName!;
+        Email = user.Email!;
+        PhoneNumber = user.PhoneNumber!;
+    }
+
     public UserDTO(IdentityUser user, List<string>? roles)
     {
         Id = user.Id;

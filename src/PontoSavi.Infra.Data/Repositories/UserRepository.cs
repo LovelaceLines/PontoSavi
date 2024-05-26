@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Net;
 
 using PontoSavi.Domain.Exceptions;
 using PontoSavi.Domain.Repositories;
 using PontoSavi.Infra.Data.Context;
+using PontoSavi.Domain.Filters;
+using PontoSavi.Domain.DTOs;
 
 namespace PontoSavi.Infra.Data.Repositories;
 
@@ -17,6 +20,55 @@ public class UserRepository : BaseRepository<IdentityUser>, IUserRepository
     {
         _context = context;
         _userManager = userManager;
+    }
+
+    public async Task<QueryResult<UserDTO>> Query(UserFilter filter)
+    {
+        var query = _context.Users.AsNoTracking().AsQueryable();
+
+        if (!filter.Search.IsNullOrEmpty())
+            query = query.Where(u => u.UserName!.Contains(filter.Search!, StringComparison.CurrentCultureIgnoreCase) ||
+                u.Email!.Contains(filter.Search!, StringComparison.CurrentCultureIgnoreCase) ||
+                u.PhoneNumber!.Contains(filter.Search!, StringComparison.CurrentCultureIgnoreCase));
+
+        if (!filter.Id.IsNullOrEmpty()) query = query.Where(u => u.Id == filter.Id);
+        if (!filter.UserName.IsNullOrEmpty()) query = query.Where(u => u.UserName!.Contains(filter.UserName!, StringComparison.CurrentCultureIgnoreCase));
+        if (!filter.Email.IsNullOrEmpty()) query = query.Where(u => u.Email!.Contains(filter.Email!, StringComparison.CurrentCultureIgnoreCase));
+        if (!filter.PhoneNumber.IsNullOrEmpty()) query = query.Where(u => u.PhoneNumber!.Contains(filter.PhoneNumber!, StringComparison.CurrentCultureIgnoreCase));
+
+        if (!filter.UserNameOrderSort.IsNullOrEmpty())
+            query = filter.UserNameOrderSort!.Equals("asc", StringComparison.CurrentCultureIgnoreCase) ? query.OrderBy(u => u.UserName) :
+                filter.UserNameOrderSort!.Equals("desc", StringComparison.CurrentCultureIgnoreCase) ? query.OrderByDescending(u => u.UserName) :
+                query;
+        if (!filter.EmailOrderSort.IsNullOrEmpty())
+            query = filter.EmailOrderSort!.Equals("asc", StringComparison.CurrentCultureIgnoreCase) ? query.OrderBy(u => u.Email) :
+                filter.EmailOrderSort!.Equals("desc", StringComparison.CurrentCultureIgnoreCase) ? query.OrderByDescending(u => u.Email) :
+                query;
+
+        var totalCount = await query.CountAsync();
+
+        var users = await query
+            .Skip(filter.PageIndex * filter.PageSize)
+            .Take(filter.PageSize)
+            .Select(u => new UserDTO
+            {
+                Id = u.Id,
+                UserName = u.UserName!,
+                Email = u.Email!,
+                PhoneNumber = u.PhoneNumber!,
+                Roles = (List<string>)_userManager.GetRolesAsync(u).Result
+            })
+            .ToListAsync();
+
+        return new QueryResult<UserDTO>(users, totalCount);
+    }
+
+    public async Task<UserDTO> QueryById(string id)
+    {
+        var user = await GetById(id);
+        var roles = await GetRoles(user);
+
+        return new UserDTO(user, roles);
     }
 
     public async Task<IdentityUser> Auth(string userName, string password)

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 
 using PontoSavi.Application.Interfaces;
 using PontoSavi.Domain.DTOs;
+using PontoSavi.Domain.Filters;
 
 namespace PontoSavi.API.Controllers;
 
@@ -22,12 +23,17 @@ public class RoleController : ControllerBase
     }
 
     /// <summary>
-    /// Gets all roles.
+    /// Queries roles by filter.
     /// </summary>
     [HttpGet]
     [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
-    public async Task<IActionResult> GetAll() =>
-        Ok(await _roleService.Query());
+    public async Task<IActionResult> Query([FromQuery] RoleFilter filter) =>
+        Ok(await _roleService.Query(filter));
+
+    [HttpGet("{id}")]
+    [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
+    public async Task<IActionResult> GetById(string id) =>
+        Ok(await _roleService.GetById(id));
 
     /// <summary>
     /// Creates a new role.

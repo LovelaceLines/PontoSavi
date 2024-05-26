@@ -1,9 +1,13 @@
 using Microsoft.AspNetCore.Identity;
+using PontoSavi.Domain.DTOs;
+using PontoSavi.Domain.Filters;
 
 namespace PontoSavi.Domain.Repositories;
 
 public interface IUserRepository : IBaseRepository<IdentityUser>
 {
+    Task<QueryResult<UserDTO>> Query(UserFilter filter);
+    Task<UserDTO> QueryById(string id);
     Task<IdentityUser> Auth(string userName, string password);
     Task<bool> ExistsById(string id);
     Task<bool> ExistsByUserName(string userName);

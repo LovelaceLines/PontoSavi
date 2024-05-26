@@ -3,6 +3,7 @@
 using PontoSavi.API.InputModels;
 using PontoSavi.Domain.DTOs;
 using PontoSavi.Domain.Exceptions;
+using PontoSavi.Domain.Filters;
 using PontoSavi.Test.Fakers;
 using PontoSavi.Test.Global;
 
@@ -10,6 +11,22 @@ namespace PontoSavi.Test.API;
 
 public class UserControllerTests : GlobalClientRequest
 {
+    [Fact]
+    public async Task Get_QueryById_ReturnsUser()
+    {
+        var role = await GetRole();
+        var user = await GetUser();
+        var userRole = await GetUserRole(userId: user.Id, roleId: role.Id);
+
+        var result = await GetFromQuery<QueryResult<UserDTO>>(_userClient, new UserFilter { Id = user.Id });
+        var userGet = result.Items.Single();
+
+        Assert.Equivalent(user.UserName, userGet.UserName);
+        Assert.Equivalent(user.Email, userGet.Email);
+        Assert.Equivalent(user.PhoneNumber, userGet.PhoneNumber);
+        Assert.Equivalent(user.Roles, userRole.RoleName);
+    }
+
     [Fact]
     public async Task Post_ValidUser_ReturnsOkResult()
     {
@@ -44,7 +61,7 @@ public class UserControllerTests : GlobalClientRequest
     public async Task Put_ValidUser_ReturnsOkResult()
     {
         var user = await GetUser();
-        var token = await GetToken(userId: user.Id, userName: user.UserName, password: user.Password);
+        var token = await GetToken(userName: user.UserName, password: user.Password);
         _accessToken = token.AuthToken.AccessToken;
         var updatedUser = new UserFake(id: user.Id).Generate();
 
@@ -71,7 +88,7 @@ public class UserControllerTests : GlobalClientRequest
     {
         var user1 = await GetUser();
         var user2 = await GetUser();
-        var token = await GetToken(userId: user1.Id, userName: user1.UserName, password: user1.Password);
+        var token = await GetToken(userName: user1.UserName, password: user1.Password);
         _accessToken = token.AuthToken.AccessToken;
         var userWithExistingUserName = new UserFake(id: user1.Id, userName: user2.UserName).Generate();
         var userWithExistingEmail = new UserFake(id: user1.Id, email: user2.Email).Generate();
@@ -90,7 +107,7 @@ public class UserControllerTests : GlobalClientRequest
     public async Task Put_Password_ValidUser_ReturnsOkResult()
     {
         var user = await GetUser();
-        var token = await GetToken(userId: user.Id, userName: user.UserName, password: user.Password);
+        var token = await GetToken(userName: user.UserName, password: user.Password);
         _accessToken = token.AuthToken.AccessToken;
         var model = new UpdatePasswordIM { OldPassword = user.Password, NewPassword = new UserFake().Generate().Password };
 

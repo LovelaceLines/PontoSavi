@@ -7,6 +7,7 @@ using PontoSavi.API.InputModels;
 using PontoSavi.API.ServiceFilters;
 using PontoSavi.Application.Interfaces;
 using PontoSavi.Domain.DTOs;
+using PontoSavi.Domain.Filters;
 
 namespace PontoSavi.API.Controllers;
 
@@ -29,15 +30,20 @@ public class UserController : ControllerBase
     }
 
     /// <summary>
+    /// Retrieves a list of users based on the specified filter.
+    /// </summary>
+    [HttpGet]
+    [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
+    public async Task<IActionResult> Query([FromQuery] UserFilter filter) =>
+        Ok(await _userService.Query(filter));
+
+    /// <summary>
     /// Gets a user by ID.
     /// </summary>
     [HttpGet("{id}")]
     [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
-    public async Task<IActionResult> GetById(string id)
-    {
-        var identityUser = await _userService.GetById(id);
-        return Ok(_mapper.Map<UserDTO>(identityUser));
-    }
+    public async Task<IActionResult> QueryById(string id) =>
+        Ok(await _userService.QueryById(id));
 
     /// <summary>
     /// Gets a user by username.

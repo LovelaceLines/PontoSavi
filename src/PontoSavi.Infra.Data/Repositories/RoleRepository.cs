@@ -1,19 +1,51 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System.Net;
 
 using PontoSavi.Domain.Exceptions;
 using PontoSavi.Domain.Repositories;
+using PontoSavi.Domain.DTOs;
+using PontoSavi.Domain.Filters;
 using PontoSavi.Infra.Data.Context;
 
 namespace PontoSavi.Infra.Data.Repositories;
 
 public class RoleRepository : BaseRepository<IdentityRole>, IRoleRepository
 {
+    private readonly AppDbContext _context;
     private readonly RoleManager<IdentityRole> _roleManager;
 
-    public RoleRepository(AppDbContext context, RoleManager<IdentityRole> roleManager) : base(context) =>
+    public RoleRepository(AppDbContext context, RoleManager<IdentityRole> roleManager) : base(context)
+    {
+        _context = context;
         _roleManager = roleManager;
+    }
+
+    public async Task<QueryResult<RoleDTO>> Query(RoleFilter filter)
+    {
+        var query = _context.Roles.AsNoTracking().AsQueryable();
+
+        if (!filter.Search.IsNullOrEmpty()) query = query.Where(r => r.Name!.Contains(filter.Search!, StringComparison.CurrentCultureIgnoreCase));
+
+        if (!filter.Id.IsNullOrEmpty()) query = query.Where(r => r.Id == filter.Id);
+        if (!filter.Name.IsNullOrEmpty()) query = query.Where(r => r.Name!.Contains(filter.Name!, StringComparison.CurrentCultureIgnoreCase));
+
+        if (!filter.NameOrderSort.IsNullOrEmpty())
+            query = filter.NameOrderSort!.Equals("asc", StringComparison.CurrentCultureIgnoreCase) ? query.OrderBy(r => r.Name) :
+                filter.NameOrderSort!.Equals("desc", StringComparison.CurrentCultureIgnoreCase) ? query.OrderByDescending(r => r.Name) :
+                query;
+
+        var totalCount = await query.CountAsync();
+
+        var roles = await query
+            .Skip(filter.PageIndex * filter.PageSize)
+            .Take(filter.PageSize)
+            .Select(r => new RoleDTO(r))
+            .ToListAsync();
+
+        return new QueryResult<RoleDTO>(roles, totalCount);
+    }
 
     public async Task<bool> ExistsById(string id) =>
         await _roleManager.Roles.AnyAsync(r => r.Id == id);

@@ -2,6 +2,7 @@
     "conventionalCommits.scopes": [
         "Backend",
         "IOC",
-        "Auth"
+        "Auth",
+        "Repository"
     ]
 }

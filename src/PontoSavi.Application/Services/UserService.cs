@@ -5,6 +5,7 @@ using PontoSavi.Application.Interfaces;
 using PontoSavi.Application.Validators;
 using PontoSavi.Domain.DTOs;
 using PontoSavi.Domain.Exceptions;
+using PontoSavi.Domain.Filters;
 using PontoSavi.Domain.Repositories;
 
 namespace PontoSavi.Application.Services;
@@ -27,8 +28,11 @@ public class UserService : IUserService
         _passwordValidator = passwordValidator;
     }
 
-    public async Task<IdentityUser> GetById(string id) =>
-        await _userRepository.GetById(id);
+    public async Task<QueryResult<UserDTO>> Query(UserFilter filter) =>
+        await _userRepository.Query(filter);
+
+    public async Task<UserDTO> QueryById(string id) =>
+        await _userRepository.QueryById(id);
 
     public async Task<UserDTO> GetByUserName(string userName)
     {

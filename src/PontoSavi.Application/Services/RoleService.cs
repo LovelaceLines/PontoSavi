@@ -5,6 +5,7 @@ using PontoSavi.Application.Interfaces;
 using PontoSavi.Domain.DTOs;
 using PontoSavi.Domain.Exceptions;
 using PontoSavi.Domain.Repositories;
+using PontoSavi.Domain.Filters;
 
 namespace PontoSavi.Application.Services;
 
@@ -15,15 +16,11 @@ public class RoleService : IRoleService
     public RoleService(IRoleRepository roleRepository) =>
         _roleRepository = roleRepository;
 
-    public Task<List<RoleDTO>> Query()
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<QueryResult<RoleDTO>> Query(RoleFilter filter) =>
+        await _roleRepository.Query(filter);
 
-    public Task<RoleDTO> GetById(int id)
-    {
-        throw new NotImplementedException();
-    }
+    public async Task<RoleDTO> GetById(string id) =>
+        new RoleDTO(await _roleRepository.GetById(id));
 
     public async Task<IdentityRole> Create(IdentityRole role)
     {
