@@ -5,6 +5,7 @@
         "Auth",
         "Repository",
         "Identity",
-        "Frontend"
+        "Frontend",
+        "UI"
     ]
 }

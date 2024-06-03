@@ -1,3 +1,4 @@
+import { getStorageValue, setStorageValue } from "@/_services";
 import { createSlice } from "@reduxjs/toolkit";
 
 interface initialStateProps {
@@ -7,7 +8,7 @@ interface initialStateProps {
 }
 
 const initialState: initialStateProps = {
-  open: false,
+  open: getStorageValue("sideBarOpen", true) as boolean || true,
   status: "idle",
   error: null,
 };
@@ -16,11 +17,9 @@ const handleSideBarSlice = createSlice({
   name: "handleSideBar",
   initialState,
   reducers: {
-    handleSideBarOpen: (state) => {
-      state.open = true;
-    },
-    handleSideBarClose: (state) => {
-      state.open = false;
+    toggleSideBar: (state) => {
+      state.open = !state.open;
+      setStorageValue("sideBarOpen", state.open);
     },
   },
   selectors: {
@@ -30,7 +29,7 @@ const handleSideBarSlice = createSlice({
   }
 });
 
-export const { handleSideBarClose, handleSideBarOpen } = handleSideBarSlice.actions;
+export const { toggleSideBar } = handleSideBarSlice.actions;
 export const { selectError, selectOpen, selectStatus } = handleSideBarSlice.selectors;
 
 export default handleSideBarSlice.reducer;

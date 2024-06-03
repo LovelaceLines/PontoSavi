@@ -1,2 +1,2 @@
 export { getAuthToken, getUser, setAuthToken, setUser } from "./authService";
-export { getKey, getStorageValue } from "./localStorageService";
+export { getKey, getStorageValue, setStorageValue } from "./localStorageService";
