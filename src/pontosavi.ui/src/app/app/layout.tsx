@@ -2,11 +2,11 @@
 
 import { Box, Container } from "@mui/material";
 import { AccountCircle, BrowseGallery, Delete, Settings } from "@mui/icons-material";
+import { useEffect, useState } from "react";
 
 import { AuthWrapper } from "@/app/auth-wrapper";
 import { AppAppBar, ISideBarProps, SideBar } from "@/_components";
-import { useSelector } from "react-redux";
-import { selectOpen } from "@/_redux/features/handleSideBar/slice";
+import { useSideBar } from "@/_contexts";
 
 const buttonList: ISideBarProps[][] = [
   [
@@ -20,10 +20,21 @@ const buttonList: ISideBarProps[][] = [
 ];
 
 const drawerWidth = 240;
-const minDrawerWidth = 48;
+const minDrawerWidth = 56;
 
 export default function Layout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const open = useSelector(selectOpen);
+  const { open } = useSideBar();
+
+  // Next.js Hydration
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <AuthWrapper>

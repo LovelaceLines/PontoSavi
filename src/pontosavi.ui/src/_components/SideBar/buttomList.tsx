@@ -19,41 +19,32 @@ const logoutButton: ISideBarProps = { text: "Logout", to: "/signin", icon: <Logo
 export const ButtonList = ({ buttonList }: Readonly<{ buttonList: ISideBarProps[][] }>) => {
   const dispatch = useDispatch();
 
-  const handleLogout = () => dispatch(logoutUser());
-
-  const ButtonList = () => (
-    buttonList.map((subList, index) =>
-      <React.Fragment key={index}>
-        {subList.map(({ text, to, icon }, index) => (
-          <ListItem key={text + index} disablePadding sx={{ display: "block" }}>
-            <Link href={to} style={{ color: "inherit", textDecoration: "none" }}>
-              <ListItemButton>
-                <ListItemIcon sx={{ color: "inherit" }}>{icon}</ListItemIcon>
-                <ListItemText primary={text} sx={{ opacity: 1 }} />
-              </ListItemButton>
-            </Link>
-          </ListItem>
-        ))}
-        <Divider key={"Divider" + index} />
-      </React.Fragment>
-    )
-  );
-
-  const LogoutButton = () => (
-    <ListItem key={logoutButton.text} disablePadding sx={{ display: "block" }}>
-      <ListItemButton onClick={handleLogout}>
-        <ListItemIcon sx={{ color: "inherit" }}>{logoutButton.icon}</ListItemIcon>
-        <ListItemText primary={logoutButton.text} sx={{ opacity: 1 }} />
-      </ListItemButton>
-    </ListItem>
-  );
-
   return (
     <List>
-      <>
-        <ButtonList />
-        <LogoutButton />
-      </>
+
+      {buttonList.map((subList, index) =>
+        <React.Fragment key={index}>
+          {subList.map(({ text, to, icon }, index) => (
+            <ListItem key={text + index} disablePadding sx={{ display: "block" }}>
+              <Link href={to} style={{ color: "inherit", textDecoration: "none" }}>
+                <ListItemButton>
+                  <ListItemIcon sx={{ color: "inherit" }}>{icon}</ListItemIcon>
+                  <ListItemText primary={text} sx={{ opacity: 1, textWrap: "nowrap" }} />
+                </ListItemButton>
+              </Link>
+            </ListItem>
+          ))}
+          <Divider key={"Divider" + index} />
+        </React.Fragment>
+      )}
+
+      <ListItem key={logoutButton.text} disablePadding sx={{ display: "block" }}>
+        <ListItemButton onClick={() => dispatch(logoutUser())}>
+          <ListItemIcon sx={{ color: "inherit" }}>{logoutButton.icon}</ListItemIcon>
+          <ListItemText primary={logoutButton.text} sx={{ opacity: 1 }} />
+        </ListItemButton>
+      </ListItem>
+
     </List>
   );
 };
