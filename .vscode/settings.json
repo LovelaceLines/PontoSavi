@@ -3,6 +3,7 @@
         "Backend",
         "IOC",
         "Auth",
-        "Repository"
+        "Repository",
+        "Frontend"
     ]
 }

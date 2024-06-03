@@ -1,0 +1,49 @@
+{
+  "name": "pontosavi.ui",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev -H 0.0.0.0",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "lint:watch": "esw -w --ext .js,.ts,.jsx,.tsx"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.11.4",
+    "@emotion/styled": "^11.11.5",
+    "@mui/icons-material": "^5.15.19",
+    "@mui/material": "^5.15.19",
+    "@mui/x-date-pickers": "^7.6.1",
+    "@reduxjs/toolkit": "^2.2.5",
+    "axios": "^1.7.2",
+    "excel-ent": "^4.4.1",
+    "export-from-json": "^1.7.4",
+    "export-to-csv": "^1.3.0",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.2",
+    "jwt-decode": "^4.0.0",
+    "material-react-table": "^2.13.0",
+    "next": "14.2.3",
+    "react": "^18",
+    "react-dom": "^18",
+    "react-hook-form": "^7.51.5",
+    "react-redux": "^9.1.2",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/redux-logger": "^3.0.13",
+    "@typescript-eslint/eslint-plugin": "^7.1.1",
+    "@typescript-eslint/parser": "^7.1.1",
+    "eslint": "^8",
+    "eslint-config-next": "^14.2.3",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.34.0",
+    "eslint-watch": "^8.0.0",
+    "redux-logger": "^3.0.6",
+    "typescript": "^5"
+  }
+}
