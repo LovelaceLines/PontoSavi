@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using System.Net;
 
 using PontoSavi.Application.Interfaces;
@@ -7,6 +6,7 @@ using PontoSavi.Domain.DTOs;
 using PontoSavi.Domain.Exceptions;
 using PontoSavi.Domain.Filters;
 using PontoSavi.Domain.Repositories;
+using PontoSavi.Domain.Entities;
 
 namespace PontoSavi.Application.Services;
 
@@ -41,7 +41,7 @@ public class UserService : IUserService
         return new UserDTO(user, roles);
     }
 
-    public async Task<IdentityUser> Create(IdentityUser user, string password)
+    public async Task<User> Create(User user, string password)
     {
         var validationResult = _userValidator.Validate(user);
         if (!validationResult.IsValid)
@@ -66,7 +66,7 @@ public class UserService : IUserService
         return newUser;
     }
 
-    public async Task<IdentityUser> Update(IdentityUser newUser, string userId)
+    public async Task<User> Update(User newUser, string userId)
     {
         if (!await _userRepository.ExistsById(newUser.Id))
             throw new AppException("Usuário não encontrado", HttpStatusCode.NotFound);
@@ -101,7 +101,7 @@ public class UserService : IUserService
         return await _userRepository.UpdatePassword(userId, oldPassword, newPassword);
     }
 
-    public async Task<IdentityUser> Delete(string id)
+    public async Task<User> Delete(string id)
     {
         if (!await _userRepository.ExistsById(id))
             throw new AppException("Usuário não encontrado", HttpStatusCode.NotFound);

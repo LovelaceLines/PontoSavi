@@ -8,6 +8,7 @@ using PontoSavi.Application.Services;
 using PontoSavi.Application.Validators;
 using PontoSavi.Domain.Repositories;
 using PontoSavi.Infra.Data.Repositories;
+using PontoSavi.Domain.Entities;
 
 namespace PontoSavi.Infra.IOC;
 
@@ -25,7 +26,8 @@ public static class DependencyInjectionSetup
         services.AddTransient<IUserRepository, UserRepository>();
 
         services.AddTransient<IdentityUserRole<string>>();
-        services.AddTransient<SignInManager<IdentityUser>>();
+        services.AddTransient<SignInManager<User>>();
+        services.AddTransient<RoleManager<Role>>();
 
         services.AddTransient<IRoleService, RoleService>();
         services.AddTransient<IRoleRepository, RoleRepository>();

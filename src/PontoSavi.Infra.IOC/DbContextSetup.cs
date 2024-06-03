@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 
 using PontoSavi.Infra.Data.Context;
+using PontoSavi.Domain.Entities;
 
 namespace PontoSavi.Infra.IOC;
 
@@ -14,7 +15,7 @@ public static class DbContextSetup
         services.AddDbContext<AppDbContext>(options =>
             options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
 
-        services.AddIdentity<IdentityUser, IdentityRole>()
+        services.AddIdentity<User, Role>()
             .AddEntityFrameworkStores<AppDbContext>()
             .AddDefaultTokenProviders();
 

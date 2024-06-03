@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.JsonWebTokens;
 using Microsoft.IdentityModel.Tokens;
@@ -11,6 +10,7 @@ using PontoSavi.Application.Interfaces;
 using PontoSavi.Domain.DTOs;
 using PontoSavi.Domain.Exceptions;
 using PontoSavi.Domain.Repositories;
+using PontoSavi.Domain.Entities;
 
 namespace PontoSavi.Application.Services;
 
@@ -48,10 +48,10 @@ public class AuthService : IAuthService
         return await GetAuthToken(user);
     }
 
-    private async Task<AuthToken> GetAuthToken(IdentityUser user) =>
+    private async Task<AuthToken> GetAuthToken(User user) =>
         new(accessToken: await GenerateAccessToken(user), expiresIn: ExpiresAccessToken.Minute, refreshToken: GenerateRefreshToken(user));
 
-    private async Task<string> GenerateAccessToken(IdentityUser user)
+    private async Task<string> GenerateAccessToken(User user)
     {
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -69,7 +69,7 @@ public class AuthService : IAuthService
         return tokenHandler.WriteToken(token);
     }
 
-    private string GenerateRefreshToken(IdentityUser user)
+    private string GenerateRefreshToken(User user)
     {
         var tokenDescriptor = new SecurityTokenDescriptor
         {
@@ -108,7 +108,7 @@ public class AuthService : IAuthService
         DateTime.UtcNow.AddHours(int.Parse(
             _configuration["HoursRefreshTokenExpires"] ?? throw new AppException("JwtConfig: ExpireRefreshTokenHours is null!", HttpStatusCode.InternalServerError)));
 
-    private async Task<ClaimsIdentity> SubjectAccessToken(IdentityUser user)
+    private async Task<ClaimsIdentity> SubjectAccessToken(User user)
     {
         var claims = new List<Claim>
         {
@@ -122,7 +122,7 @@ public class AuthService : IAuthService
         return new ClaimsIdentity(claims);
     }
 
-    private ClaimsIdentity SubjectRefreshToken(IdentityUser user)
+    private ClaimsIdentity SubjectRefreshToken(User user)
     {
         var claims = new List<Claim>
         {

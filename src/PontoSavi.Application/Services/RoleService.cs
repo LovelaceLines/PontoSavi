@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using System.Net;
 
 using PontoSavi.Application.Interfaces;
@@ -6,6 +5,7 @@ using PontoSavi.Domain.DTOs;
 using PontoSavi.Domain.Exceptions;
 using PontoSavi.Domain.Repositories;
 using PontoSavi.Domain.Filters;
+using PontoSavi.Domain.Entities;
 
 namespace PontoSavi.Application.Services;
 
@@ -22,7 +22,7 @@ public class RoleService : IRoleService
     public async Task<RoleDTO> GetById(string id) =>
         new RoleDTO(await _roleRepository.GetById(id));
 
-    public async Task<IdentityRole> Create(IdentityRole role)
+    public async Task<Role> Create(Role role)
     {
         if (await _roleRepository.ExistsByName(role.Name!))
             throw new AppException("Função já existe", HttpStatusCode.Conflict);
@@ -30,7 +30,7 @@ public class RoleService : IRoleService
         return await _roleRepository.Add(role);
     }
 
-    public async Task<IdentityRole> Update(IdentityRole role)
+    public async Task<Role> Update(Role role)
     {
         // TODO: Definy the method implementation
         // if (_roleRepository.IsDefault(role.Name!))

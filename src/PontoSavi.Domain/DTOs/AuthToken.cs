@@ -3,9 +3,9 @@ namespace PontoSavi.Domain.DTOs;
 public class AuthToken
 {
     public string TokenType { get; set; } = "Bearer";
-    public string AccessToken { get; set; } = string.Empty;
+    public string AccessToken { get; set; } = null!;
     public int ExpiresIn { get; set; }
-    public string RefreshToken { get; set; } = string.Empty;
+    public string RefreshToken { get; set; } = null!;
 
     public AuthToken() { }
 

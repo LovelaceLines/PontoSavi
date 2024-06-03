@@ -1,15 +1,16 @@
 using Microsoft.AspNetCore.Identity;
+using PontoSavi.Domain.Entities;
 
 namespace PontoSavi.Domain.DTOs;
 
 public class RoleDTO
 {
-    public string? Id { get; set; } = string.Empty;
-    public string Name { get; set; } = string.Empty;
+    public string? Id { get; set; } = null!;
+    public string Name { get; set; } = null!;
 
     public RoleDTO() { }
 
-    public RoleDTO(IdentityRole role)
+    public RoleDTO(Role role)
     {
         Id = role.Id;
         Name = role.Name!;

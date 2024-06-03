@@ -8,15 +8,16 @@ using PontoSavi.Domain.Repositories;
 using PontoSavi.Domain.DTOs;
 using PontoSavi.Domain.Filters;
 using PontoSavi.Infra.Data.Context;
+using PontoSavi.Domain.Entities;
 
 namespace PontoSavi.Infra.Data.Repositories;
 
-public class RoleRepository : BaseRepository<IdentityRole>, IRoleRepository
+public class RoleRepository : BaseRepository<Role>, IRoleRepository
 {
     private readonly AppDbContext _context;
-    private readonly RoleManager<IdentityRole> _roleManager;
+    private readonly RoleManager<Role> _roleManager;
 
-    public RoleRepository(AppDbContext context, RoleManager<IdentityRole> roleManager) : base(context)
+    public RoleRepository(AppDbContext context, RoleManager<Role> roleManager) : base(context)
     {
         _context = context;
         _roleManager = roleManager;
@@ -53,15 +54,15 @@ public class RoleRepository : BaseRepository<IdentityRole>, IRoleRepository
     public async Task<bool> ExistsByName(string name) =>
         await _roleManager.RoleExistsAsync(name);
 
-    public async Task<IdentityRole> GetById(string id) =>
+    public async Task<Role> GetById(string id) =>
         await _roleManager.FindByIdAsync(id) ??
             throw new AppException("Perfil não encontrado!", HttpStatusCode.NotFound);
 
-    public async Task<IdentityRole> GetByName(string name) =>
+    public async Task<Role> GetByName(string name) =>
         await _roleManager.FindByNameAsync(name) ??
             throw new AppException("Perfil não encontrado!", HttpStatusCode.NotFound);
 
-    public async new Task<IdentityRole> Add(IdentityRole role)
+    public async new Task<Role> Add(Role role)
     {
         var result = await _roleManager.CreateAsync(role);
 
@@ -69,7 +70,7 @@ public class RoleRepository : BaseRepository<IdentityRole>, IRoleRepository
             throw new AppException("Não foi possível criar o perfil!", HttpStatusCode.BadRequest);
     }
 
-    public async new Task<IdentityRole> Update(IdentityRole role)
+    public async new Task<Role> Update(Role role)
     {
         var result = await _roleManager.UpdateAsync(role);
 
@@ -77,7 +78,7 @@ public class RoleRepository : BaseRepository<IdentityRole>, IRoleRepository
             throw new AppException("Não foi possível atualizar o perfil!", HttpStatusCode.BadRequest);
     }
 
-    public async Task<IdentityRole> Remove(string name)
+    public async Task<Role> Remove(string name)
     {
         var role = await _roleManager.FindByNameAsync(name) ??
             throw new AppException("Perfil não encontrado!", HttpStatusCode.NotFound);

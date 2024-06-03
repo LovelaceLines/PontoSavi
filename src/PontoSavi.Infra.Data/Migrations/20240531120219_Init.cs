@@ -32,6 +32,7 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", nullable: false),
                     UserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
@@ -119,7 +120,8 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 columns: table => new
                 {
                     UserId = table.Column<string>(type: "TEXT", nullable: false),
-                    RoleId = table.Column<string>(type: "TEXT", nullable: false)
+                    RoleId = table.Column<string>(type: "TEXT", nullable: false),
+                    Discriminator = table.Column<string>(type: "TEXT", maxLength: 34, nullable: false)
                 },
                 constraints: table =>
                 {
@@ -163,33 +165,33 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "1", "4501829c-1c20-4994-bce2-312474d0664e", "Desenvolvedor", "DESENVOLVEDOR" },
-                    { "2", "1145357f-4e31-41f4-98d7-107f76f049b1", "Administrador", "ADMINISTRADOR" },
-                    { "3", "5223b9e2-4ab6-415e-9851-809cfbb4b73a", "Supervisor", "SUPERVISOR" },
-                    { "4", "f69896ef-2637-4e80-8667-eb8c1b910ca7", "Colaborador", "COLABORADOR" }
+                    { "1", "58bb5541-3d68-4d51-ae83-069ff8f29b42", "Desenvolvedor", "DESENVOLVEDOR" },
+                    { "2", "26ddd7f7-1e42-415c-9962-bb64dd129956", "Administrador", "ADMINISTRADOR" },
+                    { "3", "8227350d-c2d2-44e0-a2a8-2c0034ecc080", "Supervisor", "SUPERVISOR" },
+                    { "4", "a2514f12-40b0-4da9-8cb1-eadebff1dac4", "Colaborador", "COLABORADOR" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUsers",
-                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { "1", 0, "17220432-3b79-4261-80af-9713e08457da", "dev@gmail.com", false, false, null, "DEV@GMAIL.COM", "DEV", "AQAAAAIAAYagAAAAEDM978gz9qTLGOKDaoOHxC7pd8jUVqngnlsyoMVQQBfbUOWOUJODO0SciQV7vjtCZg==", "(55) 85 9 9999-9999", false, "11394ab2-fe5a-43fd-bb77-01670116066b", false, "dev" },
-                    { "2", 0, "09b9d811-99ba-463f-8ec0-bd2e33364cec", "admin@gmail.com", false, false, null, "ADMIN@GMAIL.COM", "ADMIN", "AQAAAAIAAYagAAAAEAlu2ZAMBuw7W29KYk22jASwh7CvbLBB2S+Ai4QctefPMvMh/R8Oko9iEXhjrwAoLg==", "(55) 85 9 9999-9998", false, "e95199b2-c69d-476c-afc4-11455c7e9252", false, "admin" },
-                    { "3", 0, "133d1108-8b35-448a-bb08-734432541e35", "super@gmail.com", false, false, null, "SUPER@GMAIL.COM", "SUPER", "AQAAAAIAAYagAAAAEEp8rM3A8EheZYoLouhrROjZwa2oIL27p/unNLfrp2OJzS7/4s0V+uOAi2WOPa6NcQ==", "(55) 85 9 9999-9997", false, "88d563a5-2029-47aa-9bec-540e5bf87895", false, "super" }
+                    { "1", 0, "cb0363fb-2fa9-468f-bce5-71feda0f66a9", "dev@gmail.com", false, false, null, "Developer", "DEV@GMAIL.COM", "DEV", "AQAAAAIAAYagAAAAELQWtwqkmF5zQtIaMerbTyn9h2asLXyKeUhrQ+fma5XQey6syczos7RQPshP2fe4QA==", "(55) 85 9 9999-9999", false, "2648c3f6-dad3-43f9-be26-ea928f2c928d", false, "dev" },
+                    { "2", 0, "400dfe7d-593a-4d13-a723-48d44191920f", "admin@gmail.com", false, false, null, "Administrator", "ADMIN@GMAIL.COM", "ADMIN", "AQAAAAIAAYagAAAAEJ2BFAnYc3zB0TZVvM1tGr6BBBxXB5l286qBfjTX01u2hN4j9H/OOsyXNt/1rcuf/w==", "(55) 85 9 9999-9998", false, "d14ba7ce-fa2a-4b3b-8147-9a982856dea2", false, "admin" },
+                    { "3", 0, "c4656b1a-4da2-4d95-8bc5-9e08c4f53ab0", "super@gmail.com", false, false, null, "Superuser", "SUPER@GMAIL.COM", "SUPER", "AQAAAAIAAYagAAAAEC8/kSEuyUJTQmIB9sGrvfwtLmd9qqzwlGBwka4CWhI+r7lPT5Zmlc+rHhIOm3bwjg==", "(55) 85 9 9999-9997", false, "2e7805b9-5a3e-4197-aed0-6393da92c52d", false, "super" }
                 });
 
             migrationBuilder.InsertData(
                 table: "AspNetUserRoles",
-                columns: new[] { "RoleId", "UserId" },
+                columns: new[] { "RoleId", "UserId", "Discriminator" },
                 values: new object[,]
                 {
-                    { "1", "1" },
-                    { "4", "1" },
-                    { "2", "2" },
-                    { "4", "2" },
-                    { "3", "3" },
-                    { "4", "3" }
+                    { "1", "1", "UserRole" },
+                    { "4", "1", "UserRole" },
+                    { "2", "2", "UserRole" },
+                    { "4", "2", "UserRole" },
+                    { "3", "3", "UserRole" },
+                    { "4", "3", "UserRole" }
                 });
 
             migrationBuilder.CreateIndex(

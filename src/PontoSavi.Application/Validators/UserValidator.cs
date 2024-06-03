@@ -1,9 +1,10 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Identity;
+using PontoSavi.Domain.Entities;
 
 namespace PontoSavi.Application.Validators;
 
-public class UserValidator : AbstractValidator<IdentityUser>
+public class UserValidator : AbstractValidator<User>
 {
     public UserValidator()
     {

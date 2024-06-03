@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.DependencyInjection;
 
 using PontoSavi.Domain.DTOs;
+using PontoSavi.Domain.Entities;
 
 namespace PontoSavi.Infra.IOC;
 
@@ -12,8 +13,8 @@ public static class AutoMapperSetup
     {
         var autoMapperConfig = new MapperConfiguration(configure =>
         {
-            configure.CreateMap<UserDTO, IdentityUser>().ReverseMap();
-            configure.CreateMap<RoleDTO, IdentityRole>().ReverseMap();
+            configure.CreateMap<UserDTO, User>().ReverseMap();
+            configure.CreateMap<RoleDTO, Role>().ReverseMap();
         });
 
         services.AddSingleton(autoMapperConfig.CreateMapper());

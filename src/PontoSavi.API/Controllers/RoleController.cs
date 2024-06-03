@@ -1,11 +1,11 @@
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
 using PontoSavi.Application.Interfaces;
 using PontoSavi.Domain.DTOs;
 using PontoSavi.Domain.Filters;
+using PontoSavi.Domain.Entities;
 
 namespace PontoSavi.API.Controllers;
 
@@ -42,7 +42,7 @@ public class RoleController : ControllerBase
     [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
     public async Task<IActionResult> Post([FromBody] RoleDTO role)
     {
-        var identityRole = _mapper.Map<IdentityRole>(role);
+        var identityRole = _mapper.Map<Role>(role);
         var roleCreated = await _roleService.Create(identityRole);
         return Ok(_mapper.Map<RoleDTO>(roleCreated));
     }
@@ -54,7 +54,7 @@ public class RoleController : ControllerBase
     [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
     public async Task<IActionResult> Put([FromBody] RoleDTO role)
     {
-        var identityRole = _mapper.Map<IdentityRole>(role);
+        var identityRole = _mapper.Map<Role>(role);
         var roleUpdated = await _roleService.Update(identityRole);
         return Ok(_mapper.Map<RoleDTO>(roleUpdated));
     }

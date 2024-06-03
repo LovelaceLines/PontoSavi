@@ -5,16 +5,17 @@ using PontoSavi.Application.Interfaces;
 using PontoSavi.Domain.DTOs;
 using PontoSavi.Domain.Exceptions;
 using PontoSavi.Domain.Repositories;
+using PontoSavi.Domain.Entities;
 
 namespace PontoSavi.Application.Services;
 
 public class UserRoleService : IUserRoleService
 {
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<User> _userManager;
     private readonly IUserRepository _userRepository;
     private readonly IRoleRepository _roleRepository;
 
-    public UserRoleService(UserManager<IdentityUser> userManager,
+    public UserRoleService(UserManager<User> userManager,
         IUserRepository userRepository,
         IRoleRepository roleRepository)
     {

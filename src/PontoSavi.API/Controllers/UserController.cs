@@ -1,5 +1,4 @@
 using AutoMapper;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
@@ -8,6 +7,7 @@ using PontoSavi.API.ServiceFilters;
 using PontoSavi.Application.Interfaces;
 using PontoSavi.Domain.DTOs;
 using PontoSavi.Domain.Filters;
+using PontoSavi.Domain.Entities;
 
 namespace PontoSavi.API.Controllers;
 
@@ -63,7 +63,7 @@ public class UserController : ControllerBase
     [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
     public async Task<IActionResult> Post([FromBody] UserDTO user)
     {
-        var identityUser = _mapper.Map<IdentityUser>(user);
+        var identityUser = _mapper.Map<User>(user);
         var userCreated = await _userService.Create(identityUser, user.Password);
         return Ok(_mapper.Map<UserDTO>(userCreated));
     }
@@ -75,7 +75,7 @@ public class UserController : ControllerBase
     public async Task<IActionResult> Put([FromBody] UserDTO user)
     {
         var userDTO = (UserDTO)HttpContext.Items["CurrentUserDTO"]!;
-        var identityUser = _mapper.Map<IdentityUser>(user);
+        var identityUser = _mapper.Map<User>(user);
         var userUpdated = await _userService.Update(identityUser, userDTO.Id!);
         return Ok(_mapper.Map<UserDTO>(userUpdated));
     }

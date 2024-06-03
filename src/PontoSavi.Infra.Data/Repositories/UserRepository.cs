@@ -8,15 +8,16 @@ using PontoSavi.Domain.Repositories;
 using PontoSavi.Infra.Data.Context;
 using PontoSavi.Domain.Filters;
 using PontoSavi.Domain.DTOs;
+using PontoSavi.Domain.Entities;
 
 namespace PontoSavi.Infra.Data.Repositories;
 
-public class UserRepository : BaseRepository<IdentityUser>, IUserRepository
+public class UserRepository : BaseRepository<User>, IUserRepository
 {
     private readonly AppDbContext _context;
-    private readonly UserManager<IdentityUser> _userManager;
+    private readonly UserManager<User> _userManager;
 
-    public UserRepository(AppDbContext context, UserManager<IdentityUser> userManager) : base(context)
+    public UserRepository(AppDbContext context, UserManager<User> userManager) : base(context)
     {
         _context = context;
         _userManager = userManager;
@@ -71,7 +72,7 @@ public class UserRepository : BaseRepository<IdentityUser>, IUserRepository
         return new UserDTO(user, roles);
     }
 
-    public async Task<IdentityUser> Auth(string userName, string password)
+    public async Task<User> Auth(string userName, string password)
     {
         if (!await ExistsByUserName(userName)) throw new AppException("Erro ao fazer login!", HttpStatusCode.Unauthorized);
         var user = await GetByUserName(userName);
@@ -84,7 +85,7 @@ public class UserRepository : BaseRepository<IdentityUser>, IUserRepository
     public async Task<bool> CheckPassword(string id, string password) =>
         await _userManager.CheckPasswordAsync(await GetById(id), password);
 
-    public async Task<bool> CheckPassword(IdentityUser user, string password) =>
+    public async Task<bool> CheckPassword(User user, string password) =>
         await _userManager.CheckPasswordAsync(user, password);
 
     public async Task<bool> ExistsByEmail(string email) =>
@@ -99,22 +100,22 @@ public class UserRepository : BaseRepository<IdentityUser>, IUserRepository
     public async Task<bool> ExistsByUserName(string userName) =>
         await _userManager.Users.AsNoTracking().AnyAsync(u => u.UserName == userName);
 
-    public async Task<IdentityUser> GetByEmail(string email) =>
+    public async Task<User> GetByEmail(string email) =>
         await _userManager.FindByEmailAsync(email) ?? throw new AppException("Usuário não encontrado!", HttpStatusCode.NotFound);
 
-    public async Task<IdentityUser> GetById(string id) =>
+    public async Task<User> GetById(string id) =>
         await _userManager.FindByIdAsync(id) ?? throw new AppException("Usuário não encontrado!", HttpStatusCode.NotFound);
 
-    public async Task<IdentityUser> GetByPhoneNumber(string phoneNumber) =>
+    public async Task<User> GetByPhoneNumber(string phoneNumber) =>
         await _userManager.Users.AsNoTracking().FirstAsync(u => u.PhoneNumber == phoneNumber);
 
-    public async Task<IdentityUser> GetByUserName(string userName) =>
+    public async Task<User> GetByUserName(string userName) =>
         await _userManager.FindByNameAsync(userName) ?? throw new AppException("Usuário não encontrado!", HttpStatusCode.NotFound);
 
-    public async Task<List<string>> GetRoles(IdentityUser user) =>
+    public async Task<List<string>> GetRoles(User user) =>
         (List<string>)await _userManager.GetRolesAsync(user);
 
-    public async Task<IdentityUser> Add(IdentityUser user, string password)
+    public async Task<User> Add(User user, string password)
     {
         user.Id = Guid.NewGuid().ToString();
         var result = await _userManager.CreateAsync(user, password);
@@ -124,7 +125,7 @@ public class UserRepository : BaseRepository<IdentityUser>, IUserRepository
         return user;
     }
 
-    public new async Task<IdentityUser> Update(IdentityUser user)
+    public new async Task<User> Update(User user)
     {
         var result = await _userManager.UpdateAsync(user);
 
