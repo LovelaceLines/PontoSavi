@@ -9,6 +9,7 @@ import { updatedPassword } from "@/_types";
 
 interface UseUpdatePasswordFormProps {
   formMethods: UseFormReturn<updatedPassword & { confirmPassword: string }>;
+  // eslint-disable-next-line no-unused-vars
   onSubmit: (data: updatedPassword) => void;
 }
 
