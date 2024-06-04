@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 
 import { selectUser } from "@/_redux/features/auth/slice";
 import { colors, ThemeContext } from "@/_theme";
+import Link from "next/link";
 
 export const Avatar = () => {
   const user = useSelector(selectUser);
@@ -15,10 +16,12 @@ export const Avatar = () => {
   useEffect(() => { if (user) setAvatarLetter(user.userName[0].toUpperCase()); }, [user]);
 
   return (
-    <IconButton href="my-account" color="inherit" sx={{ display: { xs: "none", sm: "flex" } }}>
-      <AvatarMUI sx={{ width: 24, height: 24, bgcolor: `${themeName === "light" ? colors.black : colors.white}` }}>
-        {avatarLetter}
-      </AvatarMUI>
-    </IconButton>
+    <Link href="/app/my-account" style={{ textDecoration: "none" }}>
+      <IconButton color="inherit" sx={{ display: { xs: "none", sm: "flex" } }}>
+        <AvatarMUI sx={{ width: 24, height: 24, bgcolor: `${themeName === "light" ? colors.black : colors.white}` }}>
+          {avatarLetter}
+        </AvatarMUI>
+      </IconButton>
+    </Link>
   );
 };

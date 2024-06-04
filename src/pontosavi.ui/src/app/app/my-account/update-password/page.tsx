@@ -3,7 +3,7 @@ import dynamic from "next/dynamic";
 
 import { Loading } from "@/_components";
 
-const UpdatePasswordForm = dynamic(() => import("./passwordForm").then(mod => mod.UpdatePasswordForm),
+const UpdatePasswordForm = dynamic(() => import("./updatePasswordForm").then(mod => mod.UpdatePasswordForm),
   { ssr: false, loading: () => <Loading /> });
 
 export default function Page() {
