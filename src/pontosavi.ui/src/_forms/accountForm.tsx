@@ -2,65 +2,63 @@
 
 import { Add } from "@mui/icons-material";
 import { Button, Chip, FormControl, Grid, InputLabel, ListItemIcon, MenuItem, Select, TextField } from "@mui/material";
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { useDispatch, useSelector } from "react-redux";
 
-import { selectUser } from "@/_redux/features/auth/slice";
-import { selectRoles } from "@/_redux/features/role/slice";
-import { getAllRoles } from "@/_redux/features/role/thunks";
-import { postUser, updateUser } from "@/_redux/features/user/thunks";
-import { AppDispatch } from "@/_redux/store";
 import { user } from "@/_types";
 import { includes } from "@/_utils";
-
-type account = user & { confirmPassword: string };
+import { useAccountForm } from "./useAccountForm";
 
 export const AccountForm = ({ user }: { user?: user }) => {
-  const currentUser = useSelector(selectUser);
-  const allRoles = useSelector(selectRoles);
-  const dispatch = useDispatch<AppDispatch>();
-  const { register, handleSubmit, watch, setValue, getValues, formState: { errors } } = useForm<account>({
-    defaultValues: { ...user, roles: user?.roles || ["Colaborador"] }
-  });
-
-  useEffect(() => { dispatch(getAllRoles()); }, []);
-
-  const onSubmit = (data: user) =>
-    !user ? dispatch(postUser(data)) :
-      dispatch(updateUser({ oldUser: user, newUser: data }));
-
-  const handleRoleAdd = (role: string) => {
-    if (getValues().roles.includes(role)) return;
-    setValue("roles", [...getValues().roles, role]);
-  };
-
-  const handleRoleDelete = (role: string) =>
-    setValue("roles", getValues().roles.filter(r => r !== role));
+  const {
+    allRoles,
+    currentUser,
+    getValues,
+    register,
+    handleSubmit,
+    errors,
+    onSubmit,
+    handleRoleAdd,
+    handleRoleDelete,
+  } = useAccountForm({ user });
 
   return (
     <Grid container component="form" onSubmit={handleSubmit(onSubmit)} spacing={2}>
-      <Grid item xs={12} md={4}>
+      <Grid item xs={12} md={3}>
+        <TextField
+          fullWidth
+          label="Name"
+          {...register("name")}
+          error={!!errors.name}
+          helperText={errors.name?.message}
+        />
+      </Grid>
+      <Grid item xs={12} md={3}>
         <TextField
           fullWidth
           label="Username"
-          {...register("userName", { required: true })}
+          {...register("userName")}
+          error={!!errors.userName}
+          helperText={errors.userName?.message}
         />
       </Grid>
-      <Grid item xs={12} md={4}>
+      <Grid item xs={12} md={3}>
         <TextField
           fullWidth
           label="Email"
-          {...register("email", { required: true })}
+          {...register("email")}
+          error={!!errors.email}
+          helperText={errors.email?.message}
         />
       </Grid>
-      <Grid item xs={12} md={4}>
+      <Grid item xs={12} md={3}>
         <TextField
           fullWidth
           label="Phone"
-          {...register("phoneNumber", { required: true })}
+          {...register("phoneNumber")}
+          error={!!errors.phoneNumber}
+          helperText={errors.phoneNumber?.message}
         />
       </Grid>
+
       {!user && (
         <>
           <Grid item xs={12} md={4}>
@@ -68,7 +66,9 @@ export const AccountForm = ({ user }: { user?: user }) => {
               fullWidth
               label="Password"
               type="password"
-              {...register("password", { required: true })}
+              {...register("password")}
+              error={!!errors.password}
+              helperText={errors.password?.message}
             />
           </Grid>
           <Grid item xs={12} md={4}>
@@ -76,11 +76,7 @@ export const AccountForm = ({ user }: { user?: user }) => {
               fullWidth
               label="Confirm Password"
               type="password"
-              {...register("confirmPassword", {
-                required: true,
-                validate: value =>
-                  value === watch("password", "") || "The passwords do not match.",
-              })}
+              {...register("confirmPassword")}
               error={!!errors.confirmPassword}
               helperText={errors.confirmPassword?.message}
             />
@@ -88,6 +84,7 @@ export const AccountForm = ({ user }: { user?: user }) => {
           <Grid item xs={12} md={4} />
         </>
       )}
+
       <Grid item xs={12} md={4}>
         <FormControl
           disabled={!includes(currentUser ? currentUser.roles : [], ["Desenvolvedor", "Administrador", "Supervisor"])}
@@ -107,6 +104,7 @@ export const AccountForm = ({ user }: { user?: user }) => {
           </Select>
         </FormControl>
       </Grid>
+
       <Grid item xs={12} md={8} alignContent="center" alignItems="center" gap={1}>
         {getValues().roles.map(role =>
           <Chip
@@ -118,6 +116,7 @@ export const AccountForm = ({ user }: { user?: user }) => {
           />
         )}
       </Grid>
+
       <Grid item xs={12}>
         <Button
           type="submit"

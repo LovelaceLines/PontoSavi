@@ -9,7 +9,7 @@ const UpdatePasswordForm = dynamic(() => import("./updatePasswordForm").then(mod
 export default function Page() {
   return (
     <>
-      <Typography variant="h5" mb={2}>Change Password</Typography>
+      <Typography variant="h5" mb={2}>Update Password</Typography>
       <UpdatePasswordForm />
     </>
   );

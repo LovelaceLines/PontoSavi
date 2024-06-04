@@ -9,7 +9,7 @@ import { selectUser } from "@/_redux/features/auth/slice";
 import { user } from "@/_types";
 import { Loading } from "@/_components";
 
-const AccountForm = dynamic(() => import("./accountForm").then(mod => mod.AccountForm),
+const AccountForm = dynamic(() => import("@/_forms/accountForm").then(mod => mod.AccountForm),
   { ssr: false, loading: () => <Loading /> });
 
 export default function Page() {
@@ -19,8 +19,8 @@ export default function Page() {
     <>
       <Typography variant="h5" mb={2}>My Account</Typography>
       <AccountForm user={currentUser as user} />
-      <Link href="my-account/change-password" style={{ textDecoration: "none", color: "inherit" }}>
-        <Typography variant="subtitle2" color="primary" mt={2}>Change Password?</Typography>
+      <Link href="my-account/update-password" style={{ textDecoration: "none", color: "inherit" }}>
+        <Typography variant="subtitle2" color="primary" mt={2}>Update Password?</Typography>
       </Link>
     </>
   );

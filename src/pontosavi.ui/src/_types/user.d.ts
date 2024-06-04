@@ -16,6 +16,7 @@ export type userFilter = {
 
 export type user = {
   id?: string;
+  name: string;
   userName: string;
   email: string;
   phoneNumber: string;
