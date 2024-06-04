@@ -34,6 +34,18 @@ export type role = {
   name: string;
 };
 
+export class roleFilter {
+  search?: string;
+
+  id?: string;
+  name?: string;
+
+  pageIndex?: number;
+  pageSize?: number;
+
+  nameOrderSort?: "asc" | "desc";
+}
+
 export type userRole = {
   userId: string;
   roleName: string;

@@ -1,17 +1,21 @@
 "use client";
 
 import { Box, Container } from "@mui/material";
-import { AccountCircle, BrowseGallery, Delete, Settings } from "@mui/icons-material";
+import { AccountCircle, BrowseGallery, Group, GroupWork, Settings } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 
 import { AuthWrapper } from "@/app/auth-wrapper";
 import { AppAppBar, ISideBarProps, SideBar } from "@/_components";
 import { useSideBar } from "@/_contexts";
+import { getSuperUserRoles } from "@/globalSettings";
 
 const buttonList: ISideBarProps[][] = [
   [
+    { text: "Accounts", to: "/app/accounts", icon: <Group />, allowRoles: getSuperUserRoles() },
+    { text: "Roles", to: "/app/roles", icon: <GroupWork />, allowRoles: getSuperUserRoles() },
+  ],
+  [
     { text: "Ponto", to: "/app/ponto", icon: <BrowseGallery /> },
-    { text: "Recycle Bin", to: "/app/recycle-bin", icon: <Delete /> },
   ],
   [
     { text: "My Account", to: "/app/my-account", icon: <AccountCircle /> },
