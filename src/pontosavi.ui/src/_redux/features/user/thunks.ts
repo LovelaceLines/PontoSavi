@@ -1,5 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
+import { getUserDefaultRole } from "@/globalSettings";
 import { Axios } from "@/_http/axios";
 import { queryResult, updatedPassword, user, userFilter, userRole } from "@/_types";
 
@@ -21,7 +22,7 @@ export const postUser = createAsyncThunk(
   async (user: user): Promise<user> => {
     const res = await Axios.post<user>(USER, user);
 
-    user.roles.filter(r => r !== "Colaborador").forEach(async role => {
+    user.roles.filter(r => r !== getUserDefaultRole()).forEach(async role => {
       await Axios.post<user>(USER_ADD_TO_ROLE, { userId: res.data.id, roleName: role } as userRole);
     });
 

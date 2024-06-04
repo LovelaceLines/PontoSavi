@@ -1,1 +1,1 @@
-export { AccountForm } from "./accountForm";
+export { AccountForm } from "./account";

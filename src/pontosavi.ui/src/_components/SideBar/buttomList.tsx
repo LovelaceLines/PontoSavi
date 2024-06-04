@@ -5,27 +5,31 @@ import { Logout } from "@mui/icons-material";
 import Link from "next/link";
 import React from "react";
 
-import { useDispatch } from "react-redux";
-import { logoutUser } from "@/_redux/features/auth/slice";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser, selectUser } from "@/_redux/features/auth/slice";
+import { includes } from "@/_utils";
+import { getUserDefaultRole } from "@/globalSettings";
 
 export interface ISideBarProps {
   text: string;
   to: string;
   icon: React.ReactNode;
+  allowRoles?: string[];
 }
 
 const logoutButton: ISideBarProps = { text: "Logout", to: "/signin", icon: <Logout /> };
 
 export const ButtonList = ({ buttonList }: Readonly<{ buttonList: ISideBarProps[][] }>) => {
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   return (
     <List>
 
       {buttonList.map((subList, index) =>
         <React.Fragment key={index}>
-          {subList.map(({ text, to, icon }, index) => (
-            <ListItem key={text + index} disablePadding sx={{ display: "block" }}>
+          {subList.map(({ text, to, icon, allowRoles }, index) => (
+            <ListItem key={text + index} disablePadding sx={{ display: includes(user ? user.roles : [], allowRoles || [getUserDefaultRole()]) ? "block" : "none" }}>
               <Link href={to} style={{ color: "inherit", textDecoration: "none" }}>
                 <ListItemButton>
                   <ListItemIcon sx={{ color: "inherit" }}>{icon}</ListItemIcon>

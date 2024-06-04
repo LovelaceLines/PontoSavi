@@ -9,7 +9,7 @@ import { selectUser } from "@/_redux/features/auth/slice";
 import { user } from "@/_types";
 import { Loading } from "@/_components";
 
-const AccountForm = dynamic(() => import("@/_forms/accountForm").then(mod => mod.AccountForm),
+const AccountForm = dynamic(() => import("@/_forms").then(mod => mod.AccountForm),
   { ssr: false, loading: () => <Loading /> });
 
 export default function Page() {

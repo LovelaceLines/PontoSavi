@@ -3,6 +3,7 @@
 import { Add } from "@mui/icons-material";
 import { Button, Chip, FormControl, Grid, InputLabel, ListItemIcon, MenuItem, Select, TextField } from "@mui/material";
 
+import { getSuperUserRoles } from "@/globalSettings";
 import { user } from "@/_types";
 import { includes } from "@/_utils";
 import { useAccountForm } from "./useAccountForm";
@@ -87,8 +88,8 @@ export const AccountForm = ({ user }: { user?: user }) => {
 
       <Grid item xs={12} md={4}>
         <FormControl
-          disabled={!includes(currentUser ? currentUser.roles : [], ["Desenvolvedor", "Administrador", "Supervisor"])}
-          sx={{ width: "100%" }}
+          disabled={!includes(currentUser ? currentUser.roles : [], getSuperUserRoles())}
+          sx={{ width: "100%", "& .MuiSvgIcon-root": { color: "inherit" }, "& .MuiSelect-icon": { color: "inherit" } }}
         >
           <InputLabel id="input-modulo">Add Roles</InputLabel>
           <Select>
