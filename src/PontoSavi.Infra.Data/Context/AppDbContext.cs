@@ -11,6 +11,7 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
 
     public override DbSet<User> Users { get; set; }
     public override DbSet<Role> Roles { get; set; }
+    public DbSet<Company> Companies { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -19,5 +20,7 @@ public class AppDbContext : IdentityDbContext<User, Role, int>
         builder.ApplyConfiguration(new UserConfiguration());
         builder.ApplyConfiguration(new RoleConfiguration());
         builder.ApplyConfiguration(new UserRoleConfiguration());
+
+        builder.ApplyConfiguration(new CompanyConfiguration());
     }
 }

@@ -41,6 +41,9 @@ public static class DependencyInjectionSetup
 
         services.AddTransient<IAuthService, AuthService>();
 
+        services.AddTransient<ICompanyService, CompanyService>();
+        services.AddTransient<ICompanyRepository, CompanyRepository>();
+
         return services;
     }
 }

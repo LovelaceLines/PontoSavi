@@ -15,6 +15,8 @@ public static class AutoMapperSetup
         {
             configure.CreateMap<UserDTO, User>().ReverseMap();
             configure.CreateMap<RoleDTO, Role>().ReverseMap();
+
+            configure.CreateMap<CompanyDTO, Company>().ReverseMap();
         });
 
         services.AddSingleton(autoMapperConfig.CreateMapper());

@@ -21,6 +21,7 @@ public class GlobalClientRequest : HttpClientUtil
     public readonly HttpClient _addUserToRoleClient = new() { BaseAddress = new Uri($"{BaseUrl}User/add-to-role/") };
     public readonly HttpClient _removeUserFromRoleClient = new() { BaseAddress = new Uri($"{BaseUrl}User/remove-from-role/") };
     public readonly HttpClient _roleClient = new() { BaseAddress = new Uri($"{BaseUrl}Role/") };
+    public readonly HttpClient _companyClient = new() { BaseAddress = new Uri($"{BaseUrl}Company/") };
 
     #region GetEntityFake
 
@@ -76,6 +77,16 @@ public class GlobalClientRequest : HttpClientUtil
         await PostFromBody<UserDTO>(_addUserToRoleClient, model);
 
         return model;
+    }
+
+    public async Task<CompanyDTO> GetCompany(string? publicId = null, CompanyDTO? fake = null)
+    {
+        if (!publicId.IsNullOrEmpty())
+            return await GetFromUri<CompanyDTO>(_companyClient, publicId!);
+
+        fake ??= new CompanyFake().Generate();
+
+        return await PostFromBody<CompanyDTO>(_companyClient, fake);
     }
 
     #endregion
