@@ -28,23 +28,24 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         var query = _context.Users.AsNoTracking().AsQueryable();
 
         if (!filter.Search.IsNullOrEmpty())
-            query = query.Where(u => u.UserName!.Contains(filter.Search!, StringComparison.CurrentCultureIgnoreCase) ||
-                u.Email!.Contains(filter.Search!, StringComparison.CurrentCultureIgnoreCase) ||
-                u.PhoneNumber!.Contains(filter.Search!, StringComparison.CurrentCultureIgnoreCase));
+            query = query.Where(u =>
+                u.Name.ToLower().Contains(filter.Search!.ToLower()) ||
+                u.UserName!.ToLower().Contains(filter.Search!.ToLower()) ||
+                u.Email!.ToLower().Contains(filter.Search!.ToLower()) ||
+                u.PhoneNumber!.ToLower().Contains(filter.Search!.ToLower()));
 
         if (!filter.PublicId.IsNullOrEmpty()) query = query.Where(u => u.PublicId == filter.PublicId);
-        if (!filter.UserName.IsNullOrEmpty()) query = query.Where(u => u.UserName!.Contains(filter.UserName!, StringComparison.CurrentCultureIgnoreCase));
-        if (!filter.Email.IsNullOrEmpty()) query = query.Where(u => u.Email!.Contains(filter.Email!, StringComparison.CurrentCultureIgnoreCase));
-        if (!filter.PhoneNumber.IsNullOrEmpty()) query = query.Where(u => u.PhoneNumber!.Contains(filter.PhoneNumber!, StringComparison.CurrentCultureIgnoreCase));
+        if (!filter.Name.IsNullOrEmpty()) query = query.Where(u => u.Name!.ToLower().Contains(filter.Name!.ToLower()));
+        if (!filter.UserName.IsNullOrEmpty()) query = query.Where(u => u.UserName!.ToLower().Contains(filter.UserName!.ToLower()));
+        if (!filter.Email.IsNullOrEmpty()) query = query.Where(u => u.Email!.ToLower().Contains(filter.Email!.ToLower()));
+        if (!filter.PhoneNumber.IsNullOrEmpty()) query = query.Where(u => u.PhoneNumber!.ToLower().Contains(filter.PhoneNumber!.ToLower()));
 
-        if (!filter.UserNameOrderSort.IsNullOrEmpty())
-            query = filter.UserNameOrderSort!.Equals("asc", StringComparison.CurrentCultureIgnoreCase) ? query.OrderBy(u => u.UserName) :
-                filter.UserNameOrderSort!.Equals("desc", StringComparison.CurrentCultureIgnoreCase) ? query.OrderByDescending(u => u.UserName) :
-                query;
-        if (!filter.EmailOrderSort.IsNullOrEmpty())
-            query = filter.EmailOrderSort!.Equals("asc", StringComparison.CurrentCultureIgnoreCase) ? query.OrderBy(u => u.Email) :
-                filter.EmailOrderSort!.Equals("desc", StringComparison.CurrentCultureIgnoreCase) ? query.OrderByDescending(u => u.Email) :
-                query;
+        if (filter.NameDescOrderSort.HasValue)
+            query = filter.NameDescOrderSort.Value ? query.OrderByDescending(u => u.Name) : query.OrderBy(u => u.Name);
+        if (filter.UserNameDescOrderSort.HasValue)
+            query = filter.UserNameDescOrderSort.Value ? query.OrderByDescending(u => u.UserName) : query.OrderBy(u => u.UserName);
+        if (filter.EmailDescOrderSort.HasValue)
+            query = filter.EmailDescOrderSort.Value ? query.OrderByDescending(u => u.Email) : query.OrderBy(u => u.Email);
 
         var totalCount = await query.CountAsync();
 

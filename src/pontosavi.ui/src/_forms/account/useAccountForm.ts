@@ -31,7 +31,7 @@ export const useAccountForm = ({ user }: { user?: user }) => {
     defaultValues: { ...user, roles: user?.roles || [getUserDefaultRole()] },
   });
 
-  useEffect(() => { dispatch(getRoles({ nameOrderSort: "asc" })); }, []);
+  useEffect(() => { dispatch(getRoles({ nameDescOrderSort: false })); }, []);
 
   useEffect(() => { if (status === "succeeded") Snackbar("User saved successfully"); }, [status]);
 

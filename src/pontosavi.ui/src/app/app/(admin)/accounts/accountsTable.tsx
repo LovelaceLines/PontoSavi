@@ -1,12 +1,12 @@
 "use client";
 
 import { type MRT_ColumnDef } from "material-react-table";
+import { ContentCopy } from "@mui/icons-material";
 import { useMemo } from "react";
 
 import { useDefaultMaterialReactTable } from "@/_tables";
 import { user } from "@/_types";
 import { useAccountsTable } from "./useAccountsTable";
-import { ContentCopy } from "@mui/icons-material";
 
 export const AccountsTable = () => {
   const {
@@ -65,6 +65,7 @@ export const AccountsTable = () => {
       header: "Roles",
       size: 200,
       Cell: ({ row }) => row.original.roles.join(", "),
+      enableColumnFilter: false,
       enableSorting: false,
     },
   ], []);

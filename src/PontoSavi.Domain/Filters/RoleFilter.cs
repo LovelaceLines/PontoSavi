@@ -10,5 +10,5 @@ public class RoleFilter
     public int PageIndex { get; set; } = 0;
     public int PageSize { get; set; } = int.MaxValue;
 
-    public string? NameOrderSort { get; set; }
+    public bool? NameDescOrderSort { get; set; }
 }

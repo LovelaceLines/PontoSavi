@@ -11,8 +11,9 @@ export type userFilter = {
   pageIndex?: number;
   pageSize?: number;
 
-  userNameOrderSort?: "asc" | "desc";
-  emailOrderSort?: "asc" | "desc";
+  nameDescOrderSort?: boolean;
+  userNameDescOrderSort?: boolean;
+  emailDescOrderSort?: boolean;
 };
 
 export type user = {
@@ -44,7 +45,7 @@ export class roleFilter {
   pageIndex?: number;
   pageSize?: number;
 
-  nameOrderSort?: "asc" | "desc";
+  nameDescOrderSort?: boolean;
 }
 
 export type userRole = {

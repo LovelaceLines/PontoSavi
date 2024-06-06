@@ -29,7 +29,7 @@ export const useRolesTable = () => {
   const onSubmit = () => dispatch(getRoles({
     publicId: columnFilters.find(f => f.id === "publicId")?.value as string || undefined,
     name: columnFilters.find(f => f.id === "name")?.value as string || undefined,
-    nameOrderSort: sorting.find(s => s.id === "name") ? sorting.find(s => s.id === "name")?.desc ? "desc" : "asc" : undefined,
+    nameDescOrderSort: sorting.find(s => s.id === "name") ? sorting.find(s => s.id === "name")?.desc : undefined,
   }));
 
   const toCreate = "role";

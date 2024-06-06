@@ -27,15 +27,15 @@ public class RoleRepository : BaseRepository<Role>, IRoleRepository
     {
         var query = _context.Roles.AsNoTracking().AsQueryable();
 
-        if (!filter.Search.IsNullOrEmpty()) query = query.Where(r => r.Name!.Contains(filter.Search!, StringComparison.CurrentCultureIgnoreCase));
+        if (!filter.Search.IsNullOrEmpty())
+            query = query.Where(r =>
+                r.Name!.ToLower().Contains(filter.Search!.ToLower()));
 
         if (!filter.PublicId.IsNullOrEmpty()) query = query.Where(r => r.PublicId == filter.PublicId);
-        if (!filter.Name.IsNullOrEmpty()) query = query.Where(r => r.Name!.Contains(filter.Name!, StringComparison.CurrentCultureIgnoreCase));
+        if (!filter.Name.IsNullOrEmpty()) query = query.Where(r => r.Name!.ToLower().Contains(filter.Name!.ToLower()));
 
-        if (!filter.NameOrderSort.IsNullOrEmpty())
-            query = filter.NameOrderSort!.Equals("asc", StringComparison.CurrentCultureIgnoreCase) ? query.OrderBy(r => r.Name) :
-                filter.NameOrderSort!.Equals("desc", StringComparison.CurrentCultureIgnoreCase) ? query.OrderByDescending(r => r.Name) :
-                query;
+        if (filter.NameDescOrderSort.HasValue)
+            query = filter.NameDescOrderSort.Value ? query.OrderByDescending(r => r.Name) : query.OrderBy(r => r.Name);
 
         var totalCount = await query.CountAsync();
 

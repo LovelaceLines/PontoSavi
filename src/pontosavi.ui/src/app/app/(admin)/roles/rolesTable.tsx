@@ -1,6 +1,7 @@
 "use client";
 
 import { type MRT_ColumnDef } from "material-react-table";
+import { ContentCopy } from "@mui/icons-material";
 import { useMemo } from "react";
 
 import { useDefaultMaterialReactTable } from "@/_tables";
@@ -32,6 +33,12 @@ export const RolesTable = () => {
       accessorKey: "publicId",
       header: "ID",
       size: 80,
+      enableClickToCopy: true,
+      muiCopyButtonProps: {
+        fullWidth: true,
+        startIcon: <ContentCopy />,
+        sx: { justifyContent: "flex-start" },
+      },
     },
     {
       accessorKey: "name",

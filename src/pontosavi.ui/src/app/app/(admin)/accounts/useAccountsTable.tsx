@@ -36,8 +36,9 @@ export const useAccountsTable = () => {
     search: globalFilter || undefined,
     pageIndex: pagination.pageIndex,
     pageSize: pagination.pageSize,
-    emailOrderSort: sorting.find(s => s.id === "email") ? sorting.find(s => s.id === "email")?.desc ? "desc" : "asc" : undefined,
-    userNameOrderSort: sorting.find(s => s.id === "userName") ? sorting.find(s => s.id === "userName")?.desc ? "desc" : "asc" : undefined,
+    nameDescOrderSort: sorting.find(s => s.id === "name") ? sorting.find(s => s.id === "name")?.desc : undefined,
+    userNameDescOrderSort: sorting.find(s => s.id === "userName") ? sorting.find(s => s.id === "userName")?.desc : undefined,
+    emailDescOrderSort: sorting.find(s => s.id === "email") ? sorting.find(s => s.id === "email")?.desc : undefined,
   }));
 
   const toCreate = "account";
