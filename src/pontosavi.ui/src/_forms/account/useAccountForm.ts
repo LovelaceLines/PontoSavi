@@ -26,7 +26,7 @@ export const useAccountForm = ({ user }: { user?: user }) => {
   const currentUser = useSelector(selectAuthUser);
   const allRoles = useSelector(selectRoles);
 
-  const { register, handleSubmit, setValue, getValues, formState: { errors } } = useForm<Schema>({
+  const { register, handleSubmit, setValue, getValues, formState: { errors }, watch } = useForm<Schema>({
     resolver: zodResolver(formDataSchema),
     defaultValues: { ...user, roles: user?.roles || [getUserDefaultRole()] },
   });
@@ -52,8 +52,8 @@ export const useAccountForm = ({ user }: { user?: user }) => {
   return ({
     currentUser,
     allRoles,
-    getValues,
     register,
+    watch,
     handleSubmit,
     errors,
     onSubmit,

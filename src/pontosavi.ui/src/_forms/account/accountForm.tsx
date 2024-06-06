@@ -12,8 +12,8 @@ export const AccountForm = ({ user }: { user?: user }) => {
   const {
     allRoles,
     currentUser,
-    getValues,
     register,
+    watch,
     handleSubmit,
     errors,
     onSubmit,
@@ -107,7 +107,7 @@ export const AccountForm = ({ user }: { user?: user }) => {
       </Grid>
 
       <Grid item xs={12} md={8} alignContent="center" alignItems="center" gap={1}>
-        {getValues().roles.map(role =>
+        {watch("roles").map(role =>
           <Chip
             key={role}
             label={role}

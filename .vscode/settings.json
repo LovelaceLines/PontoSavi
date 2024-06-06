@@ -6,6 +6,7 @@
         "Repository",
         "Identity",
         "Frontend",
-        "UI"
+        "UI",
+        "Form"
     ]
 }
