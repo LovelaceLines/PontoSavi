@@ -1,6 +1,7 @@
 using System.Net;
 
 using PontoSavi.Application.Interfaces;
+using PontoSavi.Domain.Constants;
 using PontoSavi.Domain.DTOs;
 using PontoSavi.Domain.Exceptions;
 using PontoSavi.Domain.Repositories;
@@ -12,15 +13,23 @@ namespace PontoSavi.Application.Services;
 public class RoleService : IRoleService
 {
     private readonly IRoleRepository _roleRepository;
+    private readonly IRolesSettingsService _rolesSettingsService;
 
-    public RoleService(IRoleRepository roleRepository) =>
+    public RoleService(IRoleRepository roleRepository,
+        IRolesSettingsService rolesSettingsService)
+    {
         _roleRepository = roleRepository;
+        _rolesSettingsService = rolesSettingsService;
+    }
 
     public async Task<QueryResult<RoleDTO>> Query(RoleFilter filter) =>
         await _roleRepository.Query(filter);
 
-    public async Task<RoleDTO> GetById(string id) =>
-        new RoleDTO(await _roleRepository.GetById(id));
+    public async Task<Role> GetByPublicId(string publicId) =>
+        await _roleRepository.GetByPublicId(publicId);
+
+    public async Task<List<Role>> GetByUser(User user) =>
+        await _roleRepository.GetByUser(user);
 
     public async Task<Role> Create(Role role)
     {
@@ -30,34 +39,34 @@ public class RoleService : IRoleService
         return await _roleRepository.Add(role);
     }
 
-    public async Task<Role> Update(Role role)
+    public async Task<Role> Update(Role newRole)
     {
-        // TODO: Definy the method implementation
-        // if (_roleRepository.IsDefault(role.Name!))
-        //     throw new AppException("Não é possível alterar uma função padrão", HttpStatusCode.BadRequest);
+        if (_rolesSettingsService.IsStandardUser(newRole.Name!))
+            throw new AppException("Não é possível alterar uma função padrão", HttpStatusCode.BadRequest);
 
-        if (!await _roleRepository.ExistsById(role.Id))
+        if (!await _roleRepository.ExistsByPublicId(newRole.PublicId))
             throw new AppException("Função não encontrada", HttpStatusCode.NotFound);
 
-        if (await _roleRepository.ExistsByName(role.Name!))
+        if (await _roleRepository.ExistsByName(newRole.Name!))
             throw new AppException("Função já existe", HttpStatusCode.Conflict);
 
-        return await _roleRepository.Update(role);
+        var oldRole = await _roleRepository.GetByPublicId(newRole.PublicId);
+
+        oldRole.Name = newRole.Name;
+
+        return await _roleRepository.Update(oldRole);
     }
 
-    public async Task<bool> Delete(string id)
+    public async Task<Role> Delete(string publicId)
     {
-        if (!await _roleRepository.ExistsById(id))
+        if (!await _roleRepository.ExistsByPublicId(publicId))
             throw new AppException("Função não encontrada", HttpStatusCode.NotFound);
 
-        var role = await _roleRepository.GetById(id);
+        var role = await _roleRepository.GetByPublicId(publicId);
 
-        // TODO: Definy the method implementation
-        // if (_roleRepository.IsDefault(role.Name!))
-        //     throw new AppException("Não é possível excluir uma função padrão", HttpStatusCode.BadRequest);
+        if (_rolesSettingsService.IsStandardUser(role.Name!))
+            throw new AppException("Não é possível excluir uma função padrão", HttpStatusCode.BadRequest);
 
-        await _roleRepository.Remove(role);
-
-        return true;
+        return await _roleRepository.Remove(role);
     }
 }

@@ -11,7 +11,7 @@ using PontoSavi.Infra.Data.Context;
 namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240531120219_Init")]
+    [Migration("20240606010625_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -20,7 +20,7 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.5");
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -32,9 +32,8 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -43,7 +42,7 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                     b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -55,9 +54,8 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                     b.Property<string>("ClaimValue")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -66,7 +64,7 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                     b.ToTable("AspNetUserClaims", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("TEXT");
@@ -77,9 +75,8 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("TEXT");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -88,18 +85,13 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                     b.ToTable("AspNetUserLogins", (string)null);
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
 
-                    b.Property<string>("RoleId")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasMaxLength(34)
-                        .HasColumnType("TEXT");
+                    b.Property<int>("RoleId")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -107,15 +99,43 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
 
                     b.ToTable("AspNetUserRoles", (string)null);
 
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUserRole<string>");
-
-                    b.UseTphMappingStrategy();
+                    b.HasData(
+                        new
+                        {
+                            UserId = 1,
+                            RoleId = 1
+                        },
+                        new
+                        {
+                            UserId = 1,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            RoleId = 2
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            RoleId = 4
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            RoleId = 3
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            RoleId = 4
+                        });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("TEXT");
@@ -133,9 +153,9 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
 
             modelBuilder.Entity("PontoSavi.Domain.Entities.Role", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("TEXT");
+                        .HasColumnType("INTEGER");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -149,6 +169,11 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                         .HasMaxLength(256)
                         .HasColumnType("TEXT");
 
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
+
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
@@ -160,38 +185,43 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1",
-                            ConcurrencyStamp = "58bb5541-3d68-4d51-ae83-069ff8f29b42",
+                            Id = 1,
+                            ConcurrencyStamp = "acb5b17a-62bc-4b3c-bfb7-361eb91b4545",
                             Name = "Desenvolvedor",
-                            NormalizedName = "DESENVOLVEDOR"
+                            NormalizedName = "DESENVOLVEDOR",
+                            PublicId = "01HZNHAB8A6EC769T61YD44732"
                         },
                         new
                         {
-                            Id = "2",
-                            ConcurrencyStamp = "26ddd7f7-1e42-415c-9962-bb64dd129956",
+                            Id = 2,
+                            ConcurrencyStamp = "800b28c7-f132-44b0-9b5f-48d909c92aeb",
                             Name = "Administrador",
-                            NormalizedName = "ADMINISTRADOR"
+                            NormalizedName = "ADMINISTRADOR",
+                            PublicId = "01HZNHAB8AT0BJZ2V7PFJ7YP4J"
                         },
                         new
                         {
-                            Id = "3",
-                            ConcurrencyStamp = "8227350d-c2d2-44e0-a2a8-2c0034ecc080",
+                            Id = 3,
+                            ConcurrencyStamp = "469ebb4d-fd8e-4ea7-83ba-c2f44c74f490",
                             Name = "Supervisor",
-                            NormalizedName = "SUPERVISOR"
+                            NormalizedName = "SUPERVISOR",
+                            PublicId = "01HZNHAB8AQFFFNBZV7T2Z4D10"
                         },
                         new
                         {
-                            Id = "4",
-                            ConcurrencyStamp = "a2514f12-40b0-4da9-8cb1-eadebff1dac4",
+                            Id = 4,
+                            ConcurrencyStamp = "8489012e-2777-4d02-88e9-d06338c5de38",
                             Name = "Colaborador",
-                            NormalizedName = "COLABORADOR"
+                            NormalizedName = "COLABORADOR",
+                            PublicId = "01HZNHAB8A955VX2E936MKY5NA"
                         });
                 });
 
             modelBuilder.Entity("PontoSavi.Domain.Entities.User", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("TEXT");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("INTEGER");
@@ -234,6 +264,11 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .IsUnicode(true)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("TEXT");
 
@@ -242,6 +277,7 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
+                        .IsUnicode(true)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -258,100 +294,64 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "1",
+                            Id = 1,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cb0363fb-2fa9-468f-bce5-71feda0f66a9",
+                            ConcurrencyStamp = "4ea1afe3-d91f-42ed-9d7e-b260e5dcfc3d",
                             Email = "dev@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Developer",
                             NormalizedEmail = "DEV@GMAIL.COM",
                             NormalizedUserName = "DEV",
-                            PasswordHash = "AQAAAAIAAYagAAAAELQWtwqkmF5zQtIaMerbTyn9h2asLXyKeUhrQ+fma5XQey6syczos7RQPshP2fe4QA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPDUbYIFtzeEoZa5wb90U7L5wdYWlXN77Kmp+plI7eOg/XJFJk7Kjt9qQ0bdEZNyhw==",
                             PhoneNumber = "(55) 85 9 9999-9999",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2648c3f6-dad3-43f9-be26-ea928f2c928d",
+                            PublicId = "01HZNHAB0WKTX69JGCSGJFJVDY",
+                            SecurityStamp = "6982f193-eeb5-404d-8cfb-4428d0a376a1",
                             TwoFactorEnabled = false,
                             UserName = "dev"
                         },
                         new
                         {
-                            Id = "2",
+                            Id = 2,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "400dfe7d-593a-4d13-a723-48d44191920f",
+                            ConcurrencyStamp = "57f462da-1a51-4a54-83e7-84c5cc76c79f",
                             Email = "admin@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Administrator",
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJ2BFAnYc3zB0TZVvM1tGr6BBBxXB5l286qBfjTX01u2hN4j9H/OOsyXNt/1rcuf/w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEzXdNqpwBFXuZ4C5q2vQOuZTbPZdmRt6GlFPoEMcNo6JiO25pIXmzqc5/7l3iyHvw==",
                             PhoneNumber = "(55) 85 9 9999-9998",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d14ba7ce-fa2a-4b3b-8147-9a982856dea2",
+                            PublicId = "01HZNHAB3AK36DGD8WSGQFMDF2",
+                            SecurityStamp = "6468925a-514e-4e1e-9265-4c5896f25f98",
                             TwoFactorEnabled = false,
                             UserName = "admin"
                         },
                         new
                         {
-                            Id = "3",
+                            Id = 3,
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c4656b1a-4da2-4d95-8bc5-9e08c4f53ab0",
+                            ConcurrencyStamp = "e3f10df4-209d-41f4-882e-927f4fb862e5",
                             Email = "super@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            Name = "Superuser",
+                            Name = "Supervisor",
                             NormalizedEmail = "SUPER@GMAIL.COM",
                             NormalizedUserName = "SUPER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEC8/kSEuyUJTQmIB9sGrvfwtLmd9qqzwlGBwka4CWhI+r7lPT5Zmlc+rHhIOm3bwjg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEB71Vp9FBWTn38Io6Tv4YYhf/RgM1ZgcuxmKks3/tLcRp9IPsWMzMoYN4vF36JFXgg==",
                             PhoneNumber = "(55) 85 9 9999-9997",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "2e7805b9-5a3e-4197-aed0-6393da92c52d",
+                            PublicId = "01HZNHAB5SPKDF8H90AC36X8D2",
+                            SecurityStamp = "4a214c08-1f66-4e96-b75e-1eaeff7ea591",
                             TwoFactorEnabled = false,
                             UserName = "super"
                         });
                 });
 
-            modelBuilder.Entity("PontoSavi.Domain.Entities.UserRole", b =>
-                {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUserRole<string>");
-
-                    b.HasDiscriminator().HasValue("UserRole");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = "1",
-                            RoleId = "1"
-                        },
-                        new
-                        {
-                            UserId = "1",
-                            RoleId = "4"
-                        },
-                        new
-                        {
-                            UserId = "2",
-                            RoleId = "2"
-                        },
-                        new
-                        {
-                            UserId = "2",
-                            RoleId = "4"
-                        },
-                        new
-                        {
-                            UserId = "3",
-                            RoleId = "3"
-                        },
-                        new
-                        {
-                            UserId = "3",
-                            RoleId = "4"
-                        });
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
                 {
                     b.HasOne("PontoSavi.Domain.Entities.Role", null)
                         .WithMany()
@@ -360,7 +360,7 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<int>", b =>
                 {
                     b.HasOne("PontoSavi.Domain.Entities.User", null)
                         .WithMany()
@@ -369,7 +369,7 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<int>", b =>
                 {
                     b.HasOne("PontoSavi.Domain.Entities.User", null)
                         .WithMany()
@@ -378,7 +378,7 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<int>", b =>
                 {
                     b.HasOne("PontoSavi.Domain.Entities.Role", null)
                         .WithMany()
@@ -393,7 +393,7 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<int>", b =>
                 {
                     b.HasOne("PontoSavi.Domain.Entities.User", null)
                         .WithMany()

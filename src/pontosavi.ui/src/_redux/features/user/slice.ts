@@ -26,13 +26,9 @@ const userSlice = createSlice({
   reducers: {
   },
   extraReducers: builder => {
-    builder.addCase(getUsers.pending, (state) => {
-      state.status = "loading";
-    });
     builder.addCase(getUsers.fulfilled, (state, action) => {
       state.users = action.payload.items;
       state.totalCount = action.payload.totalCount;
-      state.status = "succeeded";
     });
     builder.addCase(getUsers.rejected, (state, action) => {
       state.status = "failed";
@@ -57,7 +53,7 @@ const userSlice = createSlice({
     builder.addCase(updateUser.fulfilled, (state, action) => {
       state.user = action.payload;
 
-      if (action.payload.id == getUser().id)
+      if (action.payload.publicId == getUser().publicId)
         setUser(action.payload);
 
       state.status = "succeeded";

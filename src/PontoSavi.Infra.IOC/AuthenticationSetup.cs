@@ -27,9 +27,9 @@ public static class AuthenticationSetup
                 ValidateAudience = true,
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
-                ValidIssuer = configuration["Issuer"] ?? throw new AppException("JwtConfig: Issuer is null", HttpStatusCode.InternalServerError),
-                ValidAudience = configuration["Audience"] ?? throw new AppException("JwtConfig: Audience is null", HttpStatusCode.InternalServerError),
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["SecretKey"] ?? throw new AppException("JwtConfig: Secret is null", HttpStatusCode.InternalServerError))),
+                ValidIssuer = configuration.GetSection("Jwt:Issuer").Value ?? throw new AppException("Jwt: Issuer is null", HttpStatusCode.InternalServerError),
+                ValidAudience = configuration.GetSection("Jwt:Audience").Value ?? throw new AppException("Jwt: Audience is null", HttpStatusCode.InternalServerError),
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("Jwt:SecretKey").Value ?? throw new AppException("Jwt: Secret is null", HttpStatusCode.InternalServerError))),
             };
         });
 

@@ -12,11 +12,18 @@ namespace PontoSavi.API.Controllers;
 [ApiController]
 public class AuthController : ControllerBase
 {
-    private readonly IAuthService _service;
+    private readonly IAuthService _authService;
     private readonly IUserService _userService;
+    private readonly IRoleService _roleService;
 
-    public AuthController(IAuthService service, IUserService userService) =>
-        (_service, _userService) = (service, userService);
+    public AuthController(IAuthService authService,
+        IUserService userService,
+        IRoleService roleService)
+    {
+        _authService = authService;
+        _userService = userService;
+        _roleService = roleService;
+    }
 
     /// <summary>
     /// Authenticates a user and returns an auth token.
@@ -24,10 +31,11 @@ public class AuthController : ControllerBase
     [HttpPost("login")]
     public async Task<ActionResult<UserToken>> Login([FromBody] LoginIM login)
     {
-        var token = await _service.Login(login.UserName, login.Password);
+        var token = await _authService.Login(login.UserName, login.Password);
         var user = await _userService.GetByUserName(login.UserName);
+        var roles = await _roleService.GetByUser(user);
 
-        return new UserToken(token, user);
+        return Ok(new UserToken(token, new UserDTO(user, roles)));
     }
 
     /// <summary>
@@ -37,7 +45,7 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<AuthToken>> RefreshToken([FromHeader(Name = "Authorization")] string auth)
     {
         var token = AuthUtil.ExtractTokenFromHeader(auth);
-        return await _service.RefreshToken(token);
+        return Ok(await _authService.RefreshToken(token));
     }
 
     /// <summary>
@@ -48,6 +56,6 @@ public class AuthController : ControllerBase
     public async Task<ActionResult<UserDTO>> Get([FromHeader(Name = "Authorization")] string auth)
     {
         var token = AuthUtil.ExtractTokenFromHeader(auth);
-        return await _service.GetUser(token);
+        return Ok(await _authService.GetUser(token));
     }
 }

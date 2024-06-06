@@ -32,7 +32,7 @@ public class UserRepository : BaseRepository<User>, IUserRepository
                 u.Email!.Contains(filter.Search!, StringComparison.CurrentCultureIgnoreCase) ||
                 u.PhoneNumber!.Contains(filter.Search!, StringComparison.CurrentCultureIgnoreCase));
 
-        if (!filter.Id.IsNullOrEmpty()) query = query.Where(u => u.Id == filter.Id);
+        if (!filter.PublicId.IsNullOrEmpty()) query = query.Where(u => u.PublicId == filter.PublicId);
         if (!filter.UserName.IsNullOrEmpty()) query = query.Where(u => u.UserName!.Contains(filter.UserName!, StringComparison.CurrentCultureIgnoreCase));
         if (!filter.Email.IsNullOrEmpty()) query = query.Where(u => u.Email!.Contains(filter.Email!, StringComparison.CurrentCultureIgnoreCase));
         if (!filter.PhoneNumber.IsNullOrEmpty()) query = query.Where(u => u.PhoneNumber!.Contains(filter.PhoneNumber!, StringComparison.CurrentCultureIgnoreCase));
@@ -53,7 +53,8 @@ public class UserRepository : BaseRepository<User>, IUserRepository
             .Take(filter.PageSize)
             .Select(u => new UserDTO
             {
-                Id = u.Id,
+                PublicId = u.PublicId!,
+                Name = u.Name!,
                 UserName = u.UserName!,
                 Email = u.Email!,
                 PhoneNumber = u.PhoneNumber!,
@@ -62,14 +63,6 @@ public class UserRepository : BaseRepository<User>, IUserRepository
             .ToListAsync();
 
         return new QueryResult<UserDTO>(users, totalCount);
-    }
-
-    public async Task<UserDTO> QueryById(string id)
-    {
-        var user = await GetById(id);
-        var roles = await GetRoles(user);
-
-        return new UserDTO(user, roles);
     }
 
     public async Task<User> Auth(string userName, string password)
@@ -91,8 +84,11 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     public async Task<bool> ExistsByEmail(string email) =>
         await _userManager.Users.AsNoTracking().AnyAsync(u => u.Email == email);
 
-    public async Task<bool> ExistsById(string id) =>
+    public async Task<bool> ExistsById(int id) =>
         await _userManager.Users.AsNoTracking().AnyAsync(u => u.Id == id);
+
+    public async Task<bool> ExistsByPublicId(string publicId) =>
+        await _userManager.Users.AsNoTracking().AnyAsync(u => u.PublicId == publicId);
 
     public async Task<bool> ExistsByPhoneNumber(string phoneNumber) =>
         await _userManager.Users.AsNoTracking().AnyAsync(u => u.PhoneNumber == phoneNumber);
@@ -103,8 +99,11 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     public async Task<User> GetByEmail(string email) =>
         await _userManager.FindByEmailAsync(email) ?? throw new AppException("Usuário não encontrado!", HttpStatusCode.NotFound);
 
-    public async Task<User> GetById(string id) =>
-        await _userManager.FindByIdAsync(id) ?? throw new AppException("Usuário não encontrado!", HttpStatusCode.NotFound);
+    public async Task<User> GetById(int id) =>
+        await _userManager.FindByIdAsync(id.ToString()) ?? throw new AppException("Usuário não encontrado!", HttpStatusCode.NotFound);
+
+    public async Task<User> GetByPublicId(string publicId) =>
+        await _userManager.Users.AsNoTracking().FirstAsync(u => u.PublicId == publicId);
 
     public async Task<User> GetByPhoneNumber(string phoneNumber) =>
         await _userManager.Users.AsNoTracking().FirstAsync(u => u.PhoneNumber == phoneNumber);
@@ -117,7 +116,6 @@ public class UserRepository : BaseRepository<User>, IUserRepository
 
     public async Task<User> Add(User user, string password)
     {
-        user.Id = Guid.NewGuid().ToString();
         var result = await _userManager.CreateAsync(user, password);
 
         if (!result.Succeeded) CatchError(new Exception(result.Errors.First().Description));
@@ -134,7 +132,7 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         return user;
     }
 
-    public async Task<bool> UpdatePassword(string id, string oldPassword, string newPassword)
+    public async Task<bool> UpdatePassword(int id, string oldPassword, string newPassword)
     {
         var user = await GetById(id);
         var result = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);

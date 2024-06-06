@@ -23,7 +23,7 @@ export const postUser = createAsyncThunk(
     const res = await Axios.post<user>(USER, user);
 
     user.roles.filter(r => r !== getUserDefaultRole()).forEach(async role => {
-      await Axios.post<user>(USER_ADD_TO_ROLE, { userId: res.data.id, roleName: role } as userRole);
+      await Axios.post<user>(USER_ADD_TO_ROLE, { userId: res.data.publicId, roleName: role } as userRole);
     });
 
     res.data.roles = user.roles;
@@ -42,11 +42,11 @@ export const updateUser = createAsyncThunk(
       const rolesToDelete = oldUser.roles.filter(r => !newUser.roles.includes(r));
 
       for (const role of rolesToAdd) {
-        await Axios.post<user>(USER_ADD_TO_ROLE, { userId: newUser.id, roleName: role } as userRole);
+        await Axios.post<user>(USER_ADD_TO_ROLE, { userId: newUser.publicId, roleName: role } as userRole);
       }
 
       for (const role of rolesToDelete) {
-        await Axios.delete<user>(USER_REMOVE_FROM_ROLE, { data: { userId: newUser.id, roleName: role } as userRole });
+        await Axios.delete<user>(USER_REMOVE_FROM_ROLE, { data: { userId: newUser.publicId, roleName: role } as userRole });
       }
     }
 
@@ -64,8 +64,8 @@ export const updatePassword = createAsyncThunk(
 
 export const deleteUser = createAsyncThunk(
   "user/deleteUser",
-  async (id: string): Promise<user> => {
-    const res = await Axios.delete<user>(`${USER}/${id}`);
+  async (publicId: string): Promise<user> => {
+    const res = await Axios.delete<user>(`${USER}/${publicId}`);
     return res.data as user;
   }
 );

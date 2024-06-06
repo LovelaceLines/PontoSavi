@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { deleteRole, getRoles, getRoleById, postRole, putRole } from "./thunks";
+import { deleteRole, getRoles, getRoleByPublicId, postRole, putRole } from "./thunks";
 import { role } from "@/_types";
 
 interface initialStateProps {
@@ -23,20 +23,16 @@ const roleSlice = createSlice({
   reducers: {
   },
   extraReducers: builder => {
-    builder.addCase(getRoles.pending, (state) => {
-      state.status = "loading";
-    });
     builder.addCase(getRoles.fulfilled, (state, action) => {
       state.roles = action.payload.items;
       state.totalCount = action.payload.totalCount;
-      state.status = "succeeded";
     });
     builder.addCase(getRoles.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error.message || null;
     });
 
-    builder.addCase(getRoleById.rejected, (state, action) => {
+    builder.addCase(getRoleByPublicId.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error.message || null;
     });

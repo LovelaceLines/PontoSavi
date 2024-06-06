@@ -6,6 +6,7 @@ using PontoSavi.API.ServiceFilters;
 using PontoSavi.Application.Interfaces;
 using PontoSavi.Application.Services;
 using PontoSavi.Application.Validators;
+using PontoSavi.Domain.Constants;
 using PontoSavi.Domain.Repositories;
 using PontoSavi.Infra.Data.Repositories;
 using PontoSavi.Domain.Entities;
@@ -18,6 +19,8 @@ public static class DependencyInjectionSetup
     {
         services.AddSingleton(configuration);
 
+        services.AddSingleton<IRolesSettingsService, RolesSettingsService>();
+
         services.AddTransient<AuthAndUserExtractionFilter>();
 
         services.AddTransient<IUserService, UserService>();
@@ -25,8 +28,9 @@ public static class DependencyInjectionSetup
         services.AddTransient<PasswordValidator>();
         services.AddTransient<IUserRepository, UserRepository>();
 
-        services.AddTransient<IdentityUserRole<string>>();
+        services.AddTransient<IdentityUserRole<int>>();
         services.AddTransient<SignInManager<User>>();
+        services.AddTransient<UserManager<User>>();
         services.AddTransient<RoleManager<Role>>();
 
         services.AddTransient<IRoleService, RoleService>();

@@ -14,7 +14,6 @@ export const AccountsTable = () => {
     isLoading,
     onSubmit,
     toCreate,
-    toEdit,
     handleDelete,
 
     globalFilter,
@@ -29,11 +28,14 @@ export const AccountsTable = () => {
 
   const columns = useMemo<MRT_ColumnDef<user>[]>(() => [
     {
-      accessorKey: "id",
+      accessorKey: "publicId",
       header: "ID",
       size: 80,
-      Cell: ({ row }) => row.original.id ? row.original.id.slice(0, 8) + "..." : "",
-      enableSorting: false,
+    },
+    {
+      accessorKey: "name",
+      header: "Name",
+      size: 150,
     },
     {
       accessorKey: "userName",
@@ -80,7 +82,6 @@ export const AccountsTable = () => {
 
     onSubmit,
     toCreate,
-    toEdit,
     handleDelete,
 
     isLoading,

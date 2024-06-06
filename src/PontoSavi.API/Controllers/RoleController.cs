@@ -26,47 +26,47 @@ public class RoleController : ControllerBase
     /// Queries roles by filter.
     /// </summary>
     [HttpGet]
-    [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
-    public async Task<IActionResult> Query([FromQuery] RoleFilter filter) =>
+    [Authorize(Policy = "SuperUserRolesPolicy")]
+    public async Task<ActionResult<QueryResult<RoleDTO>>> Query([FromQuery] RoleFilter filter) =>
         Ok(await _roleService.Query(filter));
 
-    [HttpGet("{id}")]
-    [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
-    public async Task<IActionResult> GetById(string id) =>
-        Ok(await _roleService.GetById(id));
+    /// <summary>
+    /// Gets a role by its public id.
+    /// </summary>
+    [HttpGet("{publicId}")]
+    [Authorize(Policy = "SuperUserRolesPolicy")]
+    public async Task<ActionResult<RoleDTO>> GetByPublicId(string publicId) =>
+        Ok(await _roleService.GetByPublicId(publicId));
 
     /// <summary>
     /// Creates a new role.
     /// </summary>
     [HttpPost]
-    [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
-    public async Task<IActionResult> Post([FromBody] RoleDTO role)
+    [Authorize(Policy = "SuperUserRolesPolicy")]
+    public async Task<ActionResult<RoleDTO>> Post([FromBody] RoleDTO roleDTO)
     {
-        var identityRole = _mapper.Map<Role>(role);
-        var roleCreated = await _roleService.Create(identityRole);
-        return Ok(_mapper.Map<RoleDTO>(roleCreated));
+        var role = _mapper.Map<Role>(roleDTO);
+        role = await _roleService.Create(role);
+        return Ok(new RoleDTO(role));
     }
 
     /// <summary>
     /// Updates an existing role.
     /// </summary>
     [HttpPut]
-    [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
-    public async Task<IActionResult> Put([FromBody] RoleDTO role)
+    [Authorize(Policy = "SuperUserRolesPolicy")]
+    public async Task<ActionResult<RoleDTO>> Put([FromBody] RoleDTO roleDTO)
     {
-        var identityRole = _mapper.Map<Role>(role);
-        var roleUpdated = await _roleService.Update(identityRole);
-        return Ok(_mapper.Map<RoleDTO>(roleUpdated));
+        var role = _mapper.Map<Role>(roleDTO);
+        role = await _roleService.Update(role);
+        return Ok(new RoleDTO(role));
     }
 
     /// <summary>
-    /// Deletes a role by its ID.
+    /// Deletes a role by its public id.
     /// </summary>
-    [HttpDelete("{id}")]
-    [Authorize(Roles = "Desenvolvedor,Administrador")]
-    public async Task<IActionResult> Delete(string id)
-    {
-        await _roleService.Delete(id);
-        return Ok();
-    }
+    [HttpDelete("{publicId}")]
+    [Authorize(Policy = "AdminUserRolesPolicy")]
+    public async Task<ActionResult<RoleDTO>> Delete(string publicId) =>
+        Ok(new RoleDTO(await _roleService.Delete(publicId)));
 }

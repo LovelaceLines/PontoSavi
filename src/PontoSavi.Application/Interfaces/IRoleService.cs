@@ -7,8 +7,9 @@ namespace PontoSavi.Application.Interfaces;
 public interface IRoleService
 {
     Task<QueryResult<RoleDTO>> Query(RoleFilter filter);
-    Task<RoleDTO> GetById(string id);
+    Task<Role> GetByPublicId(string publicId);
+    Task<List<Role>> GetByUser(User user);
     Task<Role> Create(Role role);
     Task<Role> Update(Role role);
-    Task<bool> Delete(string id);
+    Task<Role> Delete(string publicId);
 }

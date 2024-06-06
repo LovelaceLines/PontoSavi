@@ -24,15 +24,15 @@ public class UserRoleService : IUserRoleService
         _roleRepository = roleRepository;
     }
 
-    public async Task<UserDTO> AddToRole(string userId, string roleName)
+    public async Task<UserDTO> AddToRole(string userPublicId, string roleName)
     {
-        if (!await _userRepository.ExistsById(userId))
+        if (!await _userRepository.ExistsByPublicId(userPublicId))
             throw new AppException("Usuário não encontrado", HttpStatusCode.NotFound);
 
         if (!await _roleRepository.ExistsByName(roleName))
             throw new AppException("Função não encontrada", HttpStatusCode.NotFound);
 
-        var user = await _userRepository.GetById(userId);
+        var user = await _userRepository.GetByPublicId(userPublicId);
         var role = await _roleRepository.GetByName(roleName);
 
         if (await _userManager.IsInRoleAsync(user, role.Name!))
@@ -46,15 +46,15 @@ public class UserRoleService : IUserRoleService
         return new UserDTO(user, await _userRepository.GetRoles(user));
     }
 
-    public async Task<UserDTO> RemoveFromRole(string userId, string roleName)
+    public async Task<UserDTO> RemoveFromRole(string userPublicId, string roleName)
     {
-        if (!await _userRepository.ExistsById(userId))
+        if (!await _userRepository.ExistsByPublicId(userPublicId))
             throw new AppException("Usuário não encontrado", HttpStatusCode.NotFound);
 
         if (!await _roleRepository.ExistsByName(roleName))
             throw new AppException("Função não encontrada", HttpStatusCode.NotFound);
 
-        var user = await _userRepository.GetById(userId);
+        var user = await _userRepository.GetByPublicId(userPublicId);
         var role = await _roleRepository.GetByName(roleName);
 
         if (!await _userManager.IsInRoleAsync(user, role.Name!))

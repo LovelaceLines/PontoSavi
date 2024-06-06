@@ -26,7 +26,7 @@ export const AuthWrapper = ({ children, authorizedRoles = [getUserDefaultRole()]
 
       if (typeof jwt.role === "string") jwt.role = [jwt.role];
 
-      const authorized = user?.id === jwt.nameid
+      const authorized = user?.publicId === jwt.nameid
         && user?.userName === jwt.unique_name
         && includes(authorizedRoles, jwt.role)
         && jwt.role.includes(getUserDefaultRole())

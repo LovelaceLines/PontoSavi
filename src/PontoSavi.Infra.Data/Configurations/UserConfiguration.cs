@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using PontoSavi.Domain.Entities;
+using PontoSavi.Infra.Data.Configurations.Util;
 
 namespace PontoSavi.Infra.Data.Configurations;
 
@@ -9,10 +10,23 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
+        builder.HasKey(u => u.Id);
+
+        builder.Property(u => u.Id)
+            .ValueGeneratedOnAdd();
+
+        builder.Property(u => u.PublicId)
+            .IsUnicode()
+            .HasValueGenerator<UlidValueGenerator>();
+
+        builder.Property(u => u.UserName)
+            .IsUnicode();
+
         builder.HasData(
             new User
             {
-                Id = "1",
+                Id = 1,
+                PublicId = Ulid.NewUlid().ToString(),
                 UserName = "dev",
                 Name = "Developer",
                 NormalizedUserName = "DEV",
@@ -25,7 +39,8 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             },
             new User
             {
-                Id = "2",
+                Id = 2,
+                PublicId = Ulid.NewUlid().ToString(),
                 UserName = "admin",
                 Name = "Administrator",
                 NormalizedUserName = "ADMIN",
@@ -38,9 +53,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             },
             new User
             {
-                Id = "3",
+                Id = 3,
+                PublicId = Ulid.NewUlid().ToString(),
                 UserName = "super",
-                Name = "Superuser",
+                Name = "Supervisor",
                 NormalizedUserName = "SUPER",
                 Email = "super@gmail.com",
                 NormalizedEmail = "SUPER@GMAIL.COM",

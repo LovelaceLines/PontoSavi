@@ -21,9 +21,11 @@ public class AuthAndUserExtractionFilter : IAsyncActionFilter
 
         var auth = context.HttpContext.Request.Headers.Authorization.ToString();
         auth = AuthUtil.ExtractTokenFromHeader(auth);
-        var user = _authService.GetUser(auth).Result;
+        var userPublicId = _authService.GetUserPublicId(auth).Result;
+        var userRoles = _authService.GetUserRoles(auth).Result;
 
-        context.HttpContext.Items.Add("CurrentUserDTO", user);
+        context.HttpContext.Items.Add("CurrentUserPublicId", userPublicId);
+        context.HttpContext.Items.Add("CurrentUserRoles", userRoles);
 
         return next();
     }

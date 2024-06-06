@@ -94,8 +94,8 @@ export const AccountForm = ({ user }: { user?: user }) => {
           <InputLabel id="input-modulo">Add Roles</InputLabel>
           <Select>
             <MenuItem value="" disabled>Add Roles</MenuItem>
-            {allRoles.map(role =>
-              <MenuItem key={role.id} value={role.name} onClick={() => handleRoleAdd(role.name)}>
+            {allRoles.map((role, index) =>
+              <MenuItem key={index + role.name} value={role.name} onClick={() => handleRoleAdd(role.name)}>
                 <ListItemIcon sx={{ color: "inherit" }}>
                   <Add fontSize="small" />
                 </ListItemIcon>

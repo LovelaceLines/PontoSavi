@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { Loading } from "@/_components";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/_redux/store";
-import { getRoleById } from "@/_redux/features/role/thunks";
+import { getRoleByPublicId } from "@/_redux/features/role/thunks";
 import { role } from "@/_types";
 
 const RoleForm = dynamic(() => import("./roleForm").then(mod => mod.RoleForm),
@@ -20,9 +20,9 @@ export default function Page({ params }: { params: { id?: string } }) {
   useEffect(() => {
     if (!params.id) return;
 
-    dispatch(getRoleById(params.id))
+    dispatch(getRoleByPublicId(params.id))
       .then(action => {
-        if (getRoleById.fulfilled.match(action)) {
+        if (getRoleByPublicId.fulfilled.match(action)) {
           setRole(action.payload);
         }
       });

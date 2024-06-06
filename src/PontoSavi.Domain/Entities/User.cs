@@ -2,8 +2,9 @@
 
 namespace PontoSavi.Domain.Entities;
 
-public class User : IdentityUser
+public class User : IdentityUser<int>
 {
+    public string PublicId { get; set; } = null!;
     public string Name { get; set; } = null!;
 
     public User() { }

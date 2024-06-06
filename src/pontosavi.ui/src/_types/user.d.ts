@@ -1,7 +1,8 @@
 export type userFilter = {
   search?: string;
 
-  id?: string;
+  publicId?: string;
+  name?: string;
   userName?: string;
   email?: string;
   phoneNumber?: string;
@@ -15,7 +16,7 @@ export type userFilter = {
 };
 
 export type user = {
-  id?: string;
+  publicId?: string;
   name: string;
   userName: string;
   email: string;
@@ -30,14 +31,14 @@ export type updatedPassword = {
 };
 
 export type role = {
-  id?: string;
+  publicId?: string;
   name: string;
 };
 
 export class roleFilter {
   search?: string;
 
-  id?: string;
+  publicId?: string;
   name?: string;
 
   pageIndex?: number;

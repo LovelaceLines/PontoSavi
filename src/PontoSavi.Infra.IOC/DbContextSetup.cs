@@ -13,7 +13,10 @@ public static class DbContextSetup
     public static IServiceCollection AddDbContextConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddDbContext<AppDbContext>(options =>
-            options.UseSqlite(configuration.GetConnectionString("DefaultConnection")));
+        {
+            options.UseSqlite(configuration.GetConnectionString("DefaultConnection"));
+            options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+        });
 
         services.AddIdentity<User, Role>()
             .AddEntityFrameworkStores<AppDbContext>()

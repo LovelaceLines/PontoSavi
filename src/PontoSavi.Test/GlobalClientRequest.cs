@@ -41,11 +41,11 @@ public class GlobalClientRequest : HttpClientUtil
         return await PostFromBody<UserToken>(_loginClient, login);
     }
 
-    public async Task<UserDTO> GetUser(string? id = null, string? password = null, UserDTO? fake = null)
+    public async Task<UserDTO> GetUser(string? publicId = null, string? password = null, UserDTO? fake = null)
     {
-        if (!id.IsNullOrEmpty())
+        if (!publicId.IsNullOrEmpty())
         {
-            var user = await GetFromUri<UserDTO>(_userClient, id!);
+            var user = await GetFromUri<UserDTO>(_userClient, publicId!);
             user.Password = password ?? user.Password;
             return user;
         }
@@ -58,20 +58,20 @@ public class GlobalClientRequest : HttpClientUtil
         return userPosted;
     }
 
-    public async Task<RoleDTO> GetRole(string? id = null)
+    public async Task<RoleDTO> GetRole(string? publicId = null, string? name = null)
     {
-        if (!id.IsNullOrEmpty())
-            return await GetFromUri<RoleDTO>(_roleClient, id!);
+        if (!publicId.IsNullOrEmpty())
+            return await GetFromUri<RoleDTO>(_roleClient, publicId!);
 
-        var roleFake = new RoleFake(id).Generate();
+        var roleFake = new RoleFake(publicId: publicId, name: name).Generate();
         return await PostFromBody<RoleDTO>(_roleClient, roleFake);
     }
 
-    public async Task<UserRoleIM> GetUserRole(string? userId = null, string? roleId = null)
+    public async Task<UserRoleIM> GetUserRole(string? userPublicId = null, string? rolePublicId = null)
     {
-        var user = await GetUser(id: userId);
-        var role = await GetRole(id: roleId);
-        var model = new UserRoleIM { UserId = user.Id!, RoleName = role.Name };
+        var user = await GetUser(publicId: userPublicId);
+        var role = await GetRole(publicId: rolePublicId);
+        var model = new UserRoleIM { UserId = user.PublicId!, RoleName = role.Name };
 
         await PostFromBody<UserDTO>(_addUserToRoleClient, model);
 

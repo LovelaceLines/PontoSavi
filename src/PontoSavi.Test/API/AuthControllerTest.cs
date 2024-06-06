@@ -85,7 +85,7 @@ public class AuthControllerTest : GlobalClientRequest
 
         var res = await Get<UserDTO>(_authUserClient);
 
-        Assert.NotNull(res.Id);
+        Assert.NotNull(res.PublicId);
         Assert.NotNull(res.UserName);
         Assert.NotNull(res.Email);
         Assert.NotNull(res.PhoneNumber);

@@ -112,7 +112,7 @@ export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
     onPaginationChange: props.setPagination,
 
     enableRowSelection: props.enableRowSelection ?? true,
-    getRowId: row => row.id ?? "",
+    getRowId: row => row.publicId ?? "",
     onRowSelectionChange: setRowSelection,
 
     initialState: {

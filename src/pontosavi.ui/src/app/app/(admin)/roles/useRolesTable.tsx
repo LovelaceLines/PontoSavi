@@ -24,17 +24,17 @@ export const useRolesTable = () => {
   const roles = useSelector(selectRoles);
   const rowCount = useSelector(selectTotalCount);
   const status = useSelector(selectStatus);
-  const isLoading = () => status === "idle" || status === "loading";
+  const isLoading = () => status === "loading";
 
   const onSubmit = () => dispatch(getRoles({
-    id: columnFilters.find(f => f.id === "id")?.value as string || undefined,
+    publicId: columnFilters.find(f => f.id === "publicId")?.value as string || undefined,
     name: columnFilters.find(f => f.id === "name")?.value as string || undefined,
     nameOrderSort: sorting.find(s => s.id === "name") ? sorting.find(s => s.id === "name")?.desc ? "desc" : "asc" : undefined,
   }));
 
   const toCreate = "role";
   const toEdit = "role";
-  const handleDelete = useMemo(() => (id: string) => dispatch(deleteRole(id)), [dispatch]);
+  const handleDelete = useMemo(() => (publicId: string) => dispatch(deleteRole(publicId)), [dispatch]);
 
   return {
     roles,

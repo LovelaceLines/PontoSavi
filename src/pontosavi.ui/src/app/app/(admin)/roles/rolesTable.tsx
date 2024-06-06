@@ -29,11 +29,9 @@ export const RolesTable = () => {
 
   const columns = useMemo<MRT_ColumnDef<role>[]>(() => [
     {
-      accessorKey: "id",
+      accessorKey: "publicId",
       header: "ID",
       size: 80,
-      Cell: ({ row }) => row.original.id ? row.original.id.slice(0, 8) + "..." : "",
-      enableSorting: false,
     },
     {
       accessorKey: "name",

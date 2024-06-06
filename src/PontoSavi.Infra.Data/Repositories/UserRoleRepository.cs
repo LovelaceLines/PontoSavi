@@ -35,9 +35,9 @@ public class UserRoleRepository : BaseRepository<IdentityUserRole<string>>, IUse
         return await _userManager.IsInRoleAsync(user, roleName);
     }
 
-    public async Task<List<string>> GetRolesByUserId(string userId)
+    public async Task<List<string>> GetRolesByUserId(int userId)
     {
-        var user = await _userManager.FindByIdAsync(userId) ?? throw new AppException("Usuário não encontrado!", HttpStatusCode.NotFound);
+        var user = await _userManager.FindByIdAsync(userId.ToString()) ?? throw new AppException("Usuário não encontrado!", HttpStatusCode.NotFound);
         return (List<string>)await _userManager.GetRolesAsync(user);
     }
 

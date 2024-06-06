@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using System.Net;
 
 using PontoSavi.API.InputModels;
 using PontoSavi.API.ServiceFilters;
@@ -8,6 +9,7 @@ using PontoSavi.Application.Interfaces;
 using PontoSavi.Domain.DTOs;
 using PontoSavi.Domain.Filters;
 using PontoSavi.Domain.Entities;
+using PontoSavi.Domain.Exceptions;
 
 namespace PontoSavi.API.Controllers;
 
@@ -17,14 +19,17 @@ namespace PontoSavi.API.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly IRoleService _roleService;
     private readonly IUserRoleService _userRoleService;
     private readonly IMapper _mapper;
 
     public UserController(IUserService userService,
+        IRoleService roleService,
         IUserRoleService userRoleService,
         IMapper mapper)
     {
         _userService = userService;
+        _roleService = roleService;
         _userRoleService = userRoleService;
         _mapper = mapper;
     }
@@ -33,88 +38,98 @@ public class UserController : ControllerBase
     /// Retrieves a list of users based on the specified filter.
     /// </summary>
     [HttpGet]
-    [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
-    public async Task<IActionResult> Query([FromQuery] UserFilter filter) =>
+    [Authorize(Policy = "SuperUserRolesPolicy")]
+    public async Task<ActionResult<QueryResult<UserDTO>>> Query([FromQuery] UserFilter filter) =>
         Ok(await _userService.Query(filter));
 
     /// <summary>
     /// Gets a user by ID.
     /// </summary>
-    [HttpGet("{id}")]
-    [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
-    public async Task<IActionResult> QueryById(string id) =>
-        Ok(await _userService.QueryById(id));
+    [HttpGet("{publicId}")]
+    [Authorize(Policy = "SuperUserRolesPolicy")]
+    public async Task<ActionResult<UserDTO>> GetByPublicId(string publicId)
+    {
+        var user = await _userService.GetByPublicId(publicId);
+        var roles = await _roleService.GetByUser(user);
+        return Ok(new UserDTO(user, roles));
+    }
 
     /// <summary>
     /// Gets a user by username.
     /// </summary>
     [HttpGet("username/{userName}")]
-    [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
-    public async Task<IActionResult> Get(string userName)
+    [Authorize(Policy = "SuperUserRolesPolicy")]
+    public async Task<ActionResult<UserDTO>> Get(string userName)
     {
-        var identityUser = await _userService.GetByUserName(userName);
-        return Ok(_mapper.Map<UserDTO>(identityUser));
+        var user = await _userService.GetByUserName(userName);
+        var roles = await _roleService.GetByUser(user);
+        return Ok(new UserDTO(user, roles));
     }
 
     /// <summary>
     /// Creates a new user.
     /// </summary>
     [HttpPost]
-    [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
-    public async Task<IActionResult> Post([FromBody] UserDTO user)
+    [Authorize(Policy = "SuperUserRolesPolicy")]
+    public async Task<ActionResult<UserDTO>> Post([FromBody] UserDTO userDTO)
     {
-        var identityUser = _mapper.Map<User>(user);
-        var userCreated = await _userService.Create(identityUser, user.Password);
-        return Ok(_mapper.Map<UserDTO>(userCreated));
+        var user = _mapper.Map<User>(userDTO);
+        user = await _userService.Create(user, userDTO.Password);
+        return Ok(new UserDTO(user));
     }
 
     /// <summary>
     /// Updates a user.
     /// </summary>
     [HttpPut]
-    public async Task<IActionResult> Put([FromBody] UserDTO user)
+    public async Task<ActionResult<UserDTO>> Put([FromBody] UserDTO userDTO)
     {
-        var userDTO = (UserDTO)HttpContext.Items["CurrentUserDTO"]!;
-        var identityUser = _mapper.Map<User>(user);
-        var userUpdated = await _userService.Update(identityUser, userDTO.Id!);
-        return Ok(_mapper.Map<UserDTO>(userUpdated));
+        var currentUserPublicId = (string)HttpContext.Items["CurrentUserPublicId"]!;
+
+        if (userDTO.PublicId != currentUserPublicId)
+            throw new AppException("Você não tem permissão para alterar este usuário", HttpStatusCode.Forbidden);
+
+        var user = _mapper.Map<User>(userDTO);
+        user = await _userService.Update(user);
+        return Ok(new UserDTO(user));
     }
 
     /// <summary>
     /// Updates the password of the current user.
     /// </summary>
     [HttpPut("password")]
-    public async Task<IActionResult> Put([FromBody] UpdatePasswordIM model)
+    public async Task<ActionResult<UserDTO>> Put([FromBody] UpdatePasswordIM model)
     {
-        var user = (UserDTO)HttpContext.Items["CurrentUserDTO"]!;
-        await _userService.UpdatePassword(user.Id!, model.OldPassword, model.NewPassword);
-        return Ok(user);
+        var currentUserPublicId = (string)HttpContext.Items["CurrentUserPublicId"]!;
+        var user = await _userService.GetByPublicId(currentUserPublicId);
+        await _userService.UpdatePassword(user.Id, model.OldPassword, model.NewPassword);
+        return Ok(new UserDTO(user));
     }
 
     /// <summary>
     /// Deletes a user by ID.
     /// </summary>
-    [HttpDelete("{id}")]
+    [HttpDelete("{publicId}")]
     [Authorize(Roles = "Desenvolvedor,Administrador")]
-    public async Task<IActionResult> Delete(string id)
+    public async Task<ActionResult<UserDTO>> Delete(string publicId)
     {
-        var identityUser = await _userService.Delete(id);
-        return Ok(_mapper.Map<UserDTO>(identityUser));
+        var user = await _userService.Delete(publicId);
+        return Ok(new UserDTO(user));
     }
 
     /// <summary>
     /// Adds a user to a role.
     /// </summary>
     [HttpPost("add-to-role")]
-    [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
-    public async Task<IActionResult> AddToRole([FromBody] UserRoleIM model) =>
+    [Authorize(Policy = "SuperUserRolesPolicy")]
+    public async Task<ActionResult<UserDTO>> AddToRole([FromBody] UserRoleIM model) =>
         Ok(await _userRoleService.AddToRole(model.UserId, model.RoleName));
 
     /// <summary>
     /// Removes a user from a role.
     /// </summary>
     [HttpDelete("remove-from-role")]
-    [Authorize(Roles = "Desenvolvedor,Administrador,Supervisor")]
-    public async Task<IActionResult> RemoveFromRole([FromBody] UserRoleIM model) =>
+    [Authorize(Policy = "SuperUserRolesPolicy")]
+    public async Task<ActionResult<UserDTO>> RemoveFromRole([FromBody] UserRoleIM model) =>
         Ok(await _userRoleService.RemoveFromRole(model.UserId, model.RoleName));
 }

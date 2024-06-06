@@ -42,8 +42,8 @@ public class AuthService : IAuthService
 
         if (!result.IsValid) throw new AppException("Sessão expirada!", HttpStatusCode.Unauthorized);
 
-        var userId = result.Claims["nameid"].ToString() ?? throw new AppException("Claims NameId not found!", HttpStatusCode.InternalServerError);
-        var user = await _userRepository.GetById(userId);
+        var userPublicId = result.Claims["nameid"].ToString() ?? throw new AppException("Claims NameId not found!", HttpStatusCode.InternalServerError);
+        var user = await _userRepository.GetByPublicId(userPublicId);
 
         return await GetAuthToken(user);
     }
@@ -92,27 +92,27 @@ public class AuthService : IAuthService
 
     private SecurityKey SecurityKey =>
         new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
-            _configuration["SecretKey"] ?? throw new AppException("JwtConfig: Secret is null!", HttpStatusCode.InternalServerError)));
+            _configuration["Jwt:SecretKey"] ?? throw new AppException("Jwt: Secret is null!", HttpStatusCode.InternalServerError)));
 
     private string Issuer =>
-        _configuration["Issuer"] ?? throw new AppException("JwtConfig: Issuer is null!", HttpStatusCode.InternalServerError);
+        _configuration["Jwt:Issuer"] ?? throw new AppException("Jwt: Issuer is null!", HttpStatusCode.InternalServerError);
 
     private string Audience =>
-        _configuration["Audience"] ?? throw new AppException("JwtConfig: Audience is null!", HttpStatusCode.InternalServerError);
+        _configuration["Jwt:Audience"] ?? throw new AppException("Jwt: Audience is null!", HttpStatusCode.InternalServerError);
 
     private DateTime ExpiresAccessToken =>
         DateTime.UtcNow.AddHours(int.Parse(
-            _configuration["HoursAccessTokenExpires"] ?? throw new AppException("JwtConfig: HoursAccessTokenExpires is null!", HttpStatusCode.InternalServerError)));
+            _configuration["Jwt:HoursAccessTokenExpires"] ?? throw new AppException("Jwt: HoursAccessTokenExpires is null!", HttpStatusCode.InternalServerError)));
 
     private DateTime ExpiresRefreshToken =>
         DateTime.UtcNow.AddHours(int.Parse(
-            _configuration["HoursRefreshTokenExpires"] ?? throw new AppException("JwtConfig: ExpireRefreshTokenHours is null!", HttpStatusCode.InternalServerError)));
+            _configuration["Jwt:HoursRefreshTokenExpires"] ?? throw new AppException("Jwt: ExpireRefreshTokenHours is null!", HttpStatusCode.InternalServerError)));
 
     private async Task<ClaimsIdentity> SubjectAccessToken(User user)
     {
         var claims = new List<Claim>
         {
-            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new(ClaimTypes.NameIdentifier, user.PublicId.ToString()),
             new(ClaimTypes.Name, user.UserName!)
         };
 
@@ -126,7 +126,7 @@ public class AuthService : IAuthService
     {
         var claims = new List<Claim>
         {
-            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new(ClaimTypes.NameIdentifier, user.PublicId.ToString()),
         };
 
         return new ClaimsIdentity(claims);
@@ -142,10 +142,38 @@ public class AuthService : IAuthService
         });
         if (!result.IsValid) throw new AppException("Sessão expirada!", HttpStatusCode.Unauthorized);
 
-        var userId = result.Claims["nameid"].ToString() ?? throw new AppException("Claims NameId not found!", HttpStatusCode.InternalServerError);
-        var user = await _userRepository.GetById(userId);
+        var userPublicId = result.Claims["nameid"].ToString() ?? throw new AppException("Claims NameId not found!", HttpStatusCode.InternalServerError);
+        var user = await _userRepository.GetByPublicId(userPublicId);
         var roles = await _userRepository.GetRoles(user);
 
         return new UserDTO(user, roles);
+    }
+
+    public async Task<string> GetUserPublicId(string token)
+    {
+        var result = await new JsonWebTokenHandler().ValidateTokenAsync(token, new TokenValidationParameters()
+        {
+            ValidIssuer = Issuer,
+            ValidAudience = Audience,
+            IssuerSigningKey = SecurityKey,
+        });
+        if (!result.IsValid) throw new AppException("Sessão expirada!", HttpStatusCode.Unauthorized);
+
+        return result.Claims["nameid"].ToString() ?? throw new AppException("Claims NameId not found!", HttpStatusCode.InternalServerError);
+    }
+
+    public async Task<string[]> GetUserRoles(string token)
+    {
+        var result = await new JsonWebTokenHandler().ValidateTokenAsync(token, new TokenValidationParameters()
+        {
+            ValidIssuer = Issuer,
+            ValidAudience = Audience,
+            IssuerSigningKey = SecurityKey,
+        });
+        if (!result.IsValid) throw new AppException("Sessão expirada!", HttpStatusCode.Unauthorized);
+
+        var rolesSTR = result.Claims["role"].ToString() ?? throw new AppException("Claims Role not found!", HttpStatusCode.InternalServerError);
+        var roles = rolesSTR.Split(',');
+        return roles;
     }
 }
