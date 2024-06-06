@@ -6,6 +6,7 @@ import { useMemo } from "react";
 import { useDefaultMaterialReactTable } from "@/_tables";
 import { user } from "@/_types";
 import { useAccountsTable } from "./useAccountsTable";
+import { ContentCopy } from "@mui/icons-material";
 
 export const AccountsTable = () => {
   const {
@@ -31,6 +32,12 @@ export const AccountsTable = () => {
       accessorKey: "publicId",
       header: "ID",
       size: 80,
+      enableClickToCopy: true,
+      muiCopyButtonProps: {
+        fullWidth: true,
+        startIcon: <ContentCopy />,
+        sx: { justifyContent: "flex-start" },
+      },
     },
     {
       accessorKey: "name",

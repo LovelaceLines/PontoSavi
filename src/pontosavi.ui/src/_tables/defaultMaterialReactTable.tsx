@@ -118,6 +118,9 @@ export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
     initialState: {
       showColumnFilters: true,
       density: "compact",
+      columnVisibility: {
+        publicId: false,
+      },
       ...props.initialState,
     },
 
