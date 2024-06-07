@@ -39,6 +39,9 @@ public static class DependencyInjectionSetup
         services.AddTransient<IUserRoleRepository, UserRoleRepository>();
         services.AddTransient<IUserRoleService, UserRoleService>();
 
+        services.AddTransient<IUserSettingsService, UserSettingsService>();
+        services.AddTransient<IUserSettingsRepository, UserSettingsRepository>();
+
         services.AddTransient<IAuthService, AuthService>();
 
         services.AddTransient<ICompanyService, CompanyService>();

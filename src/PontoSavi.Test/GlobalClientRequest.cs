@@ -1,6 +1,7 @@
 ﻿using Microsoft.IdentityModel.Tokens;
 
 using PontoSavi.API.InputModels;
+using PontoSavi.API.ViewModels;
 using PontoSavi.Domain.DTOs;
 using PontoSavi.Test.Fakers;
 using PontoSavi.Test.Utils;
@@ -20,6 +21,7 @@ public class GlobalClientRequest : HttpClientUtil
     public readonly HttpClient _userPasswordClient = new() { BaseAddress = new Uri($"{BaseUrl}User/password/") };
     public readonly HttpClient _addUserToRoleClient = new() { BaseAddress = new Uri($"{BaseUrl}User/add-to-role/") };
     public readonly HttpClient _removeUserFromRoleClient = new() { BaseAddress = new Uri($"{BaseUrl}User/remove-from-role/") };
+    public readonly HttpClient _userSettingsClient = new() { BaseAddress = new Uri($"{BaseUrl}UserSettings/") };
     public readonly HttpClient _roleClient = new() { BaseAddress = new Uri($"{BaseUrl}Role/") };
     public readonly HttpClient _companyClient = new() { BaseAddress = new Uri($"{BaseUrl}Company/") };
 
@@ -57,6 +59,17 @@ public class GlobalClientRequest : HttpClientUtil
         userPosted.Password = fake.Password;
 
         return userPosted;
+    }
+
+    public async Task<UserDTO> GetUserSettings(string? userPublicId = null, UserSettingsVM? fake = null)
+    {
+        if (!userPublicId.IsNullOrEmpty())
+            return await GetFromUri<UserDTO>(_userSettingsClient, userPublicId!);
+
+        var user = await GetUser();
+        fake ??= new UserSettingsFake(userPublicId: user.PublicId).Generate();
+
+        return await PostFromBody<UserDTO>(_userSettingsClient, fake);
     }
 
     public async Task<RoleDTO> GetRole(string? publicId = null, string? name = null)

@@ -4,6 +4,7 @@ namespace PontoSavi.Domain.DTOs;
 
 public class UserDTO
 {
+
     public string? PublicId { get; set; } = string.Empty;
     public string UserName { get; set; } = null!;
     public string Name { get; set; } = null!;
@@ -11,6 +12,7 @@ public class UserDTO
     public string PhoneNumber { get; set; } = string.Empty;
     public string Password { get; set; } = string.Empty;
     public List<string> Roles { get; set; } = [];
+    public UserSettings? userSettings { get; set; }
 
     public UserDTO() { }
 
@@ -41,5 +43,10 @@ public class UserDTO
         Email = user.Email!;
         PhoneNumber = user.PhoneNumber!;
         Roles = roles.Select(r => r.Name!).ToList();
+    }
+
+    public UserDTO(User user, List<Role> roles, UserSettings userSettings) : this(user, roles)
+    {
+        this.userSettings = userSettings;
     }
 }

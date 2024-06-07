@@ -35,6 +35,9 @@ public class UserService : IUserService
     public async Task<QueryResult<UserDTO>> Query(UserFilter filter) =>
         await _userRepository.Query(filter);
 
+    public async Task<User> GetById(int id) =>
+        await _userRepository.GetById(id);
+
     public async Task<User> GetByPublicId(string publicId) =>
         await _userRepository.GetByPublicId(publicId);
 
