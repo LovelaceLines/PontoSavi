@@ -11,6 +11,6 @@ public class CompanyFake : Faker<CompanyDTO>
         RuleFor(x => x.PublicId, f => publicId ?? null);
         RuleFor(x => x.Name, f => name ?? f.Person.FullName);
         RuleFor(x => x.TradeName, f => tradeName ?? f.Person.FullName);
-        RuleFor(x => x.CNPJ, f => cnpj ?? f.Random.Replace("##.###.###/####-##"));
+        RuleFor(x => x.CNPJ, f => cnpj ?? f.Random.Replace("##############"));
     }
 }

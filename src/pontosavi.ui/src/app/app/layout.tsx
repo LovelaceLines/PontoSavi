@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Container } from "@mui/material";
-import { AccountCircle, BrowseGallery, Group, GroupWork, Settings } from "@mui/icons-material";
+import { AccountCircle, BrowseGallery, Group, GroupWork, Settings, Store } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 
 import { AuthWrapper } from "@/app/auth-wrapper";
@@ -16,6 +16,9 @@ const buttonList: ISideBarProps[][] = [
   ],
   [
     { text: "Ponto", to: "/app/ponto", icon: <BrowseGallery /> },
+  ],
+  [
+    { text: "Companies", to: "/app/companies", icon: <Store />, allowRoles: getSuperUserRoles() }
   ],
   [
     { text: "My Account", to: "/app/my-account", icon: <AccountCircle /> },

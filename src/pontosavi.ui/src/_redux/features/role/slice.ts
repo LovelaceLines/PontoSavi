@@ -23,15 +23,25 @@ const roleSlice = createSlice({
   reducers: {
   },
   extraReducers: builder => {
+    builder.addCase(getRoles.pending, (state) => {
+      state.status = "loading";
+    });
     builder.addCase(getRoles.fulfilled, (state, action) => {
       state.roles = action.payload.items;
       state.totalCount = action.payload.totalCount;
+      state.status = "idle";
     });
     builder.addCase(getRoles.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error.message || null;
     });
 
+    builder.addCase(getRoleByPublicId.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(getRoleByPublicId.fulfilled, (state) => {
+      state.status = "idle";
+    });
     builder.addCase(getRoleByPublicId.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error.message || null;
@@ -59,6 +69,9 @@ const roleSlice = createSlice({
       state.error = action.error.message || null;
     });
 
+    builder.addCase(deleteRole.pending, (state) => {
+      state.status = "loading";
+    });
     builder.addCase(deleteRole.fulfilled, (state) => {
       state.status = "succeeded";
     });

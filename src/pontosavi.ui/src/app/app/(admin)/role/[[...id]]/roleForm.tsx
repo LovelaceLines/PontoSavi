@@ -5,7 +5,7 @@ import { Button, Grid, TextField } from "@mui/material";
 import { role } from "@/_types";
 import { useRoleForm } from "./useRoleForm";
 
-export const RoleForm = ({ role }: { role?: role } = {}) => {
+export const RoleForm = ({ role }: { role?: role }) => {
   const { errors, handleSubmit, onSubmit, register } = useRoleForm({ role });
 
   return (
