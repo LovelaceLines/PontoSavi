@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
 
@@ -39,13 +39,25 @@ public static class DependencyInjectionSetup
         services.AddTransient<IUserRoleRepository, UserRoleRepository>();
         services.AddTransient<IUserRoleService, UserRoleService>();
 
-        services.AddTransient<IUserSettingsService, UserSettingsService>();
-        services.AddTransient<IUserSettingsRepository, UserSettingsRepository>();
+        services.AddScoped<IAuthService, AuthService>();
 
-        services.AddTransient<IAuthService, AuthService>();
+        services.AddScoped<ICompanyService, CompanyService>();
+        services.AddScoped<ICompanyRepository, CompanyRepository>();
 
-        services.AddTransient<ICompanyService, CompanyService>();
-        services.AddTransient<ICompanyRepository, CompanyRepository>();
+        services.AddScoped<IDayOffService, DayOffService>();
+        services.AddScoped<IDayOffRepository, DayOffRepository>();
+
+        services.AddScoped<IPointService, PointService>();
+        services.AddScoped<IPointRepository, PointRepository>();
+
+        services.AddScoped<IWorkShiftService, WorkShiftService>();
+        services.AddScoped<IWorkShiftRepository, WorkShiftRepository>();
+
+        services.AddScoped<IUserWorkShiftRepository, UserWorkShiftRepository>();
+        services.AddScoped<IUserWorkShiftService, UserWorkShiftService>();
+
+        services.AddScoped<ICompanyWorkShiftRepository, CompanyWorkShiftRepository>();
+        services.AddScoped<ICompanyWorkShiftService, CompanyWorkShiftService>();
 
         return services;
     }

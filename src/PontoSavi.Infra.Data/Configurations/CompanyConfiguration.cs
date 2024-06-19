@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 using PontoSavi.Domain.Entities;
-using PontoSavi.Infra.Data.Configurations.Util;
 
 namespace PontoSavi.Infra.Data.Configurations;
 
@@ -11,22 +11,32 @@ public class CompanyConfiguration : IEntityTypeConfiguration<Company>
     {
         builder.HasKey(c => c.Id);
 
-        builder.Property(c => c.Id)
-            .ValueGeneratedOnAdd();
+        // TODO
+        // builder.Property(c => c.Name)
+        //     .IsUnicode();
 
-        builder.Property(c => c.PublicId)
-            .IsUnicode()
-            .HasValueGenerator<UlidValueGenerator>();
+        // TODO
+        // builder.Property(c => c.CNPJ)
+        //     .IsRequired();
 
-        builder.Property(c => c.Name)
-            // TODO .IsUnicode()
-            .IsRequired();
+        builder.Property(p => p.CreatedAt)
+            .ValueGeneratedOnAdd()
+            .HasValueGenerator<DateTimeNowValueGenerator>();
 
-        builder.Property(c => c.TradeName)
-            .IsRequired();
+        builder.Property(p => p.UpdatedAt)
+            .ValueGeneratedOnUpdate()
+            .HasValueGenerator<DateTimeNowValueGenerator>();
 
-        builder.Property(c => c.CNPJ)
-            // TODO .IsUnicode()
-            .IsRequired();
+        builder.HasData(
+            new Company
+            {
+                Id = 1,
+                Name = "Ponto Savi",
+                TradeName = "Ponto Savi",
+                CNPJ = "00000000000000",
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
+            }
+        );
     }
 }

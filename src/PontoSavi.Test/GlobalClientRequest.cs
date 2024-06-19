@@ -1,4 +1,4 @@
-﻿using Microsoft.IdentityModel.Tokens;
+using Microsoft.IdentityModel.Tokens;
 
 using PontoSavi.API.InputModels;
 using PontoSavi.API.ViewModels;
@@ -24,6 +24,16 @@ public class GlobalClientRequest : HttpClientUtil
     public readonly HttpClient _userSettingsClient = new() { BaseAddress = new Uri($"{BaseUrl}UserSettings/") };
     public readonly HttpClient _roleClient = new() { BaseAddress = new Uri($"{BaseUrl}Role/") };
     public readonly HttpClient _companyClient = new() { BaseAddress = new Uri($"{BaseUrl}Company/") };
+    public readonly HttpClient _companyAddWorkShiftClient = new() { BaseAddress = new Uri($"{BaseUrl}Company/add-work-shift/") };
+    public readonly HttpClient _companyRemoveWorkShiftClient = new() { BaseAddress = new Uri($"{BaseUrl}Company/remove-work-shift/") };
+    public readonly HttpClient _dayOffClient = new() { BaseAddress = new Uri($"{BaseUrl}DayOff/") };
+    public readonly HttpClient _pointClient = new() { BaseAddress = new Uri($"{BaseUrl}Point/") };
+    public readonly HttpClient _pointAutoClient = new() { BaseAddress = new Uri($"{BaseUrl}Point/auto/") };
+    public readonly HttpClient _pointManualClient = new() { BaseAddress = new Uri($"{BaseUrl}Point/manual/") };
+    public readonly HttpClient _pointFullClient = new() { BaseAddress = new Uri($"{BaseUrl}Point/full/") };
+    public readonly HttpClient _pointApproveClient = new() { BaseAddress = new Uri($"{BaseUrl}Point/approve/") };
+    public readonly HttpClient _pointRejectClient = new() { BaseAddress = new Uri($"{BaseUrl}Point/reject/") };
+    public readonly HttpClient _workShiftClient = new() { BaseAddress = new Uri($"{BaseUrl}WorkShift/") };
 
     #region GetEntityFake
 
@@ -92,14 +102,33 @@ public class GlobalClientRequest : HttpClientUtil
         return model;
     }
 
-    public async Task<CompanyDTO> GetCompany(string? publicId = null, CompanyDTO? fake = null)
+    public async Task<Company> GetCompany(CompanyAndUser? fake = null)
+    {
+        fake ??= new CompanyAndUserFake().Generate();
+        var companyAndUser = await PostFromBody<CompanyAndUser>(_CEOCompanyClient, fake);
+        return companyAndUser.Company;
+    }
+
+    public async Task<DayOff> GetDayOff(DayOff? fake = null)
     {
         if (!publicId.IsNullOrEmpty())
             return await GetFromUri<CompanyDTO>(_companyClient, publicId!);
 
         fake ??= new CompanyFake().Generate();
 
-        return await PostFromBody<CompanyDTO>(_companyClient, fake);
+        return await PostFromBody<CompanyWorkShift>(_companyAddWorkShiftClient, fake);
+    }
+
+    public async Task<UserWorkShift> GetUserWorkShift(UserWorkShift? fake = null)
+    {
+        if (fake is null)
+        {
+            var user = await GetUser();
+            var workShift = await GetWorkShift();
+            fake = new UserWorkShift { UserId = user.Id, WorkShiftId = workShift.Id };
+        }
+
+        return await PostFromBody<UserWorkShift>(_userAddWorkShiftClient, fake);
     }
 
     #endregion
