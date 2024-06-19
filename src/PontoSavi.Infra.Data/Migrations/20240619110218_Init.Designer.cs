@@ -11,7 +11,7 @@ using PontoSavi.Infra.Data.Context;
 namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240619015040_Init")]
+    [Migration("20240619110218_Init")]
     partial class Init
     {
         /// <inheritdoc />
@@ -151,10 +151,10 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                         {
                             Id = 1,
                             CNPJ = "00000000000000",
-                            CreatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 716, DateTimeKind.Local).AddTicks(3102),
+                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 444, DateTimeKind.Local).AddTicks(8185),
                             Name = "Ponto Savi",
                             TradeName = "Ponto Savi",
-                            UpdatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 716, DateTimeKind.Local).AddTicks(3115)
+                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 444, DateTimeKind.Local).AddTicks(8200)
                         });
                 });
 
@@ -321,51 +321,51 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                         {
                             Id = 1,
                             CompanyId = 1,
-                            ConcurrencyStamp = "1bf10673-4d8c-41fc-b088-b9584900e56c",
-                            CreatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 957, DateTimeKind.Local).AddTicks(386),
+                            ConcurrencyStamp = "98b72587-a923-4b32-a5cd-fa07a18154fa",
+                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4483),
                             Name = "Desenvolvedor",
                             NormalizedName = "DESENVOLVEDOR",
-                            UpdatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 957, DateTimeKind.Local).AddTicks(402)
+                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4497)
                         },
                         new
                         {
                             Id = 2,
                             CompanyId = 1,
-                            ConcurrencyStamp = "04f43299-9ceb-45f2-8a31-aeca32aa6988",
-                            CreatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 957, DateTimeKind.Local).AddTicks(415),
-                            Name = "Administrador",
-                            NormalizedName = "ADMINISTRADOR",
-                            UpdatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 957, DateTimeKind.Local).AddTicks(416)
+                            ConcurrencyStamp = "96872095-d959-441b-a6e0-8c93c1896b8a",
+                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4504),
+                            Name = "CEO",
+                            NormalizedName = "CEO",
+                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4504)
                         },
                         new
                         {
                             Id = 3,
                             CompanyId = 1,
-                            ConcurrencyStamp = "4563a3c8-ff91-47f8-a228-480de085c4f4",
-                            CreatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 957, DateTimeKind.Local).AddTicks(473),
-                            Name = "Supervisor",
-                            NormalizedName = "SUPERVISOR",
-                            UpdatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 957, DateTimeKind.Local).AddTicks(473)
+                            ConcurrencyStamp = "b32214e9-52fb-459a-aca8-25672cc0e87e",
+                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4509),
+                            Name = "Administrador",
+                            NormalizedName = "ADMINISTRADOR",
+                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4510)
                         },
                         new
                         {
                             Id = 4,
                             CompanyId = 1,
-                            ConcurrencyStamp = "b2faaf30-6e7d-44b0-9880-4d306dff7ac6",
-                            CreatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 957, DateTimeKind.Local).AddTicks(479),
-                            Name = "Colaborador",
-                            NormalizedName = "COLABORADOR",
-                            UpdatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 957, DateTimeKind.Local).AddTicks(479)
+                            ConcurrencyStamp = "f9fae724-5480-40aa-b8ba-35522033e666",
+                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4521),
+                            Name = "Supervisor",
+                            NormalizedName = "SUPERVISOR",
+                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4522)
                         },
                         new
                         {
                             Id = 5,
                             CompanyId = 1,
-                            ConcurrencyStamp = "0be9713e-58fe-4e20-beb9-4d032e7ad14d",
-                            CreatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 957, DateTimeKind.Local).AddTicks(484),
-                            Name = "CEO",
-                            NormalizedName = "CEO",
-                            UpdatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 957, DateTimeKind.Local).AddTicks(484)
+                            ConcurrencyStamp = "5b82c443-bc5e-48fe-a101-b29c99a7265b",
+                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4525),
+                            Name = "Colaborador",
+                            NormalizedName = "COLABORADOR",
+                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4525)
                         });
                 });
 
@@ -460,20 +460,20 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                             Id = 1,
                             AccessFailedCount = 0,
                             CompanyId = 1,
-                            ConcurrencyStamp = "b2fa46bf-7d43-4725-9423-98c44a8fb9dc",
-                            CreatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 795, DateTimeKind.Local).AddTicks(6441),
+                            ConcurrencyStamp = "81850961-8faa-4bbb-9f6e-f71906c62da7",
+                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 507, DateTimeKind.Local).AddTicks(1084),
                             Email = "dev@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Developer",
                             NormalizedEmail = "DEV@GMAIL.COM",
                             NormalizedUserName = "DEV",
-                            PasswordHash = "AQAAAAIAAYagAAAAEF5XVDwXWELdalQagrzRjUqQVsULV1tgWYZRdTaqqfk8Hm2Lp+QvQWlDmBT11+X5BA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPEj3NJD2yXaMq2ffUe/kE84aGccujBsXwiUPYdSbqESCQjlxkzXe1uxi4F0T1N0tg==",
                             PhoneNumber = "(55) 85 9 9999-9999",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "3aa1e78c-c581-45e7-b512-11ccbbe574b8",
+                            SecurityStamp = "993dd97d-9d78-466f-8717-1a70fb26fcd1",
                             TwoFactorEnabled = false,
-                            UpdatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 795, DateTimeKind.Local).AddTicks(6477),
+                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 507, DateTimeKind.Local).AddTicks(1103),
                             UserName = "dev"
                         },
                         new
@@ -481,20 +481,20 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                             Id = 2,
                             AccessFailedCount = 0,
                             CompanyId = 1,
-                            ConcurrencyStamp = "147acd0d-f27d-4cae-8aa9-278d03bd0810",
-                            CreatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 875, DateTimeKind.Local).AddTicks(5435),
+                            ConcurrencyStamp = "6fbcc103-607d-4e08-9187-a4e10811c2e4",
+                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 568, DateTimeKind.Local).AddTicks(9488),
                             Email = "admin@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Administrator",
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEAhma4TdEU4NCUuFdCqZUJb9oNtjCPeOXdC/amQO+r1e8uZw33m38VJ30UdMNdh+mg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDi1Kcbx6YH2mu2ydjw0jXjN+bPXvG8fsVdJ/kiFM4COJ9TkhU5Zg75rd6f2ZofJng==",
                             PhoneNumber = "(55) 85 9 9999-9998",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e3c68d64-6fd1-4982-bd28-f83de2360420",
+                            SecurityStamp = "274d3613-b0f3-451a-a085-bec0d0971acf",
                             TwoFactorEnabled = false,
-                            UpdatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 875, DateTimeKind.Local).AddTicks(5448),
+                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 568, DateTimeKind.Local).AddTicks(9495),
                             UserName = "admin"
                         },
                         new
@@ -502,21 +502,42 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                             Id = 3,
                             AccessFailedCount = 0,
                             CompanyId = 1,
-                            ConcurrencyStamp = "e9c37d6e-c5c4-4e8b-a0db-2a15575fb430",
-                            CreatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 955, DateTimeKind.Local).AddTicks(6207),
+                            ConcurrencyStamp = "0b0a7b55-6ab9-4111-88a1-40ec849ea6eb",
+                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 631, DateTimeKind.Local).AddTicks(2805),
                             Email = "super@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Supervisor",
                             NormalizedEmail = "SUPER@GMAIL.COM",
                             NormalizedUserName = "SUPER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMSuJnxKwNBgnAtpFuUXoBfKlRPtM4XHi/STIRKZlMHU8zBVq5w9VRv4kSpZgCKH8w==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFaCaOT1/FAQFwXtO+fD36S4Y8rL2joLLVfDuoVJDuXk3hTGZ4rLLYWgjt+fh4oMxw==",
                             PhoneNumber = "(55) 85 9 9999-9997",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "e88490cc-59c3-4b09-8f67-4e92edac2302",
+                            SecurityStamp = "d826436f-0b90-4ba8-b8b4-4f5246fc4985",
                             TwoFactorEnabled = false,
-                            UpdatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 955, DateTimeKind.Local).AddTicks(6221),
+                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 631, DateTimeKind.Local).AddTicks(2813),
                             UserName = "super"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AccessFailedCount = 0,
+                            CompanyId = 1,
+                            ConcurrencyStamp = "cc8a88b4-35b4-4101-afd6-b41989a31368",
+                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 693, DateTimeKind.Local).AddTicks(2388),
+                            Email = "base@gmail.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            Name = "Base",
+                            NormalizedEmail = "BASE@GMAIL.COM",
+                            NormalizedUserName = "BASE",
+                            PasswordHash = "AQAAAAIAAYagAAAAEEBylCq+cmebCjuw1hmsOsb3kICnDLOSsY+pHDLnbhLUbdCEMSunQ6LLwwklSpioxQ==",
+                            PhoneNumber = "(55) 85 9 9999-9997",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "bde2c58b-61c0-4d18-aaee-2f6d5f3c0819",
+                            TwoFactorEnabled = false,
+                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 693, DateTimeKind.Local).AddTicks(2402),
+                            UserName = "base"
                         });
                 });
 
@@ -553,56 +574,64 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                             UserId = 1,
                             RoleId = 1,
                             CompanyId = 1,
-                            CreatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1486),
-                            UpdatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1499)
+                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8598),
+                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8604)
+                        },
+                        new
+                        {
+                            UserId = 1,
+                            RoleId = 2,
+                            CompanyId = 1,
+                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8608),
+                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8609)
+                        },
+                        new
+                        {
+                            UserId = 1,
+                            RoleId = 3,
+                            CompanyId = 1,
+                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8610),
+                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8611)
                         },
                         new
                         {
                             UserId = 1,
                             RoleId = 4,
                             CompanyId = 1,
-                            CreatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1507),
-                            UpdatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1508)
+                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8612),
+                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8612)
                         },
                         new
                         {
                             UserId = 1,
                             RoleId = 5,
                             CompanyId = 1,
-                            CreatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1509),
-                            UpdatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1510)
+                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8613),
+                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8614)
                         },
                         new
                         {
                             UserId = 2,
-                            RoleId = 2,
-                            CompanyId = 1,
-                            CreatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1511),
-                            UpdatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1511)
-                        },
-                        new
-                        {
-                            UserId = 2,
-                            RoleId = 4,
-                            CompanyId = 1,
-                            CreatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1513),
-                            UpdatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1514)
-                        },
-                        new
-                        {
-                            UserId = 3,
                             RoleId = 3,
                             CompanyId = 1,
-                            CreatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1515),
-                            UpdatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1515)
+                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8615),
+                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8615)
                         },
                         new
                         {
                             UserId = 3,
                             RoleId = 4,
                             CompanyId = 1,
-                            CreatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1517),
-                            UpdatedAt = new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1517)
+                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8616),
+                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8617)
+                        },
+                        new
+                        {
+                            UserId = 4,
+                            RoleId = 5,
+                            CompanyId = 1,
+                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8618),
+                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8624)
                         });
                 });
 

@@ -46,6 +46,22 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
             new UserRole
             {
                 UserId = 1,
+                RoleId = 2,
+                CompanyId = 1,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
+            },
+            new UserRole
+            {
+                UserId = 1,
+                RoleId = 3,
+                CompanyId = 1,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
+            },
+            new UserRole
+            {
+                UserId = 1,
                 RoleId = 4,
                 CompanyId = 1,
                 CreatedAt = DateTime.Now,
@@ -62,22 +78,6 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
             new UserRole
             {
                 UserId = 2,
-                RoleId = 2,
-                CompanyId = 1,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
-            },
-            new UserRole
-            {
-                UserId = 2,
-                RoleId = 4,
-                CompanyId = 1,
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
-            },
-            new UserRole
-            {
-                UserId = 3,
                 RoleId = 3,
                 CompanyId = 1,
                 CreatedAt = DateTime.Now,
@@ -87,6 +87,14 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
             {
                 UserId = 3,
                 RoleId = 4,
+                CompanyId = 1,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
+            },
+            new UserRole
+            {
+                UserId = 4,
+                RoleId = 5,
                 CompanyId = 1,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now

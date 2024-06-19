@@ -275,18 +275,18 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Companies",
                 columns: new[] { "Id", "CNPJ", "CreatedAt", "Name", "TradeName" },
-                values: new object[] { 1, "00000000000000", new DateTime(2024, 6, 18, 22, 50, 39, 716, DateTimeKind.Local).AddTicks(3102), "Ponto Savi", "Ponto Savi" });
+                values: new object[] { 1, "00000000000000", new DateTime(2024, 6, 19, 8, 2, 17, 444, DateTimeKind.Local).AddTicks(8185), "Ponto Savi", "Ponto Savi" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "CompanyId", "ConcurrencyStamp", "CreatedAt", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { 1, 1, "1bf10673-4d8c-41fc-b088-b9584900e56c", new DateTime(2024, 6, 18, 22, 50, 39, 957, DateTimeKind.Local).AddTicks(386), "Desenvolvedor", "DESENVOLVEDOR" },
-                    { 2, 1, "04f43299-9ceb-45f2-8a31-aeca32aa6988", new DateTime(2024, 6, 18, 22, 50, 39, 957, DateTimeKind.Local).AddTicks(415), "Administrador", "ADMINISTRADOR" },
-                    { 3, 1, "4563a3c8-ff91-47f8-a228-480de085c4f4", new DateTime(2024, 6, 18, 22, 50, 39, 957, DateTimeKind.Local).AddTicks(473), "Supervisor", "SUPERVISOR" },
-                    { 4, 1, "b2faaf30-6e7d-44b0-9880-4d306dff7ac6", new DateTime(2024, 6, 18, 22, 50, 39, 957, DateTimeKind.Local).AddTicks(479), "Colaborador", "COLABORADOR" },
-                    { 5, 1, "0be9713e-58fe-4e20-beb9-4d032e7ad14d", new DateTime(2024, 6, 18, 22, 50, 39, 957, DateTimeKind.Local).AddTicks(484), "CEO", "CEO" }
+                    { 1, 1, "98b72587-a923-4b32-a5cd-fa07a18154fa", new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4483), "Desenvolvedor", "DESENVOLVEDOR" },
+                    { 2, 1, "96872095-d959-441b-a6e0-8c93c1896b8a", new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4504), "CEO", "CEO" },
+                    { 3, 1, "b32214e9-52fb-459a-aca8-25672cc0e87e", new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4509), "Administrador", "ADMINISTRADOR" },
+                    { 4, 1, "f9fae724-5480-40aa-b8ba-35522033e666", new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4521), "Supervisor", "SUPERVISOR" },
+                    { 5, 1, "5b82c443-bc5e-48fe-a101-b29c99a7265b", new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4525), "Colaborador", "COLABORADOR" }
                 });
 
             migrationBuilder.InsertData(
@@ -294,9 +294,10 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "CompanyId", "ConcurrencyStamp", "CreatedAt", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, 1, "b2fa46bf-7d43-4725-9423-98c44a8fb9dc", new DateTime(2024, 6, 18, 22, 50, 39, 795, DateTimeKind.Local).AddTicks(6441), "dev@gmail.com", false, false, null, "Developer", "DEV@GMAIL.COM", "DEV", "AQAAAAIAAYagAAAAEF5XVDwXWELdalQagrzRjUqQVsULV1tgWYZRdTaqqfk8Hm2Lp+QvQWlDmBT11+X5BA==", "(55) 85 9 9999-9999", false, "3aa1e78c-c581-45e7-b512-11ccbbe574b8", false, "dev" },
-                    { 2, 0, 1, "147acd0d-f27d-4cae-8aa9-278d03bd0810", new DateTime(2024, 6, 18, 22, 50, 39, 875, DateTimeKind.Local).AddTicks(5435), "admin@gmail.com", false, false, null, "Administrator", "ADMIN@GMAIL.COM", "ADMIN", "AQAAAAIAAYagAAAAEAhma4TdEU4NCUuFdCqZUJb9oNtjCPeOXdC/amQO+r1e8uZw33m38VJ30UdMNdh+mg==", "(55) 85 9 9999-9998", false, "e3c68d64-6fd1-4982-bd28-f83de2360420", false, "admin" },
-                    { 3, 0, 1, "e9c37d6e-c5c4-4e8b-a0db-2a15575fb430", new DateTime(2024, 6, 18, 22, 50, 39, 955, DateTimeKind.Local).AddTicks(6207), "super@gmail.com", false, false, null, "Supervisor", "SUPER@GMAIL.COM", "SUPER", "AQAAAAIAAYagAAAAEMSuJnxKwNBgnAtpFuUXoBfKlRPtM4XHi/STIRKZlMHU8zBVq5w9VRv4kSpZgCKH8w==", "(55) 85 9 9999-9997", false, "e88490cc-59c3-4b09-8f67-4e92edac2302", false, "super" }
+                    { 1, 0, 1, "81850961-8faa-4bbb-9f6e-f71906c62da7", new DateTime(2024, 6, 19, 8, 2, 17, 507, DateTimeKind.Local).AddTicks(1084), "dev@gmail.com", false, false, null, "Developer", "DEV@GMAIL.COM", "DEV", "AQAAAAIAAYagAAAAEPEj3NJD2yXaMq2ffUe/kE84aGccujBsXwiUPYdSbqESCQjlxkzXe1uxi4F0T1N0tg==", "(55) 85 9 9999-9999", false, "993dd97d-9d78-466f-8717-1a70fb26fcd1", false, "dev" },
+                    { 2, 0, 1, "6fbcc103-607d-4e08-9187-a4e10811c2e4", new DateTime(2024, 6, 19, 8, 2, 17, 568, DateTimeKind.Local).AddTicks(9488), "admin@gmail.com", false, false, null, "Administrator", "ADMIN@GMAIL.COM", "ADMIN", "AQAAAAIAAYagAAAAEDi1Kcbx6YH2mu2ydjw0jXjN+bPXvG8fsVdJ/kiFM4COJ9TkhU5Zg75rd6f2ZofJng==", "(55) 85 9 9999-9998", false, "274d3613-b0f3-451a-a085-bec0d0971acf", false, "admin" },
+                    { 3, 0, 1, "0b0a7b55-6ab9-4111-88a1-40ec849ea6eb", new DateTime(2024, 6, 19, 8, 2, 17, 631, DateTimeKind.Local).AddTicks(2805), "super@gmail.com", false, false, null, "Supervisor", "SUPER@GMAIL.COM", "SUPER", "AQAAAAIAAYagAAAAEFaCaOT1/FAQFwXtO+fD36S4Y8rL2joLLVfDuoVJDuXk3hTGZ4rLLYWgjt+fh4oMxw==", "(55) 85 9 9999-9997", false, "d826436f-0b90-4ba8-b8b4-4f5246fc4985", false, "super" },
+                    { 4, 0, 1, "cc8a88b4-35b4-4101-afd6-b41989a31368", new DateTime(2024, 6, 19, 8, 2, 17, 693, DateTimeKind.Local).AddTicks(2388), "base@gmail.com", false, false, null, "Base", "BASE@GMAIL.COM", "BASE", "AQAAAAIAAYagAAAAEEBylCq+cmebCjuw1hmsOsb3kICnDLOSsY+pHDLnbhLUbdCEMSunQ6LLwwklSpioxQ==", "(55) 85 9 9999-9997", false, "bde2c58b-61c0-4d18-aaee-2f6d5f3c0819", false, "base" }
                 });
 
             migrationBuilder.InsertData(
@@ -304,13 +305,14 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 columns: new[] { "CompanyId", "RoleId", "UserId", "CreatedAt" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1486) },
-                    { 1, 4, 1, new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1507) },
-                    { 1, 5, 1, new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1509) },
-                    { 1, 2, 2, new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1511) },
-                    { 1, 4, 2, new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1513) },
-                    { 1, 3, 3, new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1515) },
-                    { 1, 4, 3, new DateTime(2024, 6, 18, 22, 50, 39, 960, DateTimeKind.Local).AddTicks(1517) }
+                    { 1, 1, 1, new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8598) },
+                    { 1, 2, 1, new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8608) },
+                    { 1, 3, 1, new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8610) },
+                    { 1, 4, 1, new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8612) },
+                    { 1, 5, 1, new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8613) },
+                    { 1, 3, 2, new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8615) },
+                    { 1, 4, 3, new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8616) },
+                    { 1, 5, 4, new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8618) }
                 });
 
             migrationBuilder.CreateIndex(

@@ -113,7 +113,7 @@ public class PointControllerTest : GlobalClientRequest
         var point = await GetClosedPoint();
 
         var user = await GetUser();
-        var userRole = await GetUserRole(userId: user.Id, roleId: 2);
+        var userRole = await GetUserRole(userId: user.Id, roleId: 3);
         var token = await GetToken(user.UserName, user.Password);
         _accessToken = token.AuthToken.AccessToken;
 
@@ -129,7 +129,7 @@ public class PointControllerTest : GlobalClientRequest
         var point = await GetClosedPoint();
 
         var user = await GetUser();
-        var userRole = await GetUserRole(userId: user.Id, roleId: 2);
+        var userRole = await GetUserRole(userId: user.Id, roleId: 3);
         var token = await GetToken(user.UserName, user.Password);
         _accessToken = token.AuthToken.AccessToken;
 

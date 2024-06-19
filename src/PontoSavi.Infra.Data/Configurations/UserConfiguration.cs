@@ -85,6 +85,22 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 ConcurrencyStamp = Guid.NewGuid().ToString(),
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
+            },
+            new User
+            {
+                Id = 4,
+                CompanyId = 1,
+                UserName = "base",
+                Name = "Base",
+                NormalizedUserName = "BASE",
+                Email = "base@gmail.com",
+                NormalizedEmail = "BASE@GMAIL.COM",
+                PhoneNumber = "(55) 85 9 9999-9997",
+                PasswordHash = new PasswordHasher<User>().HashPassword(new User("base"), "!23L6(bNi.22T71,%4vfR{<~tA.]"),
+                SecurityStamp = Guid.NewGuid().ToString(),
+                ConcurrencyStamp = Guid.NewGuid().ToString(),
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
             }
         );
     }

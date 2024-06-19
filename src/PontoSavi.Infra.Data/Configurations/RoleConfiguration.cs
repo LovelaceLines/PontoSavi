@@ -46,6 +46,16 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
             {
                 Id = 2,
                 CompanyId = 1,
+                Name = "CEO",
+                NormalizedName = "CEO",
+                ConcurrencyStamp = Guid.NewGuid().ToString(),
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
+            },
+            new Role
+            {
+                Id = 3,
+                CompanyId = 1,
                 Name = "Administrador",
                 NormalizedName = "ADMINISTRADOR",
                 ConcurrencyStamp = Guid.NewGuid().ToString(),
@@ -54,7 +64,7 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
             },
             new Role
             {
-                Id = 3,
+                Id = 4,
                 CompanyId = 1,
                 Name = "Supervisor",
                 NormalizedName = "SUPERVISOR",
@@ -64,20 +74,10 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
             },
             new Role
             {
-                Id = 4,
+                Id = 5,
                 CompanyId = 1,
                 Name = "Colaborador",
                 NormalizedName = "COLABORADOR",
-                ConcurrencyStamp = Guid.NewGuid().ToString(),
-                CreatedAt = DateTime.Now,
-                UpdatedAt = DateTime.Now
-            },
-            new Role
-            {
-                Id = 5,
-                CompanyId = 1,
-                Name = "CEO",
-                NormalizedName = "CEO",
                 ConcurrencyStamp = Guid.NewGuid().ToString(),
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
