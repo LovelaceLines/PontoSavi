@@ -21,7 +21,8 @@ public class GlobalClientRequest : HttpClientUtil
     public readonly HttpClient _userPasswordClient = new() { BaseAddress = new Uri($"{BaseUrl}User/password/") };
     public readonly HttpClient _addUserToRoleClient = new() { BaseAddress = new Uri($"{BaseUrl}User/add-to-role/") };
     public readonly HttpClient _removeUserFromRoleClient = new() { BaseAddress = new Uri($"{BaseUrl}User/remove-from-role/") };
-    public readonly HttpClient _userSettingsClient = new() { BaseAddress = new Uri($"{BaseUrl}UserSettings/") };
+    public readonly HttpClient _userAddWorkShiftClient = new() { BaseAddress = new Uri($"{BaseUrl}User/add-work-shift/") };
+    public readonly HttpClient _userRemoveWorkShiftClient = new() { BaseAddress = new Uri($"{BaseUrl}User/remove-work-shift/") };
     public readonly HttpClient _roleClient = new() { BaseAddress = new Uri($"{BaseUrl}Role/") };
     public readonly HttpClient _companyClient = new() { BaseAddress = new Uri($"{BaseUrl}Company/") };
     public readonly HttpClient _companyAddWorkShiftClient = new() { BaseAddress = new Uri($"{BaseUrl}Company/add-work-shift/") };
@@ -37,52 +38,37 @@ public class GlobalClientRequest : HttpClientUtil
 
     #region GetEntityFake
 
-    public async Task<UserToken> GetToken(string? userName = null, string? password = null)
-    {
-        LoginIM login = new();
-
-        if (!userName.IsNullOrEmpty() && !password.IsNullOrEmpty())
-        {
-            login = new LoginIM { UserName = userName!, Password = password! };
-        }
-        else
+    public async Task<UserToken> GetToken()
         {
             var user = await GetUser();
-            login = new LoginIM { UserName = user.UserName, Password = user.Password };
+        return await GetToken(user.UserName, user.Password);
         }
 
+    public async Task<UserToken> GetToken(string userName, string password)
+    {
+        var login = new LoginIM { UserName = userName, Password = password };
         return await PostFromBody<UserToken>(_loginClient, login);
     }
 
-    public async Task<UserDTO> GetUser(string? publicId = null, string? password = null, UserDTO? fake = null)
+    public async Task<User> GetUser(User? fake = null)
     {
-        if (!publicId.IsNullOrEmpty())
-        {
-            var user = await GetFromUri<UserDTO>(_userClient, publicId!);
-            user.Password = password ?? user.Password;
-            return user;
-        }
-
         fake ??= new UserFake().Generate();
-
-        var userPosted = await PostFromBody<UserDTO>(_userClient, fake);
-        userPosted.Password = fake.Password;
-
-        return userPosted;
+        return await PostFromBody<User>(_userClient, fake);
     }
 
-    public async Task<UserDTO> GetUserSettings(string? userPublicId = null, UserSettingsVM? fake = null)
+    public async Task<User> GetUserByCEO(User? fake = null)
     {
-        if (!userPublicId.IsNullOrEmpty())
-            return await GetFromUri<UserDTO>(_userSettingsClient, userPublicId!);
-
-        var user = await GetUser();
-        fake ??= new UserSettingsFake(userPublicId: user.PublicId).Generate();
-
-        return await PostFromBody<UserDTO>(_userSettingsClient, fake);
+        fake ??= new UserFake().Generate();
+        return await PostFromBody<User>(_CEOUserClient, fake);
     }
 
-    public async Task<RoleDTO> GetRole(string? publicId = null, string? name = null)
+    public async Task<Role> GetRole(Role? fake = null)
+    {
+        fake ??= new RoleFake().Generate();
+        return await PostFromBody<Role>(_roleClient, fake);
+    }
+
+    public async Task<Role> GetRoleByCEO(Role? fake = null)
     {
         if (!publicId.IsNullOrEmpty())
             return await GetFromUri<RoleDTO>(_roleClient, publicId!);
@@ -91,13 +77,19 @@ public class GlobalClientRequest : HttpClientUtil
         return await PostFromBody<RoleDTO>(_roleClient, roleFake);
     }
 
-    public async Task<UserRoleIM> GetUserRole(string? userPublicId = null, string? rolePublicId = null)
+    public async Task<UserRoleIM> GetUserRole()
     {
-        var user = await GetUser(publicId: userPublicId);
-        var role = await GetRole(publicId: rolePublicId);
-        var model = new UserRoleIM { UserId = user.PublicId!, RoleName = role.Name };
+        var user = await GetUser();
+        var role = await GetRole();
 
-        await PostFromBody<UserDTO>(_addUserToRoleClient, model);
+        return await GetUserRole(user.Id, role.Id);
+    }
+
+    public async Task<UserRoleIM> GetUserRole(int userId, int roleId)
+    {
+        var model = new UserRoleIM { UserId = userId, RoleId = roleId };
+
+        await PostFromBody<AppHttpResponse>(_addUserToRoleClient, model);
 
         return model;
     }

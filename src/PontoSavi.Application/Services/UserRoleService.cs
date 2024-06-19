@@ -2,69 +2,38 @@ using Microsoft.AspNetCore.Identity;
 using System.Net;
 
 using PontoSavi.Application.Interfaces;
-using PontoSavi.Domain.DTOs;
 using PontoSavi.Domain.Exceptions;
-using PontoSavi.Domain.Repositories;
 using PontoSavi.Domain.Entities;
+using PontoSavi.Domain.Repositories;
 
 namespace PontoSavi.Application.Services;
 
 public class UserRoleService : IUserRoleService
 {
-    private readonly UserManager<User> _userManager;
-    private readonly IUserRepository _userRepository;
-    private readonly IRoleRepository _roleRepository;
+    private readonly IUserRoleRepository _repository;
 
-    public UserRoleService(UserManager<User> userManager,
-        IUserRepository userRepository,
-        IRoleRepository roleRepository)
+    public UserRoleService(IUserRoleRepository repository) =>
+        _repository = repository;
+
+    public async Task<bool> AddToRole(User user, Role role)
     {
-        _userManager = userManager;
-        _userRepository = userRepository;
-        _roleRepository = roleRepository;
+        if (await _repository.Exists(user.Id, role.Id, user.CompanyId))
+            throw new AppException("Usuário já está nesta função!", HttpStatusCode.BadRequest);
+
+        await _repository.Add(user.Id, role.Id, user.CompanyId);
+
+        return true;
     }
 
-    public async Task<UserDTO> AddToRole(string userPublicId, string roleName)
+    public async Task<bool> RemoveFromRole(User user, Role role)
     {
-        if (!await _userRepository.ExistsByPublicId(userPublicId))
-            throw new AppException("Usuário não encontrado", HttpStatusCode.NotFound);
+        if (!await _repository.Exists(user.Id, role.Id, user.CompanyId))
+            throw new AppException("Usuário não está nesta função!", HttpStatusCode.BadRequest);
 
-        if (!await _roleRepository.ExistsByName(roleName))
-            throw new AppException("Função não encontrada", HttpStatusCode.NotFound);
+        var userRole = await _repository.Get(user.Id, role.Id, user.CompanyId);
 
-        var user = await _userRepository.GetByPublicId(userPublicId);
-        var role = await _roleRepository.GetByName(roleName);
+        await _repository.Remove(userRole);
 
-        if (await _userManager.IsInRoleAsync(user, role.Name!))
-            throw new AppException("Usuário já está nesta função", HttpStatusCode.BadRequest);
-
-        var result = await _userManager.AddToRoleAsync(user, role.Name!);
-
-        if (!result.Succeeded)
-            throw new AppException(result.Errors.First().Description, HttpStatusCode.BadRequest);
-
-        return new UserDTO(user, await _userRepository.GetRoles(user));
-    }
-
-    public async Task<UserDTO> RemoveFromRole(string userPublicId, string roleName)
-    {
-        if (!await _userRepository.ExistsByPublicId(userPublicId))
-            throw new AppException("Usuário não encontrado", HttpStatusCode.NotFound);
-
-        if (!await _roleRepository.ExistsByName(roleName))
-            throw new AppException("Função não encontrada", HttpStatusCode.NotFound);
-
-        var user = await _userRepository.GetByPublicId(userPublicId);
-        var role = await _roleRepository.GetByName(roleName);
-
-        if (!await _userManager.IsInRoleAsync(user, role.Name!))
-            throw new AppException("Usuário não está nesta função", HttpStatusCode.BadRequest);
-
-        var result = await _userManager.RemoveFromRoleAsync(user, role.Name!);
-
-        if (!result.Succeeded)
-            throw new AppException(result.Errors.First().Description, HttpStatusCode.BadRequest);
-
-        return new UserDTO(user, await _userRepository.GetRoles(user));
+        return true;
     }
 }

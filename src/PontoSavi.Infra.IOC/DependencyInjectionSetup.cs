@@ -1,4 +1,4 @@
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Identity;
 
@@ -23,21 +23,21 @@ public static class DependencyInjectionSetup
 
         services.AddTransient<AuthAndUserExtractionFilter>();
 
-        services.AddTransient<IUserService, UserService>();
-        services.AddTransient<UserValidator>();
-        services.AddTransient<PasswordValidator>();
-        services.AddTransient<IUserRepository, UserRepository>();
+        services.AddScoped<IUserService, UserService>();
+        services.AddScoped<UserValidator>();
+        services.AddScoped<PasswordValidator>();
+        services.AddScoped<IUserRepository, UserRepository>();
 
-        services.AddTransient<IdentityUserRole<int>>();
-        services.AddTransient<SignInManager<User>>();
-        services.AddTransient<UserManager<User>>();
-        services.AddTransient<RoleManager<Role>>();
+        services.AddScoped<IdentityUserRole<int>>();
+        services.AddScoped<SignInManager<User>>();
+        services.AddScoped<UserManager<User>>();
+        services.AddScoped<RoleManager<Role>>();
 
-        services.AddTransient<IRoleService, RoleService>();
-        services.AddTransient<IRoleRepository, RoleRepository>();
+        services.AddScoped<IRoleService, RoleService>();
+        services.AddScoped<IRoleRepository, RoleRepository>();
 
-        services.AddTransient<IUserRoleRepository, UserRoleRepository>();
-        services.AddTransient<IUserRoleService, UserRoleService>();
+        services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+        services.AddScoped<IUserRoleService, UserRoleService>();
 
         services.AddScoped<IAuthService, AuthService>();
 

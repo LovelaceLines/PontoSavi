@@ -42,8 +42,10 @@ public class AuthService : IAuthService
 
         if (!result.IsValid) throw new AppException("Sessão expirada!", HttpStatusCode.Unauthorized);
 
-        var userPublicId = result.Claims["nameid"].ToString() ?? throw new AppException("Claims NameId not found!", HttpStatusCode.InternalServerError);
-        var user = await _userRepository.GetByPublicId(userPublicId);
+        if (!int.TryParse(result.Claims["nameid"]?.ToString(), out var userId))
+            throw new AppException("Claims NameId not found!", HttpStatusCode.InternalServerError);
+
+        var user = await _userRepository.GetById(userId);
 
         return await GetAuthToken(user);
     }
@@ -108,16 +110,22 @@ public class AuthService : IAuthService
         DateTime.UtcNow.AddHours(int.Parse(
             _configuration["Jwt:HoursRefreshTokenExpires"] ?? throw new AppException("Jwt: ExpireRefreshTokenHours is null!", HttpStatusCode.InternalServerError)));
 
+    public static class CustomClaimTypes
+    {
+        public const string Company = "Company";
+    }
+
     private async Task<ClaimsIdentity> SubjectAccessToken(User user)
     {
         var claims = new List<Claim>
         {
-            new(ClaimTypes.NameIdentifier, user.PublicId.ToString()),
-            new(ClaimTypes.Name, user.UserName!)
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new(ClaimTypes.Name, user.UserName!),
+            new(CustomClaimTypes.Company, user.CompanyId.ToString()),
         };
 
         var roles = await _userRepository.GetRoles(user);
-        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
+        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role.Name!)));
 
         return new ClaimsIdentity(claims);
     }
@@ -126,7 +134,7 @@ public class AuthService : IAuthService
     {
         var claims = new List<Claim>
         {
-            new(ClaimTypes.NameIdentifier, user.PublicId.ToString()),
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
         };
 
         return new ClaimsIdentity(claims);
@@ -142,14 +150,17 @@ public class AuthService : IAuthService
         });
         if (!result.IsValid) throw new AppException("Sessão expirada!", HttpStatusCode.Unauthorized);
 
-        var userPublicId = result.Claims["nameid"].ToString() ?? throw new AppException("Claims NameId not found!", HttpStatusCode.InternalServerError);
-        var user = await _userRepository.GetByPublicId(userPublicId);
+
+        if (!int.TryParse(result.Claims["nameid"]?.ToString(), out var userId))
+            throw new AppException("Claims NameId not found!", HttpStatusCode.InternalServerError);
+
+        var user = await _userRepository.GetById(userId);
         var roles = await _userRepository.GetRoles(user);
 
         return new UserDTO(user, roles);
     }
 
-    public async Task<string> GetUserPublicId(string token)
+    public async Task<(int, string[], int)> GetUserIds(string token)
     {
         var result = await new JsonWebTokenHandler().ValidateTokenAsync(token, new TokenValidationParameters()
         {
@@ -159,21 +170,16 @@ public class AuthService : IAuthService
         });
         if (!result.IsValid) throw new AppException("Sessão expirada!", HttpStatusCode.Unauthorized);
 
-        return result.Claims["nameid"].ToString() ?? throw new AppException("Claims NameId not found!", HttpStatusCode.InternalServerError);
-    }
 
-    public async Task<string[]> GetUserRoles(string token)
-    {
-        var result = await new JsonWebTokenHandler().ValidateTokenAsync(token, new TokenValidationParameters()
-        {
-            ValidIssuer = Issuer,
-            ValidAudience = Audience,
-            IssuerSigningKey = SecurityKey,
-        });
-        if (!result.IsValid) throw new AppException("Sessão expirada!", HttpStatusCode.Unauthorized);
+        if (!int.TryParse(result.Claims["nameid"]?.ToString(), out var userId))
+            throw new AppException("Claims NameId not found!", HttpStatusCode.InternalServerError);
 
         var rolesSTR = result.Claims["role"].ToString() ?? throw new AppException("Claims Role not found!", HttpStatusCode.InternalServerError);
         var roles = rolesSTR.Split(',');
-        return roles;
+
+        if (!int.TryParse(result.Claims[CustomClaimTypes.Company]?.ToString(), out var companyId))
+            throw new AppException("Claims Company not found!", HttpStatusCode.InternalServerError);
+
+        return (userId, roles, companyId);
     }
 }

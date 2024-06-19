@@ -2,7 +2,7 @@
 
 using PontoSavi.API.InputModels;
 using PontoSavi.Domain.DTOs;
-using PontoSavi.Domain.Exceptions;
+using PontoSavi.Test.DTOs;
 using PontoSavi.Test.Global;
 
 namespace PontoSavi.Test.API;
@@ -39,7 +39,7 @@ public class AuthControllerTest : GlobalClientRequest
         var user = await GetUser();
         var login = new LoginIM { UserName = new Bogus.Faker().Internet.UserName(), Password = user.Password };
 
-        var res = await PostFromBody<AppException>(_loginClient, login);
+        var res = await PostFromBody<AppHttpResponse>(_loginClient, login);
 
         Assert.Equal(HttpStatusCode.Unauthorized, res.StatusCode);
     }
@@ -50,7 +50,7 @@ public class AuthControllerTest : GlobalClientRequest
         var user = await GetUser();
         var login = new LoginIM { UserName = user.UserName, Password = new Bogus.Faker().Internet.Password() };
 
-        var res = await PostFromBody<AppException>(_loginClient, login);
+        var res = await PostFromBody<AppHttpResponse>(_loginClient, login);
 
         Assert.Equal(HttpStatusCode.Unauthorized, res.StatusCode);
     }
@@ -72,7 +72,7 @@ public class AuthControllerTest : GlobalClientRequest
     {
         _accessToken = new Bogus.Faker().Internet.Password();
 
-        var res = await Get<AppException>(_refreshTokenClient);
+        var res = await Get<AppHttpResponse>(_refreshTokenClient);
 
         Assert.Equal(HttpStatusCode.Unauthorized, res.StatusCode);
     }
@@ -85,7 +85,6 @@ public class AuthControllerTest : GlobalClientRequest
 
         var res = await Get<UserDTO>(_authUserClient);
 
-        Assert.NotNull(res.PublicId);
         Assert.NotNull(res.UserName);
         Assert.NotNull(res.Email);
         Assert.NotNull(res.PhoneNumber);

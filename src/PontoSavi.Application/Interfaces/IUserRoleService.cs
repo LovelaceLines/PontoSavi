@@ -1,9 +1,9 @@
-using PontoSavi.Domain.DTOs;
+using PontoSavi.Domain.Entities;
 
 namespace PontoSavi.Application.Interfaces;
 
 public interface IUserRoleService
 {
-    Task<UserDTO> AddToRole(string userId, string roleName);
-    Task<UserDTO> RemoveFromRole(string userId, string roleName);
+    Task<bool> AddToRole(User user, Role role);
+    Task<bool> RemoveFromRole(User user, Role role);
 }

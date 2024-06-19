@@ -1,53 +1,56 @@
-using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 
 using PontoSavi.Application.Interfaces;
-using PontoSavi.Domain.DTOs;
 using PontoSavi.Domain.Filters;
 using PontoSavi.Domain.Entities;
+using PontoSavi.API.ServiceFilters;
 
 namespace PontoSavi.API.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[ServiceFilter(typeof(AuthAndUserExtractionFilter))]
 public class RoleController : ControllerBase
 {
-    private readonly IRoleService _roleService;
-    private readonly IMapper _mapper;
+    private readonly IRoleService _service;
 
-    public RoleController(IRoleService roleService, IMapper mapper)
-    {
-        _roleService = roleService;
-        _mapper = mapper;
-    }
+    public RoleController(IRoleService service) =>
+        _service = service;
 
     /// <summary>
     /// Queries roles by filter.
     /// </summary>
     [HttpGet]
     [Authorize(Policy = "SuperUserRolesPolicy")]
-    public async Task<ActionResult<QueryResult<RoleDTO>>> Query([FromQuery] RoleFilter filter) =>
-        Ok(await _roleService.Query(filter));
+    public async Task<ActionResult<QueryResult<Role>>> Query([FromQuery] RoleFilter filter)
+    {
+        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
+        filter.CompanyId = currentCompanyId;
+        return await _service.Query(filter);
+    }
 
     /// <summary>
     /// Gets a role by its public id.
     /// </summary>
-    [HttpGet("{publicId}")]
+    [HttpGet("{id}")]
     [Authorize(Policy = "SuperUserRolesPolicy")]
-    public async Task<ActionResult<RoleDTO>> GetByPublicId(string publicId) =>
-        Ok(await _roleService.GetByPublicId(publicId));
+    public async Task<ActionResult<Role>> GetById(int id)
+    {
+        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
+        return await _service.GetById(id, currentCompanyId);
+    }
 
     /// <summary>
     /// Creates a new role.
     /// </summary>
     [HttpPost]
     [Authorize(Policy = "SuperUserRolesPolicy")]
-    public async Task<ActionResult<RoleDTO>> Post([FromBody] RoleDTO roleDTO)
+    public async Task<ActionResult<Role>> Post([FromBody] Role role)
     {
-        var role = _mapper.Map<Role>(roleDTO);
-        role = await _roleService.Create(role);
-        return Ok(new RoleDTO(role));
+        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
+        role.CompanyId = currentCompanyId;
+        return await _service.Create(role);
     }
 
     /// <summary>
@@ -55,18 +58,22 @@ public class RoleController : ControllerBase
     /// </summary>
     [HttpPut]
     [Authorize(Policy = "SuperUserRolesPolicy")]
-    public async Task<ActionResult<RoleDTO>> Put([FromBody] RoleDTO roleDTO)
+    public async Task<ActionResult<Role>> Put([FromBody] Role role)
     {
-        var role = _mapper.Map<Role>(roleDTO);
-        role = await _roleService.Update(role);
-        return Ok(new RoleDTO(role));
+        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
+        role.CompanyId = currentCompanyId;
+        return await _service.Update(role);
     }
 
     /// <summary>
     /// Deletes a role by its public id.
     /// </summary>
-    [HttpDelete("{publicId}")]
+    [HttpDelete("{id}")]
     [Authorize(Policy = "AdminUserRolesPolicy")]
-    public async Task<ActionResult<RoleDTO>> Delete(string publicId) =>
-        Ok(new RoleDTO(await _roleService.Delete(publicId)));
+    public async Task<ActionResult<Role>> Delete(int id)
+    {
+        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
+        var role = await _service.GetById(id, currentCompanyId);
+        return await _service.Delete(role);
+    }
 }

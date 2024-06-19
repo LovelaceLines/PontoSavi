@@ -2,51 +2,25 @@ using PontoSavi.Domain.Entities;
 
 namespace PontoSavi.Domain.DTOs;
 
-public class UserDTO
+public class UserDTO : User
 {
-
-    public string? PublicId { get; set; } = string.Empty;
-    public string UserName { get; set; } = null!;
-    public string Name { get; set; } = null!;
-    public string Email { get; set; } = string.Empty;
-    public string PhoneNumber { get; set; } = string.Empty;
-    public string Password { get; set; } = string.Empty;
-    public List<string> Roles { get; set; } = [];
-    public UserSettings? userSettings { get; set; }
+    public List<Role> Roles { get; set; } = [];
 
     public UserDTO() { }
 
     public UserDTO(User user)
     {
-        PublicId = user.PublicId!;
-        UserName = user.UserName!;
-        Name = user.Name!;
-        Email = user.Email!;
-        PhoneNumber = user.PhoneNumber!;
+        Id = user.Id;
+        UserName = user.UserName;
+        Name = user.Name;
+        Email = user.Email;
+        PhoneNumber = user.PhoneNumber;
+        CreatedAt = user.CreatedAt;
+        UpdatedAt = user.UpdatedAt;
     }
 
-    public UserDTO(User user, List<string> roles)
+    public UserDTO(User user, List<Role> roles) : this(user)
     {
-        PublicId = user.PublicId!;
-        UserName = user.UserName!;
-        Name = user.Name!;
-        Email = user.Email!;
-        PhoneNumber = user.PhoneNumber!;
         Roles = roles;
-    }
-
-    public UserDTO(User user, List<Role> roles)
-    {
-        PublicId = user.PublicId!;
-        UserName = user.UserName!;
-        Name = user.Name!;
-        Email = user.Email!;
-        PhoneNumber = user.PhoneNumber!;
-        Roles = roles.Select(r => r.Name!).ToList();
-    }
-
-    public UserDTO(User user, List<Role> roles, UserSettings userSettings) : this(user, roles)
-    {
-        this.userSettings = userSettings;
     }
 }

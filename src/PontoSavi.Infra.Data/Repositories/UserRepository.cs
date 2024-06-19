@@ -27,6 +27,8 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     {
         var query = _context.Users.AsNoTracking().AsQueryable();
 
+        query = query.Where(u => u.CompanyId == filter.CompanyId);
+
         if (!filter.Search.IsNullOrEmpty())
             query = query.Where(u =>
                 u.Name.ToLower().Contains(filter.Search!.ToLower()) ||
@@ -34,12 +36,15 @@ public class UserRepository : BaseRepository<User>, IUserRepository
                 u.Email!.ToLower().Contains(filter.Search!.ToLower()) ||
                 u.PhoneNumber!.ToLower().Contains(filter.Search!.ToLower()));
 
-        if (!filter.PublicId.IsNullOrEmpty()) query = query.Where(u => u.PublicId == filter.PublicId);
+        if (filter.Id.HasValue) query = query.Where(u => u.Id == filter.Id);
+
         if (!filter.Name.IsNullOrEmpty()) query = query.Where(u => u.Name!.ToLower().Contains(filter.Name!.ToLower()));
         if (!filter.UserName.IsNullOrEmpty()) query = query.Where(u => u.UserName!.ToLower().Contains(filter.UserName!.ToLower()));
         if (!filter.Email.IsNullOrEmpty()) query = query.Where(u => u.Email!.ToLower().Contains(filter.Email!.ToLower()));
         if (!filter.PhoneNumber.IsNullOrEmpty()) query = query.Where(u => u.PhoneNumber!.ToLower().Contains(filter.PhoneNumber!.ToLower()));
 
+        if (filter.IdDescOrderSort.HasValue)
+            query = filter.IdDescOrderSort.Value ? query.OrderByDescending(u => u.Id) : query.OrderBy(u => u.Id);
         if (filter.NameDescOrderSort.HasValue)
             query = filter.NameDescOrderSort.Value ? query.OrderByDescending(u => u.Name) : query.OrderBy(u => u.Name);
         if (filter.UserNameDescOrderSort.HasValue)
@@ -52,14 +57,11 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         var users = await query
             .Skip(filter.PageIndex * filter.PageSize)
             .Take(filter.PageSize)
-            .Select(u => new UserDTO
+            .Select(u => new UserDTO(u)
             {
-                PublicId = u.PublicId!,
-                Name = u.Name!,
-                UserName = u.UserName!,
-                Email = u.Email!,
-                PhoneNumber = u.PhoneNumber!,
-                Roles = (List<string>)_userManager.GetRolesAsync(u).Result
+                Roles = _context.UserRoles.Where(ur => ur.UserId == u.Id)
+                    .Join(_context.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => r)
+                    .ToList(),
             })
             .ToListAsync();
 
@@ -69,51 +71,43 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     public async Task<User> Auth(string userName, string password)
     {
         if (!await ExistsByUserName(userName)) throw new AppException("Erro ao fazer login!", HttpStatusCode.Unauthorized);
+
         var user = await GetByUserName(userName);
 
         if (!await CheckPassword(user, password)) throw new AppException("Erro ao fazer login!", HttpStatusCode.Unauthorized);
 
+        user.Company = await GetCompanyByUserId(user.Id);
+
         return user;
     }
-
-    public async Task<bool> CheckPassword(string id, string password) =>
-        await _userManager.CheckPasswordAsync(await GetById(id), password);
 
     public async Task<bool> CheckPassword(User user, string password) =>
         await _userManager.CheckPasswordAsync(user, password);
 
-    public async Task<bool> ExistsByEmail(string email) =>
-        await _userManager.Users.AsNoTracking().AnyAsync(u => u.Email == email);
-
-    public async Task<bool> ExistsById(int id) =>
-        await _userManager.Users.AsNoTracking().AnyAsync(u => u.Id == id);
-
-    public async Task<bool> ExistsByPublicId(string publicId) =>
-        await _userManager.Users.AsNoTracking().AnyAsync(u => u.PublicId == publicId);
-
-    public async Task<bool> ExistsByPhoneNumber(string phoneNumber) =>
-        await _userManager.Users.AsNoTracking().AnyAsync(u => u.PhoneNumber == phoneNumber);
+    public async Task<bool> ExistsById(int id, int companyId) =>
+        await _userManager.Users.AsNoTracking().AnyAsync(u => u.Id == id && u.CompanyId == companyId);
 
     public async Task<bool> ExistsByUserName(string userName) =>
         await _userManager.Users.AsNoTracking().AnyAsync(u => u.UserName == userName);
 
-    public async Task<User> GetByEmail(string email) =>
-        await _userManager.FindByEmailAsync(email) ?? throw new AppException("Usuário não encontrado!", HttpStatusCode.NotFound);
-
-    public async Task<User> GetById(int id) =>
-        await _userManager.FindByIdAsync(id.ToString()) ?? throw new AppException("Usuário não encontrado!", HttpStatusCode.NotFound);
-
-    public async Task<User> GetByPublicId(string publicId) =>
-        await _userManager.Users.AsNoTracking().FirstAsync(u => u.PublicId == publicId);
-
-    public async Task<User> GetByPhoneNumber(string phoneNumber) =>
-        await _userManager.Users.AsNoTracking().FirstAsync(u => u.PhoneNumber == phoneNumber);
+    public async Task<User> GetById(int id, int companyId) =>
+        await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id && u.CompanyId == companyId) ??
+            throw new AppException("Usuário não encontrado!", HttpStatusCode.NotFound);
 
     public async Task<User> GetByUserName(string userName) =>
-        await _userManager.FindByNameAsync(userName) ?? throw new AppException("Usuário não encontrado!", HttpStatusCode.NotFound);
+        await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.UserName == userName) ??
+            throw new AppException("Usuário não encontrado!", HttpStatusCode.NotFound);
 
-    public async Task<List<string>> GetRoles(User user) =>
-        (List<string>)await _userManager.GetRolesAsync(user);
+    public async Task<List<Role>> GetRoles(User user) =>
+        await _context.UserRoles
+            .Where(ur => ur.UserId == user.Id)
+            .Join(_context.Roles, ur => ur.RoleId, r => r.Id, (ur, r) => r)
+            .ToListAsync();
+
+    public async Task<Company> GetCompanyByUserId(int userId) =>
+        await _context.Companies.AsNoTracking()
+            .Join(_context.Users, c => c.Id, u => u.CompanyId, (c, u) => c)
+            .FirstOrDefaultAsync() ?? throw new AppException("Empresa não encontrada!", HttpStatusCode.NotFound);
 
     public async Task<User> Add(User user, string password)
     {
@@ -133,21 +127,11 @@ public class UserRepository : BaseRepository<User>, IUserRepository
         return user;
     }
 
-    public async Task<bool> UpdatePassword(int id, string oldPassword, string newPassword)
+    public async Task<bool> UpdatePassword(User user, string oldPassword, string newPassword)
     {
-        var user = await GetById(id);
         var result = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
 
         if (!result.Succeeded) throw new AppException(result.Errors.First().Description, HttpStatusCode.BadRequest);
-
-        return true;
-    }
-
-    public async Task<bool> RemoveByUserName(string userName)
-    {
-        var user = await GetByUserName(userName);
-
-        await _userManager.DeleteAsync(user);
 
         return true;
     }

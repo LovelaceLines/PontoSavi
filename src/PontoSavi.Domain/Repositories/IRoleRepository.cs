@@ -1,4 +1,3 @@
-using PontoSavi.Domain.DTOs;
 using PontoSavi.Domain.Entities;
 using PontoSavi.Domain.Filters;
 
@@ -6,15 +5,13 @@ namespace PontoSavi.Domain.Repositories;
 
 public interface IRoleRepository : IBaseRepository<Role>
 {
-    Task<QueryResult<RoleDTO>> Query(RoleFilter filter);
-    Task<bool> ExistsById(int id);
-    Task<bool> ExistsByPublicId(string publicId);
-    Task<bool> ExistsByName(string name);
-    Task<Role> GetById(int id);
-    Task<Role> GetByPublicId(string publicId);
-    Task<Role> GetByName(string name);
-    Task<List<Role>> GetByUser(User user);
-    new Task<Role> Add(Role role);
+    Task<QueryResult<Role>> Query(RoleFilter filter);
+    Task<bool> ExistsById(int id, int companyId);
+    Task<bool> ExistsByName(string name, int companyId);
+    Task<Role> GetById(int id, int companyId);
+    Task<Role> GetByName(string name, int companyId);
+    Task<List<Role>> GetByUser(int userId, int companyId);
+    // new Task<Role> Add(Role role);
     new Task<Role> Update(Role role);
-    Task<Role> Remove(string name);
+    new Task<Role> Remove(Role role);
 }

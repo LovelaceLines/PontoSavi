@@ -1,5 +1,4 @@
 using FluentValidation;
-using Microsoft.AspNetCore.Identity;
 using PontoSavi.Domain.Entities;
 
 namespace PontoSavi.Application.Validators;

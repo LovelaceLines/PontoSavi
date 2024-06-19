@@ -17,15 +17,16 @@ public class AuthAndUserExtractionFilter : IAsyncActionFilter
     public Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
     {
         if (!context.HttpContext.Request.Headers.ContainsKey("Authorization"))
-            throw new AppException("Token não encontrado", HttpStatusCode.Unauthorized);
+            throw new AppException("Token não encontrado!", HttpStatusCode.Unauthorized);
 
         var auth = context.HttpContext.Request.Headers.Authorization.ToString();
         auth = AuthUtil.ExtractTokenFromHeader(auth);
-        var userPublicId = _authService.GetUserPublicId(auth).Result;
-        var userRoles = _authService.GetUserRoles(auth).Result;
 
-        context.HttpContext.Items.Add("CurrentUserPublicId", userPublicId);
+        (var userId, var userRoles, var companyId) = _authService.GetUserIds(auth).Result;
+
+        context.HttpContext.Items.Add("CurrentUserId", userId);
         context.HttpContext.Items.Add("CurrentUserRoles", userRoles);
+        context.HttpContext.Items.Add("CurrentCompanyId", companyId);
 
         return next();
     }

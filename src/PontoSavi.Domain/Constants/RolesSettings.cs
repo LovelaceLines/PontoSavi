@@ -7,6 +7,7 @@ namespace PontoSavi.Domain.Constants;
 
 public class RolesSettings
 {
+    public List<string> CEOUserRoles { get; set; }
     public List<string> AllStandardUserRoles { get; set; }
     public List<string> BaseUserRoles { get; set; }
     public List<string> SuperUserRoles { get; set; }
@@ -14,6 +15,9 @@ public class RolesSettings
 
     public RolesSettings(IConfiguration configuration)
     {
+        CEOUserRoles = configuration.GetSection("GlobalSettings:CEOUserRoles").Value?.Split(',').ToList() ??
+            throw new AppException("GlobalSettings:CEOUserRoles is null!", HttpStatusCode.InternalServerError);
+
         AllStandardUserRoles = configuration.GetSection("GlobalSettings:AllStandardUserRoles").Value?.Split(',').ToList() ??
             throw new AppException("GlobalSettings:AllStandardUserRoles is null!", HttpStatusCode.InternalServerError);
 
@@ -30,10 +34,12 @@ public class RolesSettings
 
 public interface IRolesSettingsService
 {
+    bool IsCEOUser(string role);
     bool IsStandardUser(string role);
     bool IsBaseUser(string role);
     bool IsSuperUser(string role);
     bool IsAdminUser(string role);
+    string[] GetCEOUserRoles();
     string[] GetStandardUserRoles();
     string[] GetBaseUserRoles();
     string[] GetSuperUserRoles();
@@ -47,6 +53,9 @@ public class RolesSettingsService : IRolesSettingsService
     public RolesSettingsService(IConfiguration configuration) =>
         _globalSettings = new RolesSettings(configuration);
 
+    public bool IsCEOUser(string role) =>
+        _globalSettings.CEOUserRoles.Contains(role);
+
     public bool IsStandardUser(string role) =>
         _globalSettings.AllStandardUserRoles.Contains(role);
 
@@ -58,6 +67,9 @@ public class RolesSettingsService : IRolesSettingsService
 
     public bool IsAdminUser(string role) =>
         _globalSettings.AdminUserRoles.Contains(role);
+
+    public string[] GetCEOUserRoles() =>
+        _globalSettings.CEOUserRoles.ToArray();
 
     public string[] GetStandardUserRoles() =>
         _globalSettings.AllStandardUserRoles.ToArray();

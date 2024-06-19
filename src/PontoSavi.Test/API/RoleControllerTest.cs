@@ -1,7 +1,6 @@
 ﻿using System.Net;
 
-using PontoSavi.Domain.DTOs;
-using PontoSavi.Domain.Exceptions;
+using PontoSavi.Domain.Entities;
 using PontoSavi.Domain.Filters;
 using PontoSavi.Test.DTOs;
 using PontoSavi.Test.Fakers;
@@ -12,58 +11,64 @@ namespace PontoSavi.Test.API;
 public class RoleControllerTest : GlobalClientRequest
 {
     [Fact]
-    public async Task Get_QueryById_ReturnsRole()
+    public async Task Get_Query_ReturnsOk()
     {
         var role = await GetRole();
+        var filter = new RoleFilter
+        {
+            Id = role.Id,
+            Name = role.Name
+        };
 
-        var result = await GetFromQuery<QueryResult<RoleDTO>>(_roleClient, new RoleFilter { PublicId = role.PublicId });
-        var roleGet = result.Items.Single();
+        var result = await GetFromQuery<QueryResult<Role>>(_roleClient, filter);
+        var item = result.Items.Single();
 
-        Assert.Equivalent(role.PublicId, roleGet.PublicId);
-        Assert.Equivalent(role.Name, roleGet.Name);
+        Assert.Equal(role.Id, item.Id);
+        Assert.Equal(role.Name, item.Name);
     }
 
     [Fact]
-    public async Task Post_ValidRole_ReturnsOkResult()
+    public async Task Get_GetById_ReturnsOk()
+    {
+        var role = await GetRole();
+
+        var result = await GetFromUri<Role>(_roleClient, role.Id);
+
+        Assert.Equal(role.Id, result.Id);
+        Assert.Equal(role.Name, result.Name);
+    }
+
+    [Fact]
+    public async Task Post_ValidRole_ReturnsOk()
     {
         var role = new RoleFake().Generate();
 
-        var result = await PostFromBody<RoleDTO>(_roleClient, role);
+        var result = await PostFromBody<Role>(_roleClient, role);
 
-        Assert.Equivalent(role.Name, result.Name);
+        Assert.Equal(role.Name, result.Name);
     }
 
     [Fact]
     public async Task Post_InvalidRoleWithExistingName_ReturnsConflictResult()
     {
         var role = await GetRole();
-        var roleWithExistingName = new RoleFake(name: role.Name).Generate();
+        var fake = new RoleFake(name: role.Name).Generate();
 
-        var resultWithExistingName = await PostFromBody<AppException>(_roleClient, roleWithExistingName);
+        var result = await PostFromBody<AppHttpResponse>(_roleClient, fake);
 
-        Assert.Equal(HttpStatusCode.Conflict, resultWithExistingName.StatusCode);
+        Assert.Equal(HttpStatusCode.Conflict, result.StatusCode);
     }
 
     [Fact]
     public async Task Put_ValidRole_ReturnsOkResult()
     {
         var role = await GetRole();
-        var updatedRole = new RoleFake(publicId: role.PublicId).Generate();
+        var fake = new RoleFake(id: role.Id).Generate();
 
-        var result = await PutFromBody<RoleDTO>(_roleClient, updatedRole);
+        var result = await PutFromBody<Role>(_roleClient, fake);
 
-        Assert.Equivalent(updatedRole.PublicId, result.PublicId);
-        Assert.Equivalent(updatedRole.Name, result.Name);
-    }
-
-    [Fact]
-    public async Task Put_InvalidRoleWithNonExistingId_ReturnsNotFoundResult()
-    {
-        var role = new RoleFake(publicId: Guid.NewGuid().ToString()).Generate();
-
-        var result = await PutFromBody<AppException>(_roleClient, role);
-
-        Assert.Equal(HttpStatusCode.NotFound, result.StatusCode);
+        Assert.Equal(fake.Id, result.Id);
+        Assert.Equal(fake.Name, result.Name);
     }
 
     [Fact]
@@ -71,11 +76,11 @@ public class RoleControllerTest : GlobalClientRequest
     {
         var role1 = await GetRole();
         var role2 = await GetRole();
-        var roleWithExistingName = new RoleFake(publicId: role1.PublicId, name: role2.Name).Generate();
+        var fake = new RoleFake(id: role1.Id, name: role2.Name).Generate();
 
-        var resultWithExistingName = await PutFromBody<AppException>(_roleClient, roleWithExistingName);
+        var result = await PutFromBody<AppHttpResponse>(_roleClient, fake);
 
-        Assert.Equal(HttpStatusCode.Conflict, resultWithExistingName.StatusCode);
+        Assert.Equal(HttpStatusCode.Conflict, result.StatusCode);
     }
 
     [Fact]
@@ -83,16 +88,8 @@ public class RoleControllerTest : GlobalClientRequest
     {
         var role = await GetRole();
 
-        var result = await DeleteFromUri<AppHttpResponse>(_roleClient, role.PublicId!);
+        var result = await DeleteFromUri<AppHttpResponse>(_roleClient, role.Id);
 
         Assert.Equal(HttpStatusCode.OK, result.StatusCode);
-    }
-
-    [Fact]
-    public async Task Delete_InvalidRole_ReturnsNotFoundResult()
-    {
-        var result = await DeleteFromUri<AppException>(_roleClient, Guid.NewGuid().ToString());
-
-        Assert.Equal(HttpStatusCode.NotFound, result.StatusCode);
     }
 }

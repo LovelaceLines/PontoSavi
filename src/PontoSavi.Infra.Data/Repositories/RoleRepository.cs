@@ -5,7 +5,6 @@ using System.Net;
 
 using PontoSavi.Domain.Exceptions;
 using PontoSavi.Domain.Repositories;
-using PontoSavi.Domain.DTOs;
 using PontoSavi.Domain.Filters;
 using PontoSavi.Infra.Data.Context;
 using PontoSavi.Domain.Entities;
@@ -23,15 +22,17 @@ public class RoleRepository : BaseRepository<Role>, IRoleRepository
         _roleManager = roleManager;
     }
 
-    public async Task<QueryResult<RoleDTO>> Query(RoleFilter filter)
+    public async Task<QueryResult<Role>> Query(RoleFilter filter)
     {
         var query = _context.Roles.AsNoTracking().AsQueryable();
+
+        query = query.Where(r => r.CompanyId == filter.CompanyId);
 
         if (!filter.Search.IsNullOrEmpty())
             query = query.Where(r =>
                 r.Name!.ToLower().Contains(filter.Search!.ToLower()));
 
-        if (!filter.PublicId.IsNullOrEmpty()) query = query.Where(r => r.PublicId == filter.PublicId);
+        if (filter.Id.HasValue) query = query.Where(r => r.Id == filter.Id);
         if (!filter.Name.IsNullOrEmpty()) query = query.Where(r => r.Name!.ToLower().Contains(filter.Name!.ToLower()));
 
         if (filter.NameDescOrderSort.HasValue)
@@ -42,44 +43,39 @@ public class RoleRepository : BaseRepository<Role>, IRoleRepository
         var roles = await query
             .Skip(filter.PageIndex * filter.PageSize)
             .Take(filter.PageSize)
-            .Select(r => new RoleDTO(r))
             .ToListAsync();
 
-        return new QueryResult<RoleDTO>(roles, totalCount);
+        return new QueryResult<Role>(roles, totalCount);
     }
 
-    public async Task<bool> ExistsById(int id) =>
-        await _roleManager.Roles.AnyAsync(r => r.Id == id);
+    public async Task<bool> ExistsById(int id, int companyId) =>
+        await _context.Roles.AsNoTracking().AnyAsync(r => r.Id == id && r.CompanyId == companyId);
 
-    public async Task<bool> ExistsByPublicId(string publicId) =>
-        await _roleManager.Roles.AnyAsync(r => r.PublicId == publicId);
+    public async Task<bool> ExistsByName(string name, int companyId) =>
+        await _context.Roles.AsNoTracking().AnyAsync(r => r.Name == name && r.CompanyId == companyId);
 
-    public async Task<bool> ExistsByName(string name) =>
-        await _roleManager.RoleExistsAsync(name);
+    public async Task<Role> GetById(int id, int companyId) =>
+        await _context.Roles.AsNoTracking().FirstOrDefaultAsync(r => r.Id == id && r.CompanyId == companyId) ??
+            throw new AppException("Perfil não encontrado!", HttpStatusCode.NotFound);
 
-    public async Task<Role> GetById(int id) =>
-        await _roleManager.FindByIdAsync(id.ToString()) ?? throw new AppException("Perfil não encontrado!", HttpStatusCode.NotFound);
+    public async Task<Role> GetByName(string name, int companyId) =>
+        await _context.Roles.AsNoTracking().FirstOrDefaultAsync(r => r.Name == name && r.CompanyId == companyId) ??
+            throw new AppException("Perfil não encontrado!", HttpStatusCode.NotFound);
 
-    public async Task<Role> GetByPublicId(string publicId) =>
-        await _roleManager.Roles.FirstAsync(r => r.PublicId == publicId) ?? throw new AppException("Perfil não encontrado!", HttpStatusCode.NotFound);
-
-    public async Task<Role> GetByName(string name) =>
-        await _roleManager.FindByNameAsync(name) ?? throw new AppException("Perfil não encontrado!", HttpStatusCode.NotFound);
-
-    public async Task<List<Role>> GetByUser(User user) =>
+    public async Task<List<Role>> GetByUser(int userId, int companyId) =>
         await _context.Roles.AsNoTracking()
             .Join(_context.UserRoles.AsNoTracking(), r => r.Id, ur => ur.RoleId, (r, ur) => new { r, ur })
-            .Where(rur => rur.ur.UserId == user.Id)
+            .Where(rur => rur.ur.UserId == userId && rur.r.CompanyId == companyId)
             .Select(rur => rur.r)
             .ToListAsync();
 
-    public async new Task<Role> Add(Role role)
-    {
-        var result = await _roleManager.CreateAsync(role);
+    // public async new Task<Role> Add(Role role)
+    // {
+    //     var result = await _roleManager.CreateAsync(role);
 
-        return result.Succeeded ? role :
-            throw new AppException("Não foi possível criar o perfil!", HttpStatusCode.BadRequest);
-    }
+    //     return result.Succeeded ? role :
+    //         throw new AppException("Não foi possível criar o perfil!", HttpStatusCode.BadRequest);
+    // }
 
     public async new Task<Role> Update(Role role)
     {
@@ -89,11 +85,8 @@ public class RoleRepository : BaseRepository<Role>, IRoleRepository
             throw new AppException("Não foi possível atualizar o perfil!", HttpStatusCode.BadRequest);
     }
 
-    public async Task<Role> Remove(string name)
+    public async new Task<Role> Remove(Role role)
     {
-        var role = await _roleManager.FindByNameAsync(name) ??
-            throw new AppException("Perfil não encontrado!", HttpStatusCode.NotFound);
-
         var result = await _roleManager.DeleteAsync(role);
 
         return result.Succeeded ? role :

@@ -33,7 +33,7 @@ public class AuthController : ControllerBase
     {
         var token = await _authService.Login(login.UserName, login.Password);
         var user = await _userService.GetByUserName(login.UserName);
-        var roles = await _roleService.GetByUser(user);
+        var roles = await _roleService.GetByUser(user.Id, user.CompanyId);
 
         return Ok(new UserToken(token, new UserDTO(user, roles)));
     }

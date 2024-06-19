@@ -1,14 +1,15 @@
 ﻿using Bogus;
 
-using PontoSavi.Domain.DTOs;
+using PontoSavi.Domain.Entities;
 
 namespace PontoSavi.Test.Fakers;
 
-public class RoleFake : Faker<RoleDTO>
+public class RoleFake : Faker<Role>
 {
-    public RoleFake(string? publicId = null, string? name = null)
+    public RoleFake(int? id = null, string? name = null, int? companyId = null)
     {
-        RuleFor(x => x.PublicId, f => publicId ?? null);
+        RuleFor(x => x.Id, f => id ?? 0);
         RuleFor(x => x.Name, f => name ?? f.Company.CompanyName() + f.Random.Replace("##**"));
+        RuleFor(x => x.CompanyId, f => companyId ?? 0);
     }
 }

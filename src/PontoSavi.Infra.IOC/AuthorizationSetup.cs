@@ -12,6 +12,12 @@ public static class AuthorizationSetup
     {
         services.AddAuthorization(options =>
         {
+            options.AddPolicy("CEOUserRolesPolicy", policy =>
+            {
+                policy.RequireRole(configuration.GetSection("GlobalSettings:CEOUserRoles").Value?.Split(',') ??
+                    throw new AppException("GlobalSettings:CEOUserRoles is null!", HttpStatusCode.InternalServerError));
+            });
+
             options.AddPolicy("BaseUserRolesPolicy", policy =>
             {
                 policy.RequireRole(configuration.GetSection("GlobalSettings:BaseUserRoles").Value?.Split(',') ??

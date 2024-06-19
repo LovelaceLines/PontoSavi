@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Identity;
 using System.Net;
 
@@ -8,42 +9,29 @@ using PontoSavi.Domain.Entities;
 
 namespace PontoSavi.Infra.Data.Repositories;
 
-public class UserRoleRepository : BaseRepository<IdentityUserRole<string>>, IUserRoleRepository
+public class UserRoleRepository : BaseRepository<UserRole>, IUserRoleRepository
 {
     private readonly AppDbContext _context;
-    private readonly UserManager<User> _userManager;
 
-    public UserRoleRepository(AppDbContext context, UserManager<User> userManager) : base(context)
-    {
+    public UserRoleRepository(AppDbContext context, UserManager<User> userManager) : base(context) =>
         _context = context;
-        _userManager = userManager;
-    }
 
-    public async Task<bool> Add(User user, string roleName)
+    public async Task<bool> Exists(int userId, int roleId, int companyId) =>
+        await _context.UserRoles.AsNoTracking().AnyAsync(ur => ur.UserId == userId && ur.RoleId == roleId && ur.CompanyId == companyId);
+
+    public async Task<UserRole> Get(int userId, int roleId, int companyId) =>
+        await _context.UserRoles.AsNoTracking().FirstOrDefaultAsync(ur => ur.UserId == userId && ur.RoleId == roleId && ur.CompanyId == companyId) ??
+            throw new AppException("Relação não encontrada!", HttpStatusCode.NotFound);
+
+    public async Task<UserRole> Add(int userId, int roleId, int companyId)
     {
-        var result = await _userManager.AddToRoleAsync(user, roleName);
-        return result.Succeeded ? true : throw new AppException("Erro ao adicionar usuário ao perfil!", HttpStatusCode.BadRequest);
-    }
+        UserRole userRole = new()
+        {
+            UserId = userId,
+            RoleId = roleId,
+            CompanyId = companyId
+        };
 
-    public async Task<bool> ExistsByUserAndRoleName(User user, string roleName) =>
-        await _userManager.IsInRoleAsync(user, roleName);
-
-    public async Task<bool> ExistsByUserIdAndRoleName(string userId, string roleName)
-    {
-        var user = await _userManager.FindByIdAsync(userId) ?? throw new AppException("Usuário não encontrado!", HttpStatusCode.NotFound);
-
-        return await _userManager.IsInRoleAsync(user, roleName);
-    }
-
-    public async Task<List<string>> GetRolesByUserId(int userId)
-    {
-        var user = await _userManager.FindByIdAsync(userId.ToString()) ?? throw new AppException("Usuário não encontrado!", HttpStatusCode.NotFound);
-        return (List<string>)await _userManager.GetRolesAsync(user);
-    }
-
-    public async Task<bool> Remove(User user, string roleName)
-    {
-        var result = await _userManager.RemoveFromRoleAsync(user, roleName);
-        return result.Succeeded ? true : throw new AppException("Erro ao remover usuário do perfil!", HttpStatusCode.BadRequest);
+        return await Add(userRole);
     }
 }

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+
 using PontoSavi.Domain.Entities;
-using PontoSavi.Infra.Data.Configurations.Util;
 
 namespace PontoSavi.Infra.Data.Configurations;
 
@@ -10,23 +10,38 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
+        builder.ToTable("Users");
+
         builder.HasKey(u => u.Id);
 
-        builder.Property(u => u.Id)
-            .ValueGeneratedOnAdd();
-
-        builder.Property(u => u.PublicId)
-            .IsUnicode()
-            .HasValueGenerator<UlidValueGenerator>();
+        builder.HasOne(u => u.Company)
+            .WithMany()
+            .HasForeignKey(u => u.CompanyId);
 
         builder.Property(u => u.UserName)
             .IsUnicode();
+
+        // TODO
+        // builder.Property(u => u.PhoneNumber)
+        //     .IsUnicode();
+
+        // TODO
+        // builder.Property(u => u.Email)
+        //     .IsUnicode();
+
+        builder.Property(p => p.CreatedAt)
+            .ValueGeneratedOnAdd()
+            .HasValueGenerator<DateTimeNowValueGenerator>();
+
+        builder.Property(p => p.UpdatedAt)
+            .ValueGeneratedOnUpdate()
+            .HasValueGenerator<DateTimeNowValueGenerator>();
 
         builder.HasData(
             new User
             {
                 Id = 1,
-                PublicId = Ulid.NewUlid().ToString(),
+                CompanyId = 1,
                 UserName = "dev",
                 Name = "Developer",
                 NormalizedUserName = "DEV",
@@ -35,12 +50,14 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 PhoneNumber = "(55) 85 9 9999-9999",
                 PasswordHash = new PasswordHasher<User>().HashPassword(new User("dev"), "!23L6(bNi.22T71,%4vfR{<~tA.]"),
                 SecurityStamp = Guid.NewGuid().ToString(),
-                ConcurrencyStamp = Guid.NewGuid().ToString()
+                ConcurrencyStamp = Guid.NewGuid().ToString(),
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
             },
             new User
             {
                 Id = 2,
-                PublicId = Ulid.NewUlid().ToString(),
+                CompanyId = 1,
                 UserName = "admin",
                 Name = "Administrator",
                 NormalizedUserName = "ADMIN",
@@ -49,12 +66,14 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 PhoneNumber = "(55) 85 9 9999-9998",
                 PasswordHash = new PasswordHasher<User>().HashPassword(new User("admin"), "!23L6(bNi.22T71,%4vfR{<~tA.]"),
                 SecurityStamp = Guid.NewGuid().ToString(),
-                ConcurrencyStamp = Guid.NewGuid().ToString()
+                ConcurrencyStamp = Guid.NewGuid().ToString(),
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
             },
             new User
             {
                 Id = 3,
-                PublicId = Ulid.NewUlid().ToString(),
+                CompanyId = 1,
                 UserName = "super",
                 Name = "Supervisor",
                 NormalizedUserName = "SUPER",
@@ -63,7 +82,9 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 PhoneNumber = "(55) 85 9 9999-9997",
                 PasswordHash = new PasswordHasher<User>().HashPassword(new User("super"), "!23L6(bNi.22T71,%4vfR{<~tA.]"),
                 SecurityStamp = Guid.NewGuid().ToString(),
-                ConcurrencyStamp = Guid.NewGuid().ToString()
+                ConcurrencyStamp = Guid.NewGuid().ToString(),
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
             }
         );
     }
