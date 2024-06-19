@@ -5,11 +5,13 @@ import { SwipeableDrawer, useMediaQuery, useTheme } from "@mui/material";
 import { ButtonList, ISideBarProps } from "./buttomList";
 import { useSideBar } from "@/_contexts";
 import { Header } from "./header";
+import { colors, useThemeContext } from "@/_theme";
 import { UpgradeToPro } from "./upgrade";
 
 export const SideBar = ({ buttonList, drawerWidth = 240, minDrawerWidth = 56 }: Readonly<{ buttonList: ISideBarProps[][], drawerWidth: number | undefined, minDrawerWidth: number | undefined }>) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const { themeName } = useThemeContext();
 
   const { open, toggleSideBar } = useSideBar();
 
@@ -24,7 +26,17 @@ export const SideBar = ({ buttonList, drawerWidth = 240, minDrawerWidth = 56 }: 
           width: open ? drawerWidth : minDrawerWidth,
           borderRight: "none",
           backgroundImage: "none",
-          overflowX: "hidden"
+          overflowX: "hidden",
+          overflowY: "scroll",
+          "&::-webkit-scrollbar": {
+            width: "3px",
+          },
+          "&::-webkit-scrollbar-thumb": {
+            background: colors.jet,
+          },
+          "&::-webkit-scrollbar-thumb:hover": {
+            background: colors.imperialRed,
+          }
         }
       }}
     >

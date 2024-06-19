@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext } from "react";
+import { createContext, useContext } from "react";
 import { CssBaseline, ThemeProvider, useMediaQuery } from "@mui/material";
 
 import { DarkTheme } from "./darkTheme";
@@ -32,4 +32,9 @@ export const AppThemeProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       </ThemeContext.Provider>
     </ThemeProvider>
   );
+};
+
+export const useThemeContext = () => {
+  const { ...props } = useContext(ThemeContext);
+  return { ...props };
 };

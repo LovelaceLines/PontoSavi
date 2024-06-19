@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-vars */
+
 "use client";
 
 import { MRT_ColumnFiltersState, MRT_PaginationState, MRT_SortingState } from "material-react-table";

@@ -10,7 +10,7 @@ export const setAuthToken = (authToken: authToken) =>
   setStorageValue("authToken", authToken);
 
 export const getUser = (): user =>
-  getStorageValue("user", { publicId: "", name: "", userName: "", email: "", phoneNumber: "", password: "", roles: [] } as user) as user;
+  getStorageValue("user", { id: "", name: "", userName: "", email: "", phoneNumber: "", password: "", roles: [] } as user) as user;
 
 export const setUser = (user: user) =>
   setStorageValue("user", user);

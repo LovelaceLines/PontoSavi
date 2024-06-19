@@ -1,24 +1,32 @@
 "use client";
 
 import { Box, Container } from "@mui/material";
-import { AccountCircle, BrowseGallery, Group, GroupWork, Settings, Store } from "@mui/icons-material";
+import { AccessTime, AccountCircle, AddBusiness, CalendarToday, ControlPointDuplicate, Group, GroupAdd, GroupWork, PersonAdd, Settings, Store, WorkHistory } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 
 import { AuthWrapper } from "@/app/auth-wrapper";
 import { AppAppBar, ISideBarProps, SideBar } from "@/_components";
 import { useSideBar } from "@/_contexts";
-import { getSuperUserRoles } from "@/globalSettings";
+import { getBaseUserRoles, getCEOUserRoles, getSuperUserRoles } from "@/globalSettings";
 
 const buttonList: ISideBarProps[][] = [
   [
+    { text: "Companies", to: "/app/companies", icon: <Store />, allowRoles: getCEOUserRoles() },
+    { text: "Add Company", to: "/app/company-and-user", icon: <AddBusiness />, allowRoles: getCEOUserRoles() },
+    { text: "Add User", to: "/app/add-user-company", icon: <PersonAdd />, allowRoles: getCEOUserRoles() },
+    { text: "Add Role", to: "/app/add-role-company", icon: <GroupAdd />, allowRoles: getCEOUserRoles() },
+  ],
+  [
+    { text: "My Company", to: "/app/my-company", icon: <Store />, allowRoles: getSuperUserRoles() },
+    { text: "Days Off", to: "/app/days-off", icon: <CalendarToday />, allowRoles: getSuperUserRoles() },
+    { text: "Work Shifts", to: "/app/work-shifts", icon: <WorkHistory />, allowRoles: getSuperUserRoles() },
     { text: "Accounts", to: "/app/accounts", icon: <Group />, allowRoles: getSuperUserRoles() },
     { text: "Roles", to: "/app/roles", icon: <GroupWork />, allowRoles: getSuperUserRoles() },
+    { text: "Points", to: "/app/points", icon: <ControlPointDuplicate />, allowRoles: getSuperUserRoles() },
   ],
   [
-    { text: "Ponto", to: "/app/ponto", icon: <BrowseGallery /> },
-  ],
-  [
-    { text: "Companies", to: "/app/companies", icon: <Store />, allowRoles: getSuperUserRoles() }
+    { text: "My Points", to: "/app/my-points", icon: <ControlPointDuplicate />, allowRoles: getBaseUserRoles() },
+    { text: "Point", to: "/app/my-point", icon: <AccessTime />, allowRoles: getBaseUserRoles() },
   ],
   [
     { text: "My Account", to: "/app/my-account", icon: <AccountCircle /> },

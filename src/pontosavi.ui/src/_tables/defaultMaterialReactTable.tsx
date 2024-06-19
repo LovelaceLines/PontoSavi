@@ -1,8 +1,10 @@
+/* eslint-disable no-unused-vars */
+
 "use client";
 
 import { MaterialReactTable, MRT_ColumnFiltersState, MRT_PaginationState, MRT_RowSelectionState, MRT_ShowHideColumnsButton, MRT_SortingState, MRT_TableInstance, MRT_TableState, MRT_ToggleDensePaddingButton, MRT_ToggleFiltersButton, MRT_ToggleFullScreenButton, MRT_ToggleGlobalFilterButton, useMaterialReactTable, type MRT_ColumnDef, type MRT_RowData, type MRT_TableOptions, } from "material-react-table";
 import { Add, ClearAll, Delete, Edit, FileDownload, Share } from "@mui/icons-material";
-import { Box, Button, IconButton } from "@mui/material";
+import { Box, Button, IconButton, Tooltip } from "@mui/material";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useContext, useState } from "react";
 
@@ -28,7 +30,7 @@ interface Props<TData extends MRT_RowData> extends MRT_TableOptions<TData> {
   title: string;
   toCreate?: string;
   toEdit?: string;
-  handleDelete?: (id: string) => void;
+  handleDelete?: (id: number) => void;
 }
 
 export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
@@ -64,7 +66,7 @@ export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
       return;
     }
 
-    const id = Object.keys(rowSelection)[0].toString() ?? "";
+    const id = parseInt(Object.keys(rowSelection)[0] ?? 0);
     setRowSelection({});
     props.handleDelete && props.handleDelete(id);
     snackbar("Record deleted! Update the page to see the changes.");
@@ -81,9 +83,9 @@ export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
 
   const renderToolbarInternalActions = ({ table }: { table: MRT_TableInstance<TData> }) => [
     <MRT_ToggleGlobalFilterButton key="globalFilter" table={table} />,
-    <IconButton key="share" size="medium" aria-label="teste" onClick={handleShare}><Share /></IconButton>,
-    <IconButton key="clear-filters" size="medium" onClick={handleClearFilters}><ClearAll /></IconButton>,
-    <IconButton key="export" size="medium" onClick={handleDownloadExportRows}><FileDownload /></IconButton>,
+    <Tooltip key="Share" title="Share"><IconButton key="share" size="medium" aria-label="teste" onClick={handleShare}><Share /></IconButton></Tooltip>,
+    <Tooltip key="Clear Filters" title="Clear Filters"><IconButton key="clear-filters" size="medium" onClick={handleClearFilters}><ClearAll /></IconButton></Tooltip>,
+    <Tooltip key="Export" title="Export"><IconButton key="export" size="medium" onClick={handleDownloadExportRows}><FileDownload /></IconButton></Tooltip>,
     <MRT_ToggleFiltersButton key="toggleFilters" table={table} />,
     <MRT_ShowHideColumnsButton key="showHideColumns" table={table} />,
     <MRT_ToggleDensePaddingButton key="toggleDensePadding" table={table} />,
@@ -112,15 +114,12 @@ export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
     onPaginationChange: props.setPagination,
 
     enableRowSelection: props.enableRowSelection ?? true,
-    getRowId: row => row.publicId ?? "",
+    getRowId: row => row.id ?? "",
     onRowSelectionChange: setRowSelection,
 
     initialState: {
       showColumnFilters: true,
       density: "compact",
-      columnVisibility: {
-        publicId: false,
-      },
       ...props.initialState,
     },
 
