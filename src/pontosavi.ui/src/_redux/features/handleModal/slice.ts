@@ -1,3 +1,5 @@
+// TODO move to apicontext
+
 import { createSlice } from "@reduxjs/toolkit";
 
 interface initialStateProps {
