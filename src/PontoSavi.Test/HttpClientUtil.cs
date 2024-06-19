@@ -12,7 +12,7 @@ namespace PontoSavi.Test.Utils;
 
 public class HttpClientUtil
 {
-    public string _accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6ImF0K2p3dCJ9.eyJuYW1laWQiOiIwMUhaTkhBQjBXS1RYNjlKR0NTR0pGSlZEWSIsInVuaXF1ZV9uYW1lIjoiZGV2Iiwicm9sZSI6WyJEZXNlbnZvbHZlZG9yIiwiQ29sYWJvcmFkb3IiXSwibmJmIjoxNzE3NjM2Njg0LCJleHAiOjE3MTgyNDE0ODQsImlhdCI6MTcxNzYzNjY4NCwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo1MTc4IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDo1MTc4In0.xhPM4Li0y5A4LJ7gCLTNI5S39mYoX40jbW5h3OPGuis";
+    public string _accessToken = "eyJhbGciOiJIUzI1NiIsInR5cCI6ImF0K2p3dCJ9.eyJuYW1laWQiOiIxIiwidW5pcXVlX25hbWUiOiJkZXYiLCJDb21wYW55IjoiMSIsInJvbGUiOlsiRGVzZW52b2x2ZWRvciIsIkNvbGFib3JhZG9yIl0sIm5iZiI6MTcxODY2Mjk3NSwiZXhwIjoxNzE5MjY3Nzc1LCJpYXQiOjE3MTg2NjI5NzUsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE3OCIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6NTE3OCJ9.x1k5FvPk5Rn9PESBaBEA5X611wqMg5mNQywVcAU2Ys8";
     public string _refreshToken = string.Empty;
 
     /// <summary>
@@ -113,7 +113,7 @@ public class HttpClientUtil
 
             if (property!.PropertyType.Name == "IFormFile")
             {
-                var formFile = property.GetValue(obj) as IFormFile ?? throw new Exception("FormFile is null");
+                var formFile = property.GetValue(obj) as IFormFile ?? throw new Exception("FormFile is null!");
                 formData.Add(new StreamContent(formFile.OpenReadStream()), !entityName.IsNullOrEmpty() ? entityName + "." + property.Name : property.Name, formFile.FileName);
                 continue;
             }
@@ -161,7 +161,7 @@ public class HttpClientUtil
 
         if (response.StatusCode == HttpStatusCode.OK || typeof(T) == typeof(AppException))
             return JsonConvert.DeserializeObject<T>(content) ??
-                throw new Exception("Deserialized object is null");
+                throw new Exception("Deserialized object is null!");
 
         var errorMessage = $"Unexpected response status code:\n" +
                            $"Content:\n{content}\n" +
