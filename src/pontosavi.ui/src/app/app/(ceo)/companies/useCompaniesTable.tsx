@@ -1,10 +1,10 @@
 "use client";
 
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectStatus, selectTotalCount, selectCompanies } from "@/_redux/features/company/slice";
-import { deleteCompany, getCompanies } from "@/_redux/features/company/thunks";
+import { selectStatus, selectTotalCount, selectCompanies } from "@/_redux/features/ceo/slice";
+import { getCompanies } from "@/_redux/features/ceo/thunks";
 import { AppDispatch } from "@/_redux/store";
 import { useTable } from "@/_tables/useTable";
 
@@ -27,21 +27,20 @@ export const useCompaniesTable = () => {
   const isLoading = () => status === "loading";
 
   const onSubmit = () => dispatch(getCompanies({
-    publicId: columnFilters.find(f => f.id === "publicId")?.value as string || undefined,
+    id: columnFilters.find(f => f.id === "id")?.value as number || undefined,
     name: columnFilters.find(f => f.id === "name")?.value as string || undefined,
     tradeName: columnFilters.find(f => f.id === "tradeName")?.value as string || undefined,
     cnpj: columnFilters.find(f => f.id === "cnpj")?.value as string || undefined,
     search: globalFilter || undefined,
     pageIndex: pagination.pageIndex,
     pageSize: pagination.pageSize,
+    idDescOrderSort: sorting.find(s => s.id === "id") ? sorting.find(s => s.id === "id")?.desc : undefined,
     nameDescOrderSort: sorting.find(s => s.id === "name") ? sorting.find(s => s.id === "name")?.desc : undefined,
     tradeNameDescOrderSort: sorting.find(s => s.id === "tradeName") ? sorting.find(s => s.id === "tradeName")?.desc : undefined,
     cnpjDescOrderSort: sorting.find(s => s.id === "cnpj") ? sorting.find(s => s.id === "cnpj")?.desc : undefined,
   }));
 
-  const toCreate = "company";
-  const toEdit = "company";
-  const handleDelete = useMemo(() => (id: string) => dispatch(deleteCompany(id)), [dispatch]);
+  const toCreate = "company-and-user";
 
   return {
     companies,
@@ -49,8 +48,6 @@ export const useCompaniesTable = () => {
     isLoading,
     onSubmit,
     toCreate,
-    toEdit,
-    handleDelete,
 
     globalFilter,
     sorting,

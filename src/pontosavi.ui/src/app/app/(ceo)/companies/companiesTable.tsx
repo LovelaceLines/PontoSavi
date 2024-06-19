@@ -4,7 +4,7 @@ import { type MRT_ColumnDef } from "material-react-table";
 import { ContentCopy } from "@mui/icons-material";
 import { useMemo } from "react";
 
-import { useDefaultMaterialReactTable } from "@/_tables";
+import { DateTimeToStr, useDefaultMaterialReactTable } from "@/_tables";
 import { company } from "@/_types";
 import { useCompaniesTable } from "./useCompaniesTable";
 
@@ -15,8 +15,6 @@ export const CompaniesTable = () => {
     isLoading,
     onSubmit,
     toCreate,
-    toEdit,
-    handleDelete,
 
     globalFilter,
     setGlobalFilter,
@@ -30,9 +28,9 @@ export const CompaniesTable = () => {
 
   const columns = useMemo<MRT_ColumnDef<company>[]>(() => [
     {
-      accessorKey: "publicId",
+      accessorKey: "id",
       header: "ID",
-      // size: 80,
+      size: 25,
       enableClickToCopy: true,
       muiCopyButtonProps: {
         fullWidth: true,
@@ -53,7 +51,6 @@ export const CompaniesTable = () => {
     {
       accessorKey: "cnpj",
       header: "CNPJ",
-      size: 75,
       enableSorting: false,
       enableClickToCopy: true,
       muiCopyButtonProps: {
@@ -64,6 +61,16 @@ export const CompaniesTable = () => {
       Cell: ({ cell }) => (
         <>{(cell.getValue() as string).replace(/(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})/, "$1.$2.$3/$4-$5")}</>
       ),
+    },
+    {
+      accessorKey: "createdAt",
+      header: "Created At",
+      Cell: ({ cell }) => <DateTimeToStr date={cell.getValue() as Date} />,
+    },
+    {
+      accessorKey: "updatedAt",
+      header: "Updated At",
+      Cell: ({ cell }) => <DateTimeToStr date={cell.getValue() as Date} />,
     },
   ], []);
 
@@ -87,8 +94,6 @@ export const CompaniesTable = () => {
 
     onSubmit,
     toCreate,
-    toEdit,
-    handleDelete,
 
     isLoading,
   });

@@ -1,17 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { deleteCompany, getCompanies, getCompanyByPublicId, postCompany, putCompany } from "./thunks";
+import { deleteRemoveWorkShift, getCompany, postAddWorkShift, putCompany } from "./thunks";
 import { company } from "@/_types";
 
 interface initialStateProps {
-  companies: company[] | null;
+  company: company | null;
   totalCount: number | null;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
 }
 
 const initialState: initialStateProps = {
-  companies: null,
+  company: null,
   totalCount: null,
   status: "idle",
   error: null,
@@ -23,37 +23,14 @@ const companySlice = createSlice({
   reducers: {
   },
   extraReducers: builder => {
-    builder.addCase(getCompanies.pending, (state) => {
+    builder.addCase(getCompany.pending, (state) => {
       state.status = "loading";
     });
-    builder.addCase(getCompanies.fulfilled, (state, action) => {
-      state.companies = action.payload.items;
-      state.totalCount = action.payload.totalCount;
+    builder.addCase(getCompany.fulfilled, (state, action) => {
+      state.company = action.payload;
       state.status = "idle";
     });
-    builder.addCase(getCompanies.rejected, (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message || null;
-    });
-
-    builder.addCase(getCompanyByPublicId.pending, (state) => {
-      state.status = "loading";
-    });
-    builder.addCase(getCompanyByPublicId.fulfilled, (state) => {
-      state.status = "idle";
-    });
-    builder.addCase(getCompanyByPublicId.rejected, (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message || null;
-    });
-
-    builder.addCase(postCompany.pending, (state) => {
-      state.status = "loading";
-    });
-    builder.addCase(postCompany.fulfilled, (state) => {
-      state.status = "succeeded";
-    });
-    builder.addCase(postCompany.rejected, (state, action) => {
+    builder.addCase(getCompany.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error.message || null;
     });
@@ -69,19 +46,30 @@ const companySlice = createSlice({
       state.error = action.error.message || null;
     });
 
-    builder.addCase(deleteCompany.pending, (state) => {
+    builder.addCase(postAddWorkShift.pending, (state) => {
       state.status = "loading";
     });
-    builder.addCase(deleteCompany.fulfilled, (state) => {
+    builder.addCase(postAddWorkShift.fulfilled, (state) => {
       state.status = "succeeded";
     });
-    builder.addCase(deleteCompany.rejected, (state, action) => {
+    builder.addCase(postAddWorkShift.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message || null;
+    });
+
+    builder.addCase(deleteRemoveWorkShift.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(deleteRemoveWorkShift.fulfilled, (state) => {
+      state.status = "succeeded";
+    });
+    builder.addCase(deleteRemoveWorkShift.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error.message || null;
     });
   },
   selectors: {
-    selectCompanies: state => state.companies,
+    selectCompany: state => state.company,
     selectTotalCount: state => state.totalCount,
     selectStatus: state => state.status,
     selectError: state => state.error,
@@ -89,6 +77,6 @@ const companySlice = createSlice({
 });
 
 export const { } = companySlice.actions;
-export const { selectError, selectStatus, selectTotalCount, selectCompanies } = companySlice.selectors;
+export const { selectCompany, selectError, selectStatus, selectTotalCount } = companySlice.selectors;
 
 export default companySlice.reducer;
