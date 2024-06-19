@@ -1,10 +1,13 @@
-using Microsoft.IdentityModel.Tokens;
+﻿using Microsoft.IdentityModel.Tokens;
 
 using PontoSavi.API.InputModels;
-using PontoSavi.API.ViewModels;
 using PontoSavi.Domain.DTOs;
+using PontoSavi.Domain.Entities;
+using PontoSavi.Test.DTOs;
 using PontoSavi.Test.Fakers;
 using PontoSavi.Test.Utils;
+
+using User = PontoSavi.Test.Fakers.User;
 
 [assembly: CollectionBehavior(CollectionBehavior.CollectionPerAssembly)]
 
@@ -14,9 +17,14 @@ public class GlobalClientRequest : HttpClientUtil
 {
     public const string BaseUrl = "http://localhost:5178/api/";
     public readonly HttpClient _authClient = new() { BaseAddress = new Uri($"{BaseUrl}Auth/") };
-    public readonly HttpClient _loginClient = new() { BaseAddress = new Uri($"{BaseUrl}Auth/login") };
-    public readonly HttpClient _refreshTokenClient = new() { BaseAddress = new Uri($"{BaseUrl}Auth/refresh-token") };
-    public readonly HttpClient _authUserClient = new() { BaseAddress = new Uri($"{BaseUrl}Auth/user") };
+    public readonly HttpClient _loginClient = new() { BaseAddress = new Uri($"{BaseUrl}Auth/login/") };
+    public readonly HttpClient _refreshTokenClient = new() { BaseAddress = new Uri($"{BaseUrl}Auth/refresh-token/") };
+    public readonly HttpClient _authUserClient = new() { BaseAddress = new Uri($"{BaseUrl}Auth/user/") };
+    public readonly HttpClient _CEOClient = new() { BaseAddress = new Uri($"{BaseUrl}CEO/") };
+    public readonly HttpClient _CEOCompanyClient = new() { BaseAddress = new Uri($"{BaseUrl}CEO/company/") };
+    public readonly HttpClient _CEOUserClient = new() { BaseAddress = new Uri($"{BaseUrl}CEO/user/") };
+    public readonly HttpClient _CEOUserAddToRoleClient = new() { BaseAddress = new Uri($"{BaseUrl}CEO/user/add-to-role/") };
+    public readonly HttpClient _CEORoleClient = new() { BaseAddress = new Uri($"{BaseUrl}CEO/role/") };
     public readonly HttpClient _userClient = new() { BaseAddress = new Uri($"{BaseUrl}User/") };
     public readonly HttpClient _userPasswordClient = new() { BaseAddress = new Uri($"{BaseUrl}User/password/") };
     public readonly HttpClient _addUserToRoleClient = new() { BaseAddress = new Uri($"{BaseUrl}User/add-to-role/") };
@@ -39,10 +47,10 @@ public class GlobalClientRequest : HttpClientUtil
     #region GetEntityFake
 
     public async Task<UserToken> GetToken()
-        {
-            var user = await GetUser();
+    {
+        var user = await GetUser();
         return await GetToken(user.UserName, user.Password);
-        }
+    }
 
     public async Task<UserToken> GetToken(string userName, string password)
     {
@@ -70,11 +78,8 @@ public class GlobalClientRequest : HttpClientUtil
 
     public async Task<Role> GetRoleByCEO(Role? fake = null)
     {
-        if (!publicId.IsNullOrEmpty())
-            return await GetFromUri<RoleDTO>(_roleClient, publicId!);
-
-        var roleFake = new RoleFake(publicId: publicId, name: name).Generate();
-        return await PostFromBody<RoleDTO>(_roleClient, roleFake);
+        fake ??= new RoleFake().Generate();
+        return await PostFromBody<Role>(_CEORoleClient, fake);
     }
 
     public async Task<UserRoleIM> GetUserRole()
@@ -103,10 +108,44 @@ public class GlobalClientRequest : HttpClientUtil
 
     public async Task<DayOff> GetDayOff(DayOff? fake = null)
     {
-        if (!publicId.IsNullOrEmpty())
-            return await GetFromUri<CompanyDTO>(_companyClient, publicId!);
+        fake ??= new DayOffFake().Generate();
+        return await PostFromBody<DayOff>(_dayOffClient, fake);
+    }
 
-        fake ??= new CompanyFake().Generate();
+    public async Task<Point> GetOpenPoint(Point? pointFake = null, User? user = null)
+    {
+        user ??= await GetUser();
+        var token = await GetToken(user.UserName, user.Password);
+        _accessToken = token.AuthToken.AccessToken;
+
+        pointFake ??= new PointFake(userId: user.Id).Generate();
+        return await PostFromBody<Point>(_pointAutoClient, pointFake.CheckInDescription!);
+    }
+
+    public async Task<Point> GetClosedPoint(Point? pointFake = null, User? user = null)
+    {
+        user ??= await GetUser();
+        var token = await GetToken(user.UserName, user.Password);
+        _accessToken = token.AuthToken.AccessToken;
+
+        var openPoint = await GetOpenPoint(pointFake, user);
+        openPoint = new PointFake(id: openPoint.Id, userId: openPoint.UserId, checkIn: openPoint.CheckIn, checkInDescription: openPoint.CheckInDescription).Generate();
+        return await PutFromBody<Point>(_pointManualClient, openPoint);
+    }
+
+    public async Task<WorkShift> GetWorkShift(WorkShift? fake = null)
+    {
+        fake ??= new WorkShiftFake().Generate();
+        return await PostFromBody<WorkShift>(_workShiftClient, fake);
+    }
+
+    public async Task<CompanyWorkShift> GetCompanyWorkShift(CompanyWorkShift? fake = null)
+    {
+        if (fake is null)
+        {
+            var workShift = await GetWorkShift();
+            fake = new CompanyWorkShift { WorkShiftId = workShift.Id };
+        }
 
         return await PostFromBody<CompanyWorkShift>(_companyAddWorkShiftClient, fake);
     }
