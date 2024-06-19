@@ -27,7 +27,7 @@ export const useAccountsTable = () => {
   const isLoading = () => status === "loading";
 
   const onSubmit = () => dispatch(getUsers({
-    publicId: columnFilters.find(f => f.id === "publicId")?.value as string || undefined,
+    id: columnFilters.find(f => f.id === "id")?.value as number || undefined,
     email: columnFilters.find(f => f.id === "email")?.value as string || undefined,
     role: columnFilters.find(f => f.id === "roles")?.value as string || undefined,
     phoneNumber: columnFilters.find(f => f.id === "phoneNumber")?.value as string || undefined,
@@ -36,13 +36,15 @@ export const useAccountsTable = () => {
     search: globalFilter || undefined,
     pageIndex: pagination.pageIndex,
     pageSize: pagination.pageSize,
+    idDescOrderSort: sorting.find(s => s.id === "id") ? sorting.find(s => s.id === "id")?.desc : undefined,
     nameDescOrderSort: sorting.find(s => s.id === "name") ? sorting.find(s => s.id === "name")?.desc : undefined,
     userNameDescOrderSort: sorting.find(s => s.id === "userName") ? sorting.find(s => s.id === "userName")?.desc : undefined,
     emailDescOrderSort: sorting.find(s => s.id === "email") ? sorting.find(s => s.id === "email")?.desc : undefined,
   }));
 
   const toCreate = "account";
-  const handleDelete = useMemo(() => (id: string) => dispatch(deleteUser(id)), [dispatch]);
+  const toEdit = "account";
+  const handleDelete = useMemo(() => (id: number) => dispatch(deleteUser(id)), [dispatch]);
 
   return {
     users,
@@ -50,6 +52,7 @@ export const useAccountsTable = () => {
     isLoading,
     onSubmit,
     toCreate,
+    toEdit,
     handleDelete,
 
     globalFilter,

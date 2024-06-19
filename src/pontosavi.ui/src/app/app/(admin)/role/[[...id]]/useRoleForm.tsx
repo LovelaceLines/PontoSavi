@@ -28,9 +28,9 @@ export const useRoleForm = ({ role }: { role?: role }) => {
 
   useEffect(() => { if (error) Snackbar(error); }, [error]);
 
-  const onSubmit = ({ publicId, name }: Schema) =>
-    role ? dispatch(putRole({ publicId, name })) :
-      dispatch(postRole({ name }));
+  const onSubmit = ({ id, name }: Schema) =>
+    role ? dispatch(putRole({ id, name })) :
+      dispatch(postRole({ id, name }));
 
   return ({
     register,

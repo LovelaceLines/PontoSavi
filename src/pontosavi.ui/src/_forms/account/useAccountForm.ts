@@ -6,14 +6,13 @@ import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useSnackbar } from "@/_contexts";
-import { getUserDefaultRole } from "@/globalSettings";
 import { selectUser as selectAuthUser } from "@/_redux/features/auth/slice";
 import { selectRoles } from "@/_redux/features/role/slice";
 import { getRoles } from "@/_redux/features/role/thunks";
 import { selectError, selectStatus } from "@/_redux/features/user/slice";
 import { postUser, updateUser } from "@/_redux/features/user/thunks";
 import { AppDispatch } from "@/_redux/store";
-import { user } from "@/_types";
+import { user, role } from "@/_types";
 import { formDataSchema, Schema } from "./schema";
 
 export const useAccountForm = ({ user }: { user?: user }) => {
@@ -28,7 +27,7 @@ export const useAccountForm = ({ user }: { user?: user }) => {
 
   const { register, handleSubmit, setValue, getValues, formState: { errors }, watch } = useForm<Schema>({
     resolver: zodResolver(formDataSchema),
-    defaultValues: { ...user, roles: user?.roles || [getUserDefaultRole()] },
+    defaultValues: { ...user, roles: user?.roles || [] },
   });
 
   useEffect(() => { dispatch(getRoles({ nameDescOrderSort: false })); }, []);
@@ -37,17 +36,17 @@ export const useAccountForm = ({ user }: { user?: user }) => {
 
   useEffect(() => { if (error) Snackbar(error); }, [error]);
 
-  const onSubmit = ({ name, userName, email, phoneNumber, password, roles }: Schema) =>
-    !user ? dispatch(postUser({ name, userName, email, phoneNumber, password, roles })) :
-      dispatch(updateUser({ oldUser: user, newUser: { name, userName, email, phoneNumber, password, roles } }));
+  const onSubmit = ({ password, ...data }: Schema) =>
+    !user ? dispatch(postUser({ password: password ?? "", ...data })) :
+      dispatch(updateUser({ oldUser: user, newUser: { password: password ?? "", ...data } }));
 
-  const handleRoleAdd = (role: string) => {
-    if (getValues().roles.includes(role)) return;
-    setValue("roles", [...getValues().roles, role]);
+  const handleRoleAdd = (role: role) => {
+    if (getValues().roles?.map(r => r.name).includes(role.name)) return;
+    setValue("roles", [...getValues().roles ?? [], role]);
   };
 
-  const handleRoleDelete = (role: string) =>
-    setValue("roles", getValues().roles.filter(r => r !== role));
+  const handleRoleDelete = (role: role) =>
+    setValue("roles", getValues().roles?.filter(r => r.name !== role.name));
 
   return ({
     currentUser,

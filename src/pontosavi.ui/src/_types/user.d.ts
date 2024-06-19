@@ -1,7 +1,7 @@
 export type userFilter = {
   search?: string;
 
-  publicId?: string;
+  id?: int;
   name?: string;
   userName?: string;
   email?: string;
@@ -11,19 +11,23 @@ export type userFilter = {
   pageIndex?: number;
   pageSize?: number;
 
+  idDescOrderSort?: boolean;
   nameDescOrderSort?: boolean;
   userNameDescOrderSort?: boolean;
   emailDescOrderSort?: boolean;
 };
 
 export type user = {
-  publicId?: string;
+  id?: int;
   name: string;
   userName: string;
   email: string;
   phoneNumber: string;
-  password: string;
-  roles: string[];
+  password?: string;
+  roles?: role[];
+  createdAt?: Date;
+  updatedAt?: Date;
+  companyId?: int;
 };
 
 export type updatedPassword = {
@@ -32,14 +36,17 @@ export type updatedPassword = {
 };
 
 export type role = {
-  publicId?: string;
+  id: int;
   name: string;
+  createdAt?: Date;
+  updatedAt?: Date;
+  companyId?: int;
 };
 
 export class roleFilter {
   search?: string;
 
-  publicId?: string;
+  id?: int;
   name?: string;
 
   pageIndex?: number;
@@ -49,6 +56,11 @@ export class roleFilter {
 }
 
 export type userRole = {
-  userId: string;
-  roleName: string;
+  userId: int;
+  roleId: int;
 };
+
+export type userWorkShift = {
+  userId: int;
+  workShiftId: int;
+}

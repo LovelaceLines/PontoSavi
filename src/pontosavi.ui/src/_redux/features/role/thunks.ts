@@ -13,10 +13,10 @@ export const getRoles = createAsyncThunk(
   }
 );
 
-export const getRoleByPublicId = createAsyncThunk(
-  "role/getRolesByPublicId",
-  async (publicId: string): Promise<role> => {
-    const res = await Axios.get<role>(`${ROLE}/${publicId}`);
+export const getRoleById = createAsyncThunk(
+  "role/getRoleById",
+  async (id: number): Promise<role> => {
+    const res = await Axios.get<role>(`${ROLE}/${id}`);
     return res.data as role;
   }
 );
@@ -39,7 +39,7 @@ export const putRole = createAsyncThunk(
 
 export const deleteRole = createAsyncThunk(
   "role/deleteRole",
-  async (publicId: string): Promise<void> => {
-    await Axios.delete(`${ROLE}/${publicId}`);
+  async (id: number): Promise<void> => {
+    await Axios.delete(`${ROLE}/${id}`);
   }
 );

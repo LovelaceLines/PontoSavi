@@ -4,7 +4,7 @@ import { type MRT_ColumnDef } from "material-react-table";
 import { ContentCopy } from "@mui/icons-material";
 import { useMemo } from "react";
 
-import { useDefaultMaterialReactTable } from "@/_tables";
+import { useDefaultMaterialReactTable, DateTimeToStr } from "@/_tables";
 import { user } from "@/_types";
 import { useAccountsTable } from "./useAccountsTable";
 
@@ -15,6 +15,7 @@ export const AccountsTable = () => {
     isLoading,
     onSubmit,
     toCreate,
+    toEdit,
     handleDelete,
 
     globalFilter,
@@ -29,9 +30,9 @@ export const AccountsTable = () => {
 
   const columns = useMemo<MRT_ColumnDef<user>[]>(() => [
     {
-      accessorKey: "publicId",
+      accessorKey: "id",
       header: "ID",
-      size: 80,
+      size: 25,
       enableClickToCopy: true,
       muiCopyButtonProps: {
         fullWidth: true,
@@ -64,10 +65,22 @@ export const AccountsTable = () => {
       accessorKey: "roles",
       header: "Roles",
       size: 200,
-      Cell: ({ row }) => row.original.roles.join(", "),
+      Cell: ({ row }) => row.original.roles?.map(r => r.name).join(", "),
       enableColumnFilter: false,
       enableSorting: false,
     },
+    {
+      accessorKey: "createdAt",
+      header: "Created At",
+      size: 75,
+      Cell: ({ cell }) => <DateTimeToStr date={cell.getValue() as Date} />,
+    },
+    {
+      accessorKey: "updatedAt",
+      header: "Updated At",
+      size: 75,
+      Cell: ({ cell }) => <DateTimeToStr date={cell.getValue() as Date} />,
+    }
   ], []);
 
   return useDefaultMaterialReactTable({
@@ -90,6 +103,7 @@ export const AccountsTable = () => {
 
     onSubmit,
     toCreate,
+    toEdit,
     handleDelete,
 
     isLoading,

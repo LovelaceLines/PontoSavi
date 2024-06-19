@@ -30,9 +30,9 @@ export const RolesTable = () => {
 
   const columns = useMemo<MRT_ColumnDef<role>[]>(() => [
     {
-      accessorKey: "publicId",
+      accessorKey: "id",
       header: "ID",
-      size: 80,
+      size: 25,
       enableClickToCopy: true,
       muiCopyButtonProps: {
         fullWidth: true,
@@ -43,7 +43,6 @@ export const RolesTable = () => {
     {
       accessorKey: "name",
       header: "Name",
-      size: 150,
     },
   ], []);
 

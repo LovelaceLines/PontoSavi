@@ -27,14 +27,14 @@ export const useRolesTable = () => {
   const isLoading = () => status === "loading";
 
   const onSubmit = () => dispatch(getRoles({
-    publicId: columnFilters.find(f => f.id === "publicId")?.value as string || undefined,
+    id: columnFilters.find(f => f.id === "id")?.value as number || undefined,
     name: columnFilters.find(f => f.id === "name")?.value as string || undefined,
     nameDescOrderSort: sorting.find(s => s.id === "name") ? sorting.find(s => s.id === "name")?.desc : undefined,
   }));
 
   const toCreate = "role";
   const toEdit = "role";
-  const handleDelete = useMemo(() => (publicId: string) => dispatch(deleteRole(publicId)), [dispatch]);
+  const handleDelete = useMemo(() => (id: number) => dispatch(deleteRole(id)), [dispatch]);
 
   return {
     roles,

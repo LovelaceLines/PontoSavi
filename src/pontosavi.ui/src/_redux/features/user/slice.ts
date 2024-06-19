@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { deleteUser, getUsers, postUser, updatePassword, updateUser } from "./thunks";
+import { deleteUser, deleteWorkShift, getUserById, getUsers, postAddWorkShift, postUser, updatePassword, updateUser } from "./thunks";
 import { user } from "@/_types";
 import { getUser, setUser } from "@/_services";
 
@@ -39,6 +39,18 @@ const userSlice = createSlice({
       state.error = action.error.message || null;
     });
 
+    builder.addCase(getUserById.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(getUserById.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.status = "idle";
+    });
+    builder.addCase(getUserById.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message || null;
+    });
+
     builder.addCase(postUser.pending, (state) => {
       state.status = "loading";
     });
@@ -57,7 +69,7 @@ const userSlice = createSlice({
     builder.addCase(updateUser.fulfilled, (state, action) => {
       state.user = action.payload;
 
-      if (action.payload.publicId == getUser().publicId)
+      if (action.payload.id == getUser().id)
         setUser(action.payload);
 
       state.status = "succeeded";
@@ -88,6 +100,28 @@ const userSlice = createSlice({
       state.status = "succeeded";
     });
     builder.addCase(deleteUser.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message || null;
+    });
+
+    builder.addCase(postAddWorkShift.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(postAddWorkShift.fulfilled, (state) => {
+      state.status = "succeeded";
+    });
+    builder.addCase(postAddWorkShift.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message || null;
+    });
+
+    builder.addCase(deleteWorkShift.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(deleteWorkShift.fulfilled, (state) => {
+      state.status = "succeeded";
+    });
+    builder.addCase(deleteWorkShift.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error.message || null;
     });
