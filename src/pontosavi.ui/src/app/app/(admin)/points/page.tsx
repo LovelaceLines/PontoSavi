@@ -12,7 +12,7 @@ export default function Page() {
   return (
     <>
       <Typography variant="h5" mb={2}>Points</Typography>
-      <PointsTable />
+      <PointsTable mode="admin" />
     </>
   );
 }

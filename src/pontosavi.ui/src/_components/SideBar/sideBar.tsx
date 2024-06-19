@@ -5,13 +5,12 @@ import { SwipeableDrawer, useMediaQuery, useTheme } from "@mui/material";
 import { ButtonList, ISideBarProps } from "./buttomList";
 import { useSideBar } from "@/_contexts";
 import { Header } from "./header";
-import { colors, useThemeContext } from "@/_theme";
+import { colors } from "@/_theme";
 import { UpgradeToPro } from "./upgrade";
 
 export const SideBar = ({ buttonList, drawerWidth = 240, minDrawerWidth = 56 }: Readonly<{ buttonList: ISideBarProps[][], drawerWidth: number | undefined, minDrawerWidth: number | undefined }>) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-  const { themeName } = useThemeContext();
 
   const { open, toggleSideBar } = useSideBar();
 
