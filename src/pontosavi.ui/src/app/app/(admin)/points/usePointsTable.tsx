@@ -9,7 +9,7 @@ import { AppDispatch } from "@/_redux/store";
 import { useTable } from "@/_tables/useTable";
 import { pointFilter, pointStatus } from "@/_types";
 
-export const usePointsTable = ({ mode = "admin", filters }: { mode: "admin" | "base", filters?: pointFilter }) => {
+export const usePointsTable = ({ mode = "admin", filters }: { mode?: "admin" | "base", filters?: pointFilter }) => {
   const {
     state: { globalFilter, sorting, columnFilters, pagination },
     setGlobalFilter,

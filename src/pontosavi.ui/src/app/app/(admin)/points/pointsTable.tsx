@@ -5,6 +5,7 @@ import { ContentCopy } from "@mui/icons-material";
 import Link from "next/link";
 import { useMemo } from "react";
 
+import { Actions } from "./pointsComponents";
 import { useDefaultMaterialReactTable, DateTimeToStr } from "@/_tables";
 import { point, pointFilter } from "@/_types";
 import { usePointsTable } from "./usePointsTable";
@@ -146,5 +147,8 @@ export const PointsTable = ({ mode = "admin", filters }: { mode: "admin" | "base
     toEdit,
 
     isLoading,
+
+    enableRowActions: true,
+    renderRowActions: ({ row }) => <Actions row={row.original} />,
   });
 };
