@@ -2,7 +2,7 @@
 
 import { Provider } from "react-redux";
 
-import { SideBarProvider, SnackbarProvider } from "@/_contexts";
+import { ModalProvider, SideBarProvider, SnackbarProvider } from "@/_contexts";
 import { store } from "@/_redux/store";
 import { TableProvider } from "@/_tables";
 
@@ -12,9 +12,11 @@ export default function ClientProviders({ children }: Readonly<{ children: React
       <Provider store={store}>
         <SideBarProvider>
           <SnackbarProvider>
-            <TableProvider>
-              {children}
-            </TableProvider>
+            <ModalProvider>
+              <TableProvider>
+                {children}
+              </TableProvider>
+            </ModalProvider>
           </SnackbarProvider>
         </SideBarProvider>
       </Provider>

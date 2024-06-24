@@ -3,16 +3,15 @@
 import { AppBar, Container, Grid, IconButton, Toolbar } from "@mui/material";
 import { NotificationAdd } from "@mui/icons-material";
 import Image from "next/image";
-import { useContext } from "react";
 
 import { Avatar } from "./avatar";
 import { Search } from "./search";
-import { colors, ThemeContext } from "@/_theme";
+import { colors, useThemeContext } from "@/_theme";
 import { ToggleSideBar } from "./toggleSideBar";
 import { ToggleThemeIcon } from "./toggleThemeIcon";
 
 export const AppAppBar = () => {
-  const { themeName } = useContext(ThemeContext);
+  const { themeName } = useThemeContext();
 
   return (
     <AppBar position="sticky" color="transparent" elevation={0} sx={{ bgcolor: `${themeName === "light" ? colors.white : colors.black}` }}>

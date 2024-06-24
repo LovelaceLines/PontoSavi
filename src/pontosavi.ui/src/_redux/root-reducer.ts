@@ -4,7 +4,6 @@ import authReducer from "./features/auth/slice";
 import ceoReducer from "./features/ceo/slice";
 import companyReducer from "./features/company/slice";
 import dayOffReducer from "./features/dayOff/slice";
-import handleModal from "./features/handleModal/slice";
 import pointReducer from "./features/point/slice";
 import roleReducer from "./features/role/slice";
 import userReducer from "./features/user/slice";
@@ -15,7 +14,6 @@ export const rootReducer = combineReducers({
   ceo: ceoReducer,
   company: companyReducer,
   dayOff: dayOffReducer,
-  handleModal: handleModal,
   point: pointReducer,
   role: roleReducer,
   user: userReducer,

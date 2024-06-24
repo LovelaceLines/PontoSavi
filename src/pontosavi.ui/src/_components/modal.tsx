@@ -1,20 +1,19 @@
 "use client";
 
-import { colors, ThemeContext } from "@/_theme";
+import { colors, useThemeContext } from "@/_theme";
 import { Close } from "@mui/icons-material";
 import { Box, IconButton, Modal as ModalMUI } from "@mui/material";
-import { ReactElement, useContext } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { ReactElement } from "react";
 
-import { handleModalClose, selectOpen } from "@/_redux/features/handleModal/slice";
+import { useModal } from "@/_contexts";
 
 export const Modal = ({ children, initOpen, id }: Readonly<{ children: ReactElement, initOpen: boolean, id: string }>) => {
-  const dispatch = useDispatch();
-  const open = useSelector(selectOpen)[id] ?? initOpen;
+  const { handleModalClose, isOpen } = useModal();
+  const { themeName } = useThemeContext();
 
-  const { themeName } = useContext(ThemeContext);
+  const open = isOpen(id) ?? initOpen;
 
-  const handleClose = () => dispatch(handleModalClose(id));
+  const handleClose = () => handleModalClose(id);
 
   return (
     <ModalMUI

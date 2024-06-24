@@ -18,7 +18,8 @@ export const DarkTheme = createTheme(GlobalTheme, {
     },
     action: {
       hover: "#06060F",
+      disabled: "#837A75",
     },
-    divider: "#16161F",
+    divider: colors.jet,
   }
 } as ThemeOptions);

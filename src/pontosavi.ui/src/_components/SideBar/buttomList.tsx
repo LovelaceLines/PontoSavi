@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutUser, selectUser } from "@/_redux/features/auth/slice";
 import { includes } from "@/_utils";
 import { getUserDefaultRole } from "@/globalSettings";
-import { colors } from "@/_theme";
 
 export interface ISideBarProps {
   text: string;
@@ -45,7 +44,7 @@ export const ButtonList = ({ buttonList }: Readonly<{ buttonList: ISideBarProps[
               </Link>
             </ListItem>
           ))}
-          <Divider key={"Divider" + index} sx={{ borderColor: colors.jet }} />
+          <Divider key={"Divider" + index} />
         </React.Fragment>
       )}
 

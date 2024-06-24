@@ -1,9 +1,9 @@
-import { AppThemeProvider } from "@/_theme";
+import { ThemeProvider } from "@/_theme";
 
 export default function ServerProviders({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <AppThemeProvider>
+    <ThemeProvider>
       {children}
-    </AppThemeProvider>
+    </ThemeProvider>
   );
 }

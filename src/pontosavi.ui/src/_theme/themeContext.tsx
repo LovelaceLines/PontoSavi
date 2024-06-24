@@ -1,11 +1,12 @@
 "use client";
 
 import { createContext, useContext } from "react";
-import { CssBaseline, ThemeProvider, useMediaQuery } from "@mui/material";
+import { CssBaseline, GlobalStyles, ThemeProvider as ThemeProviderMUI, useMediaQuery } from "@mui/material";
 
 import { DarkTheme } from "./darkTheme";
 import { LightTheme } from "./lightTheme";
 import { useLocalStorage } from "@/_hooks";
+import { scrollbarStyles } from "./scrollbarStyles";
 
 interface IThemeContextProps {
   themeName: "light" | "dark";
@@ -15,7 +16,7 @@ interface IThemeContextProps {
 
 export const ThemeContext = createContext({} as IThemeContextProps);
 
-export const AppThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const isLightModePreferred = useMediaQuery("(prefers-color-scheme: light)");
   const [themeName, setThemeName] = useLocalStorage("theme", isLightModePreferred ? "light" : "dark");
   const toggleTheme = () => setThemeName(themeName === "light" ? "dark" : "light");
@@ -25,12 +26,13 @@ export const AppThemeProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
-    <ThemeProvider theme={theme}>
+    <ThemeProviderMUI theme={theme}>
       <CssBaseline enableColorScheme />
+      <GlobalStyles styles={{ ...scrollbarStyles }} />
       <ThemeContext.Provider value={{ themeName, toggleTheme, isMobile }}>
         {children}
       </ThemeContext.Provider>
-    </ThemeProvider>
+    </ThemeProviderMUI>
   );
 };
 

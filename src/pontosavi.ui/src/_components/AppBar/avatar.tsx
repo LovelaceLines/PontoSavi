@@ -1,17 +1,17 @@
 "use client";
 
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Avatar as AvatarMUI, IconButton } from "@mui/material";
 import { useSelector } from "react-redux";
 
 import { selectUser } from "@/_redux/features/auth/slice";
-import { colors, ThemeContext } from "@/_theme";
+import { colors, useThemeContext } from "@/_theme";
 import Link from "next/link";
 
 export const Avatar = () => {
   const user = useSelector(selectUser);
   const [avatarLetter, setAvatarLetter] = useState<string | null>(null);
-  const { themeName } = useContext(ThemeContext);
+  const { themeName } = useThemeContext();
 
   useEffect(() => { if (user) setAvatarLetter(user.userName[0].toUpperCase()); }, [user]);
 

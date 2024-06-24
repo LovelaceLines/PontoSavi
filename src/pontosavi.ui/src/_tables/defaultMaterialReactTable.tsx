@@ -6,13 +6,11 @@ import { MaterialReactTable, MRT_ColumnFiltersState, MRT_PaginationState, MRT_Ro
 import { Add, ClearAll, Delete, Edit, FileDownload, Share } from "@mui/icons-material";
 import { Box, Button, IconButton, Tooltip } from "@mui/material";
 import Link from "next/link";
-import { Dispatch, SetStateAction, useContext, useState } from "react";
+import React, { Dispatch, SetStateAction, useCallback, useContext, useState } from "react";
 
-import { useSnackbar } from "@/_contexts";
-import { colors, ThemeContext } from "@/_theme";
+import { useSnackbar, useModal } from "@/_contexts";
+import { colors, useThemeContext } from "@/_theme";
 import { DownloadExportDisplay } from "./components/DownloadExportDisplay/downloadExportDisplay";
-import { useDispatch } from "react-redux";
-import { handleModalOpen } from "@/_redux/features/handleModal/slice";
 
 interface Props<TData extends MRT_RowData> extends MRT_TableOptions<TData> {
   columns: MRT_ColumnDef<TData>[];
@@ -39,28 +37,28 @@ export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
 
   const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
 
-  const dispatch = useDispatch();
-
   const snackbar = useSnackbar();
-  const { themeName } = useContext(ThemeContext);
+  const { handleModalOpen } = useModal();
+  const { themeName } = useThemeContext();
 
-  const handleShare = () => {
+  const handleShare = useCallback(() => {
     const url = typeof window === "undefined" ? "" : `${window.location.href}`;
 
     navigator.clipboard.writeText(url)
       .then(() => snackbar("Link copied to clipboard"));
-  };
+  }, []);
 
-  const handleClearFilters = () => {
+  const handleClearFilters = useCallback(() => {
     props.setGlobalFilter && props.setGlobalFilter("");
     props.setColumnFilters && props.setColumnFilters([]);
     props.setSorting && props.setSorting([]);
-  };
+  }, []);
 
-  const handleDownloadExportRows = () =>
-    dispatch(handleModalOpen("download-export-display"));
+  const handleDownloadExportRows = useCallback(() => {
+    handleModalOpen("download-export-display");
+  }, []);
 
-  const handleDelete = () => {
+  const handleDelete = useCallback(() => {
     if (!Object.keys(rowSelection).length) {
       snackbar("Select a row to delete");
       return;
@@ -70,7 +68,7 @@ export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
     setRowSelection({});
     props.handleDelete && props.handleDelete(id);
     snackbar("Record deleted! Update the page to see the changes.");
-  };
+  }, [rowSelection]);
 
   const renderTopToolbarCustomActions = ({ table }: { table: MRT_TableInstance<TData> }) => (
     <Box display="flex" alignItems="center" gap={1}>
