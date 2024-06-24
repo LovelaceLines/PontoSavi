@@ -7,7 +7,7 @@ import { useMemo } from "react";
 import { useDefaultMaterialReactTable, DateTimeToStr } from "@/_tables";
 import { workShift } from "@/_types";
 import { useWorkShiftsTable } from "./useWorkShiftsTable";
-import { Actions } from "./workShiftComponents";
+import { Actions } from "./workShiftActions";
 
 export const WorkShiftsTable = () => {
   const {
