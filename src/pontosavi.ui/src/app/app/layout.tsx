@@ -25,8 +25,8 @@ const buttonList: ISideBarProps[][] = [
     { text: "Points", to: "/app/points", icon: <ControlPointDuplicate />, allowRoles: getSuperUserRoles() },
   ],
   [
+    { text: "Point", to: "/app/my-point/check", icon: <AccessTime />, allowRoles: getBaseUserRoles() },
     { text: "My Points", to: "/app/my-points", icon: <ControlPointDuplicate />, allowRoles: getBaseUserRoles() },
-    { text: "Point", to: "/app/my-point", icon: <AccessTime />, allowRoles: getBaseUserRoles() },
   ],
   [
     { text: "My Account", to: "/app/my-account", icon: <AccountCircle /> },

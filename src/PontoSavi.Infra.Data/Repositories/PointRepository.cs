@@ -45,6 +45,8 @@ public class PointRepository : BaseRepository<Point>, IPointRepository
         var points = await query
             .Skip(filter.PageIndex * filter.PageSize)
             .Take(filter.PageSize)
+            .Include(p => p.User)
+            .Include(p => p.Manager)
             .ToListAsync();
 
         return new QueryResult<Point>(points, totalCount);

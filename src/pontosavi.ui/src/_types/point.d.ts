@@ -1,5 +1,7 @@
 /* eslint-disable no-unused-vars */
 
+import { user } from "./user";
+
 export type pointFilter = {
   search?: string;
 
@@ -22,7 +24,9 @@ export type pointFilter = {
 export type point = {
   id?: number;
   userId?: number;
+  user?: user,
   managerId?: number;
+  manager?: user,
   checkIn: Date;
   checkInStatus?: pointStatus;
   checkInDescription?: string;

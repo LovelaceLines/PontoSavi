@@ -110,8 +110,11 @@ public class PointControllerTest : GlobalClientRequest
     [Fact]
     public async Task PostApprove_ValidPoint_ReturnsOk()
     {
+        var auxAccessToken = _accessToken;
+
         var point = await GetClosedPoint();
 
+        _accessToken = auxAccessToken;
         var user = await GetUser();
         var userRole = await GetUserRole(userId: user.Id, roleId: 3);
         var token = await GetToken(user.UserName, user.Password);
@@ -126,8 +129,11 @@ public class PointControllerTest : GlobalClientRequest
     [Fact]
     public async Task PostReject_ValidPoint_ReturnsOk()
     {
+        var auxAccessToken = _accessToken;
+
         var point = await GetClosedPoint();
 
+        _accessToken = auxAccessToken;
         var user = await GetUser();
         var userRole = await GetUserRole(userId: user.Id, roleId: 3);
         var token = await GetToken(user.UserName, user.Password);

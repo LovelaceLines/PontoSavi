@@ -2,6 +2,7 @@
 
 import { type MRT_ColumnDef } from "material-react-table";
 import { ContentCopy } from "@mui/icons-material";
+import Link from "next/link";
 import { useMemo } from "react";
 
 import { useDefaultMaterialReactTable, DateTimeToStr } from "@/_tables";
@@ -62,6 +63,11 @@ export const PointsTable = ({ mode = "admin", filters }: { mode: "admin" | "base
       },
     },
     {
+      accessorKey: "user.name",
+      header: "User Name",
+      Cell: ({ row }) => <Link href={`account/${row.original.userId}`} style={{ color: "inherit" }}>{row.original.user?.name}</Link>,
+    },
+    {
       accessorKey: "managerId",
       header: "Manager ID",
       size: 125,
@@ -71,6 +77,11 @@ export const PointsTable = ({ mode = "admin", filters }: { mode: "admin" | "base
         startIcon: <ContentCopy />,
         sx: { justifyContent: "flex-start" },
       },
+    },
+    {
+      accessorKey: "manager.name",
+      header: "Manager Name",
+      Cell: ({ row }) => <Link href={`account/${row.original.managerId}`} style={{ color: "inherit" }}>{row.original.manager?.name}</Link>,
     },
     {
       accessorKey: "checkIn",

@@ -5,6 +5,8 @@ import { point } from "@/_types";
 
 interface initialStateProps {
   points: point[];
+  point: point | undefined;
+  openPoint: point | null;
   totalCount: number;
   status: "idle" | "loading" | "succeeded" | "failed";
   error: string | null;
@@ -12,6 +14,8 @@ interface initialStateProps {
 
 const initialState: initialStateProps = {
   points: [],
+  point: undefined,
+  openPoint: null,
   totalCount: 0,
   status: "idle",
   error: null,
@@ -25,11 +29,13 @@ const pointSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(getPoints.pending, (state) => {
       state.status = "loading";
+      state.error = null;
     });
     builder.addCase(getPoints.fulfilled, (state, action) => {
       state.points = action.payload.items;
       state.totalCount = action.payload.totalCount;
       state.status = "idle";
+      state.error = null;
     });
     builder.addCase(getPoints.rejected, (state, action) => {
       state.status = "failed";
@@ -37,32 +43,43 @@ const pointSlice = createSlice({
     });
 
     builder.addCase(getPointById.pending, (state) => {
+      state.point = undefined;
       state.status = "loading";
+      state.error = null;
     });
-    builder.addCase(getPointById.fulfilled, (state) => {
+    builder.addCase(getPointById.fulfilled, (state, action) => {
+      state.point = action.payload;
       state.status = "idle";
+      state.error = null;
     });
     builder.addCase(getPointById.rejected, (state, action) => {
+      state.point = undefined;
       state.status = "failed";
       state.error = action.error.message || null;
     });
 
     builder.addCase(getCurrentPoint.pending, (state) => {
+      state.openPoint = null;
       state.status = "loading";
+      state.error = null;
     });
-    builder.addCase(getCurrentPoint.fulfilled, (state) => {
+    builder.addCase(getCurrentPoint.fulfilled, (state, action) => {
+      state.openPoint = action.payload;
       state.status = "idle";
+      state.error = null;
     });
-    builder.addCase(getCurrentPoint.rejected, (state, action) => {
+    builder.addCase(getCurrentPoint.rejected, (state) => {
+      state.openPoint = null;
       state.status = "failed";
-      state.error = action.error.message || null;
+      // state.error = action.error.message || null;
     });
 
     builder.addCase(postPointAutoCheckIn.pending, (state) => {
-      state.status = "loading";
+      state.error = null;
     });
     builder.addCase(postPointAutoCheckIn.fulfilled, (state) => {
       state.status = "succeeded";
+      state.error = null;
     });
     builder.addCase(postPointAutoCheckIn.rejected, (state, action) => {
       state.status = "failed";
@@ -70,10 +87,11 @@ const pointSlice = createSlice({
     });
 
     builder.addCase(putPointAutoCheckOut.pending, (state) => {
-      state.status = "loading";
+      state.error = null;
     });
     builder.addCase(putPointAutoCheckOut.fulfilled, (state) => {
       state.status = "succeeded";
+      state.error = null;
     });
     builder.addCase(putPointAutoCheckOut.rejected, (state, action) => {
       state.status = "failed";
@@ -81,10 +99,11 @@ const pointSlice = createSlice({
     });
 
     builder.addCase(postPointManualCheckIn.pending, (state) => {
-      state.status = "loading";
+      state.error = null;
     });
     builder.addCase(postPointManualCheckIn.fulfilled, (state) => {
       state.status = "succeeded";
+      state.error = null;
     });
     builder.addCase(postPointManualCheckIn.rejected, (state, action) => {
       state.status = "failed";
@@ -92,10 +111,11 @@ const pointSlice = createSlice({
     });
 
     builder.addCase(putPointManualCheckOut.pending, (state) => {
-      state.status = "loading";
+      state.error = null;
     });
     builder.addCase(putPointManualCheckOut.fulfilled, (state) => {
       state.status = "succeeded";
+      state.error = null;
     });
     builder.addCase(putPointManualCheckOut.rejected, (state, action) => {
       state.status = "failed";
@@ -103,10 +123,12 @@ const pointSlice = createSlice({
     });
 
     builder.addCase(putPoint.pending, (state) => {
-      state.status = "loading";
+      state.error = null;
     });
-    builder.addCase(putPoint.fulfilled, (state) => {
+    builder.addCase(putPoint.fulfilled, (state, action) => {
+      state.point = action.payload;
       state.status = "succeeded";
+      state.error = null;
     });
     builder.addCase(putPoint.rejected, (state, action) => {
       state.status = "failed";
@@ -114,10 +136,11 @@ const pointSlice = createSlice({
     });
 
     builder.addCase(putPointFull.pending, (state) => {
-      state.status = "loading";
+      state.error = null;
     });
     builder.addCase(putPointFull.fulfilled, (state) => {
       state.status = "succeeded";
+      state.error = null;
     });
     builder.addCase(putPointFull.rejected, (state, action) => {
       state.status = "failed";
@@ -125,10 +148,11 @@ const pointSlice = createSlice({
     });
 
     builder.addCase(postPointApprove.pending, (state) => {
-      state.status = "loading";
+      state.error = null;
     });
     builder.addCase(postPointApprove.fulfilled, (state) => {
       state.status = "succeeded";
+      state.error = null;
     });
     builder.addCase(postPointApprove.rejected, (state, action) => {
       state.status = "failed";
@@ -136,10 +160,11 @@ const pointSlice = createSlice({
     });
 
     builder.addCase(postPointReject.pending, (state) => {
-      state.status = "loading";
+      state.error = null;
     });
     builder.addCase(postPointReject.fulfilled, (state) => {
       state.status = "succeeded";
+      state.error = null;
     });
     builder.addCase(postPointReject.rejected, (state, action) => {
       state.status = "failed";
@@ -148,6 +173,8 @@ const pointSlice = createSlice({
   },
   selectors: {
     selectError: state => state.error,
+    selectPoint: state => state.point,
+    selectOpenPoint: state => state.openPoint,
     selectPoints: state => state.points,
     selectStatus: state => state.status,
     selectTotalCount: state => state.totalCount,
@@ -155,6 +182,6 @@ const pointSlice = createSlice({
 });
 
 export const { } = pointSlice.actions;
-export const { selectError, selectPoints, selectStatus, selectTotalCount } = pointSlice.selectors;
+export const { selectError, selectOpenPoint, selectPoint, selectPoints, selectStatus, selectTotalCount } = pointSlice.selectors;
 
 export default pointSlice.reducer;

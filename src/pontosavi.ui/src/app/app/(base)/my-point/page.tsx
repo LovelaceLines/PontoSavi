@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
 
 export default function Page() {
-  redirect("app/my-point");
+  redirect("my-point/check");
 }

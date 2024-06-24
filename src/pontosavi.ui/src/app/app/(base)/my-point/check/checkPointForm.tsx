@@ -2,19 +2,20 @@
 
 import { Button, Grid, TextField } from "@mui/material";
 
-import { useManualPoint } from "./useManualPointForm";
+import { useCheckPointForm } from "./useCheckPointForm";
+import { point } from "@/_types";
 
-export const ManualPointForm = ({ mode }: { mode: "check-in" | "check-out" | "idle" }) => {
+export const CheckPointForm = ({ point, auto }: { point?: point, auto: boolean }) => {
   const {
     errors,
     handleSubmit,
     onSubmit,
     register
-  } = useManualPoint({ mode });
+  } = useCheckPointForm({ point, auto });
 
   return (
     <Grid container component="form" onSubmit={handleSubmit(onSubmit)} spacing={2} alignItems="center">
-      <Grid item xs={12} md={3} display={mode === "check-out" ? "none" : "block"}>
+      <Grid item xs={12} md={3} display={auto || point ? "none" : "block"}>
         <TextField
           fullWidth
           label="Check In"
@@ -24,7 +25,7 @@ export const ManualPointForm = ({ mode }: { mode: "check-in" | "check-out" | "id
           helperText={errors.checkIn?.message}
         />
       </Grid>
-      <Grid item xs={12} md={9} display={mode === "check-out" ? "none" : "block"}>
+      <Grid item xs={12} md={auto ? 12 : 9} display={point ? "none" : "block"}>
         <TextField
           fullWidth
           label="Check In Description"
@@ -33,7 +34,7 @@ export const ManualPointForm = ({ mode }: { mode: "check-in" | "check-out" | "id
           helperText={errors.checkInDescription?.message}
         />
       </Grid>
-      <Grid item xs={12} md={3} display={mode === "check-in" ? "none" : "block"}>
+      <Grid item xs={12} md={3} display={auto ? "none" : point ? "block" : "none"}>
         <TextField
           fullWidth
           label="Check Out"
@@ -43,7 +44,7 @@ export const ManualPointForm = ({ mode }: { mode: "check-in" | "check-out" | "id
           helperText={errors.checkOut?.message}
         />
       </Grid>
-      <Grid item xs={12} md={9} display={mode === "check-in" ? "none" : "block"}>
+      <Grid item xs={12} md={auto ? 12 : 9} display={point ? "block" : "none"}>
         <TextField
           fullWidth
           label="Check Out Description"
@@ -58,9 +59,8 @@ export const ManualPointForm = ({ mode }: { mode: "check-in" | "check-out" | "id
           variant="contained"
           color="primary"
           fullWidth
-          disabled={mode === "idle"}
         >
-          {mode === "check-in" ? "Check In" : "Check Out"}
+          Mark {auto ? "Auto" : "Manual"} {point ? "Check Out" : "Check In"}
         </Button>
       </Grid>
     </Grid>
