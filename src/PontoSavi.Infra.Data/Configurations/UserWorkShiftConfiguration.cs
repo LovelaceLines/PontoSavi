@@ -9,10 +9,7 @@ public class UserWorkShiftConfiguration : IEntityTypeConfiguration<UserWorkShift
 {
     public void Configure(EntityTypeBuilder<UserWorkShift> builder)
     {
-        builder.HasKey(x => x.WorkShiftId);
-
-        builder.HasIndex(x => new { x.UserId, x.WorkShiftId })
-            .IsUnique();
+        builder.HasKey(x => new { x.UserId, x.WorkShiftId });
 
         builder.HasOne(x => x.User)
             .WithMany()
@@ -23,8 +20,8 @@ public class UserWorkShiftConfiguration : IEntityTypeConfiguration<UserWorkShift
             .HasForeignKey(x => x.CompanyId);
 
         builder.HasOne(x => x.WorkShift)
-            .WithOne()
-            .HasForeignKey<UserWorkShift>(x => x.WorkShiftId);
+            .WithMany()
+            .HasForeignKey(x => x.WorkShiftId);
 
         builder.Property(x => x.CreatedAt)
             .ValueGeneratedOnAdd()

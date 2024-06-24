@@ -1,6 +1,7 @@
 ﻿using System.Net;
 
 using PontoSavi.Application.Interfaces;
+using PontoSavi.Domain.DTOs;
 using PontoSavi.Domain.Entities;
 using PontoSavi.Domain.Exceptions;
 using PontoSavi.Domain.Filters;
@@ -23,7 +24,7 @@ public class WorkShiftService : IWorkShiftService
         _companyWorkShiftRepository = companyWorkShiftRepository;
     }
 
-    public async Task<QueryResult<WorkShift>> Query(WorkShiftFilter filter) =>
+    public async Task<QueryResult<WorkShiftDTO>> Query(WorkShiftFilter filter) =>
         await _repository.Query(filter);
 
     public async Task<WorkShift> GetById(int id, int companyId) =>
@@ -31,11 +32,17 @@ public class WorkShiftService : IWorkShiftService
 
     public async Task<WorkShift> Create(WorkShift workShift)
     {
+        if (await _repository.ExistsByCheckInAndCheckOut(workShift.CheckIn, workShift.CheckOut, workShift.CompanyId))
+            throw new AppException("Já existe um turno de trabalho com o mesmo horário de entrada e saída!", HttpStatusCode.Conflict);
+
         return await _repository.Add(workShift);
     }
 
     public async Task<WorkShift> Update(WorkShift workShift)
     {
+        if (await _repository.ExistsByCheckInAndCheckOut(workShift.CheckIn, workShift.CheckOut, workShift.CompanyId))
+            throw new AppException("Já existe um turno de trabalho com o mesmo horário de entrada e saída!", HttpStatusCode.Conflict);
+
         if (await _userWorkShiftRepository.ExistsById(workShift.Id, workShift.CompanyId) ||
             await _companyWorkShiftRepository.ExistsById(workShift.Id, workShift.CompanyId))
             throw new AppException("Turno de trabalho não pode ser alterado pois está sendo utilizado!", HttpStatusCode.Conflict);

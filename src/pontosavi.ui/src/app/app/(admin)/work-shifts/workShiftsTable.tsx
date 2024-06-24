@@ -7,10 +7,11 @@ import { useMemo } from "react";
 import { useDefaultMaterialReactTable, DateTimeToStr } from "@/_tables";
 import { workShift } from "@/_types";
 import { useWorkShiftsTable } from "./useWorkShiftsTable";
+import { Actions } from "./workShiftComponents";
 
 export const WorkShiftsTable = () => {
   const {
-    daysOff,
+    workShits,
     rowCount,
     isLoading,
     onSubmit,
@@ -32,7 +33,6 @@ export const WorkShiftsTable = () => {
     {
       accessorKey: "id",
       header: "ID",
-      size: 25,
       enableClickToCopy: true,
       muiCopyButtonProps: {
         fullWidth: true,
@@ -43,51 +43,61 @@ export const WorkShiftsTable = () => {
     {
       accessorKey: "checkIn",
       header: "Check-in",
-      size: 25,
     },
     {
       accessorKey: "checkInToleranceMinutes",
       header: "Check-in Tolerance",
-      size: 25,
     },
     {
       accessorKey: "checkOut",
       header: "Check-out",
-      size: 25,
     },
     {
       accessorKey: "checkOutToleranceMinutes",
       header: "Check-out Tolerance",
-      size: 25,
     },
     {
       accessorKey: "description",
       header: "Description",
     },
     {
+      accessorKey: "user.name",
+      header: "User",
+      enableColumnFilter: false,
+      enableSorting: false,
+    },
+    {
+      accessorKey: "company.name",
+      header: "Company",
+      enableColumnFilter: false,
+      enableSorting: false,
+    },
+    {
       accessorKey: "createdAt",
       header: "Created At",
-      size: 75,
+      enableColumnFilter: false,
+      enableSorting: false,
       Cell: ({ cell }) => <DateTimeToStr date={cell.getValue() as Date} />,
     },
     {
       accessorKey: "updatedAt",
       header: "Updated At",
-      size: 75,
+      enableColumnFilter: false,
+      enableSorting: false,
       Cell: ({ cell }) => <DateTimeToStr date={cell.getValue() as Date} />,
     }
   ], []);
 
   return useDefaultMaterialReactTable({
     columns,
-    data: daysOff || [],
+    data: workShits || [],
     title: "Accounts",
 
     setGlobalFilter,
     setColumnFilters,
     setSorting,
     setPagination,
-    rowCount: rowCount ?? daysOff?.length ?? undefined,
+    rowCount: rowCount ?? workShits?.length ?? undefined,
 
     state: {
       globalFilter,
@@ -102,5 +112,8 @@ export const WorkShiftsTable = () => {
     handleDelete,
 
     isLoading,
+
+    enableRowActions: true,
+    renderRowActions: ({ row }) => <Actions row={row.original} />,
   });
 };

@@ -243,15 +243,15 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 name: "UserWorkShifts",
                 columns: table => new
                 {
-                    WorkShiftId = table.Column<int>(type: "INTEGER", nullable: false),
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
+                    WorkShiftId = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
                     CompanyId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserWorkShifts", x => x.WorkShiftId);
+                    table.PrimaryKey("PK_UserWorkShifts", x => new { x.UserId, x.WorkShiftId });
                     table.ForeignKey(
                         name: "FK_UserWorkShifts_Companies_CompanyId",
                         column: x => x.CompanyId,
@@ -275,18 +275,18 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Companies",
                 columns: new[] { "Id", "CNPJ", "CreatedAt", "Name", "TradeName" },
-                values: new object[] { 1, "00000000000000", new DateTime(2024, 6, 19, 8, 2, 17, 444, DateTimeKind.Local).AddTicks(8185), "Ponto Savi", "Ponto Savi" });
+                values: new object[] { 1, "00000000000000", new DateTime(2024, 6, 20, 21, 5, 47, 276, DateTimeKind.Local).AddTicks(364), "Ponto Savi", "Ponto Savi" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
                 columns: new[] { "Id", "CompanyId", "ConcurrencyStamp", "CreatedAt", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { 1, 1, "98b72587-a923-4b32-a5cd-fa07a18154fa", new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4483), "Desenvolvedor", "DESENVOLVEDOR" },
-                    { 2, 1, "96872095-d959-441b-a6e0-8c93c1896b8a", new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4504), "CEO", "CEO" },
-                    { 3, 1, "b32214e9-52fb-459a-aca8-25672cc0e87e", new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4509), "Administrador", "ADMINISTRADOR" },
-                    { 4, 1, "f9fae724-5480-40aa-b8ba-35522033e666", new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4521), "Supervisor", "SUPERVISOR" },
-                    { 5, 1, "5b82c443-bc5e-48fe-a101-b29c99a7265b", new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4525), "Colaborador", "COLABORADOR" }
+                    { 1, 1, "655ba2ee-8920-44c8-b2a0-cdfabe0ed649", new DateTime(2024, 6, 20, 21, 5, 47, 599, DateTimeKind.Local).AddTicks(9048), "Desenvolvedor", "DESENVOLVEDOR" },
+                    { 2, 1, "106cd16c-fc98-407d-a8b1-c3e367631527", new DateTime(2024, 6, 20, 21, 5, 47, 599, DateTimeKind.Local).AddTicks(9065), "CEO", "CEO" },
+                    { 3, 1, "87ccfd78-a345-42c0-9a1e-a8406c780891", new DateTime(2024, 6, 20, 21, 5, 47, 599, DateTimeKind.Local).AddTicks(9070), "Administrador", "ADMINISTRADOR" },
+                    { 4, 1, "92bc3799-958a-4edf-9145-0efe4bdf0d1a", new DateTime(2024, 6, 20, 21, 5, 47, 599, DateTimeKind.Local).AddTicks(9084), "Supervisor", "SUPERVISOR" },
+                    { 5, 1, "1c7f231a-3f32-480c-a2cf-89bff796b9f3", new DateTime(2024, 6, 20, 21, 5, 47, 599, DateTimeKind.Local).AddTicks(9088), "Colaborador", "COLABORADOR" }
                 });
 
             migrationBuilder.InsertData(
@@ -294,10 +294,10 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 columns: new[] { "Id", "AccessFailedCount", "CompanyId", "ConcurrencyStamp", "CreatedAt", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, 1, "81850961-8faa-4bbb-9f6e-f71906c62da7", new DateTime(2024, 6, 19, 8, 2, 17, 507, DateTimeKind.Local).AddTicks(1084), "dev@gmail.com", false, false, null, "Developer", "DEV@GMAIL.COM", "DEV", "AQAAAAIAAYagAAAAEPEj3NJD2yXaMq2ffUe/kE84aGccujBsXwiUPYdSbqESCQjlxkzXe1uxi4F0T1N0tg==", "(55) 85 9 9999-9999", false, "993dd97d-9d78-466f-8717-1a70fb26fcd1", false, "dev" },
-                    { 2, 0, 1, "6fbcc103-607d-4e08-9187-a4e10811c2e4", new DateTime(2024, 6, 19, 8, 2, 17, 568, DateTimeKind.Local).AddTicks(9488), "admin@gmail.com", false, false, null, "Administrator", "ADMIN@GMAIL.COM", "ADMIN", "AQAAAAIAAYagAAAAEDi1Kcbx6YH2mu2ydjw0jXjN+bPXvG8fsVdJ/kiFM4COJ9TkhU5Zg75rd6f2ZofJng==", "(55) 85 9 9999-9998", false, "274d3613-b0f3-451a-a085-bec0d0971acf", false, "admin" },
-                    { 3, 0, 1, "0b0a7b55-6ab9-4111-88a1-40ec849ea6eb", new DateTime(2024, 6, 19, 8, 2, 17, 631, DateTimeKind.Local).AddTicks(2805), "super@gmail.com", false, false, null, "Supervisor", "SUPER@GMAIL.COM", "SUPER", "AQAAAAIAAYagAAAAEFaCaOT1/FAQFwXtO+fD36S4Y8rL2joLLVfDuoVJDuXk3hTGZ4rLLYWgjt+fh4oMxw==", "(55) 85 9 9999-9997", false, "d826436f-0b90-4ba8-b8b4-4f5246fc4985", false, "super" },
-                    { 4, 0, 1, "cc8a88b4-35b4-4101-afd6-b41989a31368", new DateTime(2024, 6, 19, 8, 2, 17, 693, DateTimeKind.Local).AddTicks(2388), "base@gmail.com", false, false, null, "Base", "BASE@GMAIL.COM", "BASE", "AQAAAAIAAYagAAAAEEBylCq+cmebCjuw1hmsOsb3kICnDLOSsY+pHDLnbhLUbdCEMSunQ6LLwwklSpioxQ==", "(55) 85 9 9999-9997", false, "bde2c58b-61c0-4d18-aaee-2f6d5f3c0819", false, "base" }
+                    { 1, 0, 1, "d9957b7f-1d5d-4815-81eb-302e794d6607", new DateTime(2024, 6, 20, 21, 5, 47, 356, DateTimeKind.Local).AddTicks(8274), "dev@gmail.com", false, false, null, "Developer", "DEV@GMAIL.COM", "DEV", "AQAAAAIAAYagAAAAEK+VdDfM5Wk4LV6mW1cwXkrc3P8vplwVFJav7I65eggvgOq7PP1KdG2JnqwEooIMMw==", "(55) 85 9 9999-9999", false, "55a0d3f2-256d-4680-8c5d-31e2188bf27f", false, "dev" },
+                    { 2, 0, 1, "99fa85cf-0ee2-41de-a522-55734c7d7cf6", new DateTime(2024, 6, 20, 21, 5, 47, 438, DateTimeKind.Local).AddTicks(6971), "admin@gmail.com", false, false, null, "Administrator", "ADMIN@GMAIL.COM", "ADMIN", "AQAAAAIAAYagAAAAENv7X5QOa1hGa+3LcGUNVI5W1tHz9sr7eEkfvVeWGnW+pc9b4wxTbB4qpt3pYz69YA==", "(55) 85 9 9999-9998", false, "95595c3f-f08c-4579-9cf3-d7d5ea8fc75a", false, "admin" },
+                    { 3, 0, 1, "5a91fd52-9cf5-4709-95d5-104e6232d7db", new DateTime(2024, 6, 20, 21, 5, 47, 518, DateTimeKind.Local).AddTicks(8296), "super@gmail.com", false, false, null, "Supervisor", "SUPER@GMAIL.COM", "SUPER", "AQAAAAIAAYagAAAAEHGZdTvSkUfIAQc4WpXYeKXEkLN6BN8ccpS2QP1i39bNI5QaZuUivWguxyjlA4UwVg==", "(55) 85 9 9999-9997", false, "4c035670-a214-4fae-94a7-823e77dac5b8", false, "super" },
+                    { 4, 0, 1, "91cd285f-b7cf-40dd-b812-569e99b1a3be", new DateTime(2024, 6, 20, 21, 5, 47, 598, DateTimeKind.Local).AddTicks(4717), "base@gmail.com", false, false, null, "Base", "BASE@GMAIL.COM", "BASE", "AQAAAAIAAYagAAAAEPiI74eabsVO8yZv2gs7ebl6hp6AVgtaA25YFWSKzVZdXM7WS1InvalfvMLIIin9tQ==", "(55) 85 9 9999-9997", false, "c9e960f1-0264-4481-99c4-2d20b9c94251", false, "base" }
                 });
 
             migrationBuilder.InsertData(
@@ -305,14 +305,16 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 columns: new[] { "CompanyId", "RoleId", "UserId", "CreatedAt" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8598) },
-                    { 1, 2, 1, new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8608) },
-                    { 1, 3, 1, new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8610) },
-                    { 1, 4, 1, new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8612) },
-                    { 1, 5, 1, new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8613) },
-                    { 1, 3, 2, new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8615) },
-                    { 1, 4, 3, new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8616) },
-                    { 1, 5, 4, new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8618) }
+                    { 1, 1, 1, new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9806) },
+                    { 1, 2, 1, new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9814) },
+                    { 1, 3, 1, new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9816) },
+                    { 1, 4, 1, new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9818) },
+                    { 1, 5, 1, new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9889) },
+                    { 1, 3, 2, new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9892) },
+                    { 1, 5, 2, new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9893) },
+                    { 1, 4, 3, new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9905) },
+                    { 1, 5, 3, new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9907) },
+                    { 1, 5, 4, new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9909) }
                 });
 
             migrationBuilder.CreateIndex(
@@ -401,10 +403,9 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 column: "CompanyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserWorkShifts_UserId_WorkShiftId",
+                name: "IX_UserWorkShifts_WorkShiftId",
                 table: "UserWorkShifts",
-                columns: new[] { "UserId", "WorkShiftId" },
-                unique: true);
+                column: "WorkShiftId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_WorkShifts_CompanyId",

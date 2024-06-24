@@ -148,10 +148,10 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                         {
                             Id = 1,
                             CNPJ = "00000000000000",
-                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 444, DateTimeKind.Local).AddTicks(8185),
+                            CreatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 276, DateTimeKind.Local).AddTicks(364),
                             Name = "Ponto Savi",
                             TradeName = "Ponto Savi",
-                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 444, DateTimeKind.Local).AddTicks(8200)
+                            UpdatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 276, DateTimeKind.Local).AddTicks(377)
                         });
                 });
 
@@ -318,51 +318,51 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                         {
                             Id = 1,
                             CompanyId = 1,
-                            ConcurrencyStamp = "98b72587-a923-4b32-a5cd-fa07a18154fa",
-                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4483),
+                            ConcurrencyStamp = "655ba2ee-8920-44c8-b2a0-cdfabe0ed649",
+                            CreatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 599, DateTimeKind.Local).AddTicks(9048),
                             Name = "Desenvolvedor",
                             NormalizedName = "DESENVOLVEDOR",
-                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4497)
+                            UpdatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 599, DateTimeKind.Local).AddTicks(9057)
                         },
                         new
                         {
                             Id = 2,
                             CompanyId = 1,
-                            ConcurrencyStamp = "96872095-d959-441b-a6e0-8c93c1896b8a",
-                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4504),
+                            ConcurrencyStamp = "106cd16c-fc98-407d-a8b1-c3e367631527",
+                            CreatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 599, DateTimeKind.Local).AddTicks(9065),
                             Name = "CEO",
                             NormalizedName = "CEO",
-                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4504)
+                            UpdatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 599, DateTimeKind.Local).AddTicks(9066)
                         },
                         new
                         {
                             Id = 3,
                             CompanyId = 1,
-                            ConcurrencyStamp = "b32214e9-52fb-459a-aca8-25672cc0e87e",
-                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4509),
+                            ConcurrencyStamp = "87ccfd78-a345-42c0-9a1e-a8406c780891",
+                            CreatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 599, DateTimeKind.Local).AddTicks(9070),
                             Name = "Administrador",
                             NormalizedName = "ADMINISTRADOR",
-                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4510)
+                            UpdatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 599, DateTimeKind.Local).AddTicks(9071)
                         },
                         new
                         {
                             Id = 4,
                             CompanyId = 1,
-                            ConcurrencyStamp = "f9fae724-5480-40aa-b8ba-35522033e666",
-                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4521),
+                            ConcurrencyStamp = "92bc3799-958a-4edf-9145-0efe4bdf0d1a",
+                            CreatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 599, DateTimeKind.Local).AddTicks(9084),
                             Name = "Supervisor",
                             NormalizedName = "SUPERVISOR",
-                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4522)
+                            UpdatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 599, DateTimeKind.Local).AddTicks(9084)
                         },
                         new
                         {
                             Id = 5,
                             CompanyId = 1,
-                            ConcurrencyStamp = "5b82c443-bc5e-48fe-a101-b29c99a7265b",
-                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4525),
+                            ConcurrencyStamp = "1c7f231a-3f32-480c-a2cf-89bff796b9f3",
+                            CreatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 599, DateTimeKind.Local).AddTicks(9088),
                             Name = "Colaborador",
                             NormalizedName = "COLABORADOR",
-                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 694, DateTimeKind.Local).AddTicks(4525)
+                            UpdatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 599, DateTimeKind.Local).AddTicks(9089)
                         });
                 });
 
@@ -457,20 +457,20 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                             Id = 1,
                             AccessFailedCount = 0,
                             CompanyId = 1,
-                            ConcurrencyStamp = "81850961-8faa-4bbb-9f6e-f71906c62da7",
-                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 507, DateTimeKind.Local).AddTicks(1084),
+                            ConcurrencyStamp = "d9957b7f-1d5d-4815-81eb-302e794d6607",
+                            CreatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 356, DateTimeKind.Local).AddTicks(8274),
                             Email = "dev@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Developer",
                             NormalizedEmail = "DEV@GMAIL.COM",
                             NormalizedUserName = "DEV",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPEj3NJD2yXaMq2ffUe/kE84aGccujBsXwiUPYdSbqESCQjlxkzXe1uxi4F0T1N0tg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEK+VdDfM5Wk4LV6mW1cwXkrc3P8vplwVFJav7I65eggvgOq7PP1KdG2JnqwEooIMMw==",
                             PhoneNumber = "(55) 85 9 9999-9999",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "993dd97d-9d78-466f-8717-1a70fb26fcd1",
+                            SecurityStamp = "55a0d3f2-256d-4680-8c5d-31e2188bf27f",
                             TwoFactorEnabled = false,
-                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 507, DateTimeKind.Local).AddTicks(1103),
+                            UpdatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 356, DateTimeKind.Local).AddTicks(8289),
                             UserName = "dev"
                         },
                         new
@@ -478,20 +478,20 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                             Id = 2,
                             AccessFailedCount = 0,
                             CompanyId = 1,
-                            ConcurrencyStamp = "6fbcc103-607d-4e08-9187-a4e10811c2e4",
-                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 568, DateTimeKind.Local).AddTicks(9488),
+                            ConcurrencyStamp = "99fa85cf-0ee2-41de-a522-55734c7d7cf6",
+                            CreatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 438, DateTimeKind.Local).AddTicks(6971),
                             Email = "admin@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Administrator",
                             NormalizedEmail = "ADMIN@GMAIL.COM",
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAEDi1Kcbx6YH2mu2ydjw0jXjN+bPXvG8fsVdJ/kiFM4COJ9TkhU5Zg75rd6f2ZofJng==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENv7X5QOa1hGa+3LcGUNVI5W1tHz9sr7eEkfvVeWGnW+pc9b4wxTbB4qpt3pYz69YA==",
                             PhoneNumber = "(55) 85 9 9999-9998",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "274d3613-b0f3-451a-a085-bec0d0971acf",
+                            SecurityStamp = "95595c3f-f08c-4579-9cf3-d7d5ea8fc75a",
                             TwoFactorEnabled = false,
-                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 568, DateTimeKind.Local).AddTicks(9495),
+                            UpdatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 438, DateTimeKind.Local).AddTicks(6981),
                             UserName = "admin"
                         },
                         new
@@ -499,20 +499,20 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                             Id = 3,
                             AccessFailedCount = 0,
                             CompanyId = 1,
-                            ConcurrencyStamp = "0b0a7b55-6ab9-4111-88a1-40ec849ea6eb",
-                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 631, DateTimeKind.Local).AddTicks(2805),
+                            ConcurrencyStamp = "5a91fd52-9cf5-4709-95d5-104e6232d7db",
+                            CreatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 518, DateTimeKind.Local).AddTicks(8296),
                             Email = "super@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Supervisor",
                             NormalizedEmail = "SUPER@GMAIL.COM",
                             NormalizedUserName = "SUPER",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFaCaOT1/FAQFwXtO+fD36S4Y8rL2joLLVfDuoVJDuXk3hTGZ4rLLYWgjt+fh4oMxw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEHGZdTvSkUfIAQc4WpXYeKXEkLN6BN8ccpS2QP1i39bNI5QaZuUivWguxyjlA4UwVg==",
                             PhoneNumber = "(55) 85 9 9999-9997",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "d826436f-0b90-4ba8-b8b4-4f5246fc4985",
+                            SecurityStamp = "4c035670-a214-4fae-94a7-823e77dac5b8",
                             TwoFactorEnabled = false,
-                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 631, DateTimeKind.Local).AddTicks(2813),
+                            UpdatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 518, DateTimeKind.Local).AddTicks(8305),
                             UserName = "super"
                         },
                         new
@@ -520,20 +520,20 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                             Id = 4,
                             AccessFailedCount = 0,
                             CompanyId = 1,
-                            ConcurrencyStamp = "cc8a88b4-35b4-4101-afd6-b41989a31368",
-                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 693, DateTimeKind.Local).AddTicks(2388),
+                            ConcurrencyStamp = "91cd285f-b7cf-40dd-b812-569e99b1a3be",
+                            CreatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 598, DateTimeKind.Local).AddTicks(4717),
                             Email = "base@gmail.com",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             Name = "Base",
                             NormalizedEmail = "BASE@GMAIL.COM",
                             NormalizedUserName = "BASE",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEBylCq+cmebCjuw1hmsOsb3kICnDLOSsY+pHDLnbhLUbdCEMSunQ6LLwwklSpioxQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPiI74eabsVO8yZv2gs7ebl6hp6AVgtaA25YFWSKzVZdXM7WS1InvalfvMLIIin9tQ==",
                             PhoneNumber = "(55) 85 9 9999-9997",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "bde2c58b-61c0-4d18-aaee-2f6d5f3c0819",
+                            SecurityStamp = "c9e960f1-0264-4481-99c4-2d20b9c94251",
                             TwoFactorEnabled = false,
-                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 693, DateTimeKind.Local).AddTicks(2402),
+                            UpdatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 598, DateTimeKind.Local).AddTicks(4723),
                             UserName = "base"
                         });
                 });
@@ -571,69 +571,88 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                             UserId = 1,
                             RoleId = 1,
                             CompanyId = 1,
-                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8598),
-                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8604)
+                            CreatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9806),
+                            UpdatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9810)
                         },
                         new
                         {
                             UserId = 1,
                             RoleId = 2,
                             CompanyId = 1,
-                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8608),
-                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8609)
+                            CreatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9814),
+                            UpdatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9815)
                         },
                         new
                         {
                             UserId = 1,
                             RoleId = 3,
                             CompanyId = 1,
-                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8610),
-                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8611)
+                            CreatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9816),
+                            UpdatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9817)
                         },
                         new
                         {
                             UserId = 1,
                             RoleId = 4,
                             CompanyId = 1,
-                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8612),
-                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8612)
+                            CreatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9818),
+                            UpdatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9819)
                         },
                         new
                         {
                             UserId = 1,
                             RoleId = 5,
                             CompanyId = 1,
-                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8613),
-                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8614)
+                            CreatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9889),
+                            UpdatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9890)
                         },
                         new
                         {
                             UserId = 2,
                             RoleId = 3,
                             CompanyId = 1,
-                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8615),
-                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8615)
+                            CreatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9892),
+                            UpdatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9892)
+                        },
+                        new
+                        {
+                            UserId = 2,
+                            RoleId = 5,
+                            CompanyId = 1,
+                            CreatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9893),
+                            UpdatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9897)
                         },
                         new
                         {
                             UserId = 3,
                             RoleId = 4,
                             CompanyId = 1,
-                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8616),
-                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8617)
+                            CreatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9905),
+                            UpdatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9905)
+                        },
+                        new
+                        {
+                            UserId = 3,
+                            RoleId = 5,
+                            CompanyId = 1,
+                            CreatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9907),
+                            UpdatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9907)
                         },
                         new
                         {
                             UserId = 4,
                             RoleId = 5,
                             CompanyId = 1,
-                            CreatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8618),
-                            UpdatedAt = new DateTime(2024, 6, 19, 8, 2, 17, 700, DateTimeKind.Local).AddTicks(8624)
+                            CreatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9909),
+                            UpdatedAt = new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9909)
                         });
                 });
 
             modelBuilder.Entity("PontoSavi.Domain.Entities.UserWorkShift", b =>
                 {
+                    b.Property<int>("UserId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("WorkShiftId")
                         .HasColumnType("INTEGER");
 
@@ -648,15 +667,11 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                         .ValueGeneratedOnUpdate()
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("WorkShiftId");
+                    b.HasKey("UserId", "WorkShiftId");
 
                     b.HasIndex("CompanyId");
 
-                    b.HasIndex("UserId", "WorkShiftId")
-                        .IsUnique();
+                    b.HasIndex("WorkShiftId");
 
                     b.ToTable("UserWorkShifts");
                 });
@@ -856,8 +871,8 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("PontoSavi.Domain.Entities.WorkShift", "WorkShift")
-                        .WithOne()
-                        .HasForeignKey("PontoSavi.Domain.Entities.UserWorkShift", "WorkShiftId")
+                        .WithMany()
+                        .HasForeignKey("WorkShiftId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

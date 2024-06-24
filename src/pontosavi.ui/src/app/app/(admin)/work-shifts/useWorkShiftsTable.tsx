@@ -21,7 +21,7 @@ export const useWorkShiftsTable = () => {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const daysOff = useSelector(selectWorkShifts);
+  const workShits = useSelector(selectWorkShifts);
   const rowCount = useSelector(selectTotalCount);
   const status = useSelector(selectStatus);
   const isLoading = () => status === "loading";
@@ -45,7 +45,7 @@ export const useWorkShiftsTable = () => {
   const handleDelete = useMemo(() => (id: number) => dispatch(deleteWorkShift(id)), [dispatch]);
 
   return {
-    daysOff,
+    workShits,
     rowCount,
     isLoading,
     onSubmit,

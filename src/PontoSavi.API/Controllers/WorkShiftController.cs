@@ -2,6 +2,7 @@
 
 using PontoSavi.API.ServiceFilters;
 using PontoSavi.Application.Interfaces;
+using PontoSavi.Domain.DTOs;
 using PontoSavi.Domain.Entities;
 using PontoSavi.Domain.Filters;
 
@@ -19,7 +20,7 @@ public class WorkShiftController : ControllerBase
         _service = workShiftService;
 
     [HttpGet]
-    public async Task<ActionResult<QueryResult<WorkShift>>> Get([FromQuery] WorkShiftFilter filter)
+    public async Task<ActionResult<QueryResult<WorkShiftDTO>>> Get([FromQuery] WorkShiftFilter filter)
     {
         var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
         filter.CompanyId = currentCompanyId;

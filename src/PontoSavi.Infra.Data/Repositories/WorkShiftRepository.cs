@@ -6,6 +6,7 @@ using PontoSavi.Domain.Exceptions;
 using PontoSavi.Domain.Filters;
 using PontoSavi.Domain.Repositories;
 using PontoSavi.Infra.Data.Context;
+using PontoSavi.Domain.DTOs;
 
 namespace PontoSavi.Infra.Data.Repositories;
 
@@ -16,7 +17,7 @@ public class WorkShiftRepository : BaseRepository<WorkShift>, IWorkShiftReposito
     public WorkShiftRepository(AppDbContext context) : base(context) =>
         _context = context;
 
-    public async Task<QueryResult<WorkShift>> Query(WorkShiftFilter filter)
+    public async Task<QueryResult<WorkShiftDTO>> Query(WorkShiftFilter filter)
     {
         var query = _context.WorkShifts.AsQueryable();
 
@@ -35,18 +36,32 @@ public class WorkShiftRepository : BaseRepository<WorkShift>, IWorkShiftReposito
         if (filter.CheckOutDescOrderSort.HasValue)
             query = filter.CheckOutDescOrderSort.Value ? query.OrderByDescending(x => x.CheckOut) : query.OrderBy(x => x.CheckOut);
 
-        var totalCount = query.Count();
+        var _query = query
+            .GroupJoin(_context.UserWorkShifts, ws => ws.Id, uws => uws.WorkShiftId, (ws, uws) => new { ws, uws })
+            .SelectMany(x => x.uws.DefaultIfEmpty(), (ws, uws) => new { ws.ws, uws })
+            .GroupJoin(_context.Users, wsuws => wsuws.uws!.UserId, u => u.Id, (wsuws, u) => new { wsuws.ws, u })
+            .SelectMany(x => x.u.DefaultIfEmpty(), (ws, u) => new { ws.ws, u })
+            .GroupJoin(_context.CompanyWorkShifts, wsu => wsu.ws.Id, cws => cws.WorkShiftId, (wsu, cws) => new { wsu.ws, wsu.u, cws })
+            .SelectMany(x => x.cws.DefaultIfEmpty(), (wsu, cws) => new { wsu.ws, wsu.u, cws })
+            .GroupJoin(_context.Companies, wsucws => wsucws.cws!.CompanyId, c => c.Id, (wsucws, c) => new { wsucws.ws, wsucws.u, c })
+            .SelectMany(x => x.c.DefaultIfEmpty(), (wsuc, c) => new { wsuc.ws, wsuc.u, c });
 
-        var workShifts = await query
+        var totalCount = _query.Count();
+
+        var workShifts = await _query
             .Skip(filter.PageIndex * filter.PageSize)
             .Take(filter.PageSize)
+            .Select(x => new WorkShiftDTO(x.ws, x.u, x.c))
             .ToListAsync();
 
-        return new QueryResult<WorkShift>(workShifts, totalCount);
+        return new QueryResult<WorkShiftDTO>(workShifts, totalCount);
     }
 
     public async Task<bool> ExistsById(int id, int companyId) =>
         await _context.WorkShifts.AsNoTracking().AnyAsync(x => x.Id == id && x.CompanyId == companyId);
+
+    public async Task<bool> ExistsByCheckInAndCheckOut(TimeOnly checkIn, TimeOnly checkOut, int companyId) =>
+        await _context.WorkShifts.AsNoTracking().AnyAsync(x => x.CheckIn == checkIn && x.CheckOut == checkOut && x.CompanyId == companyId);
 
     public async Task<WorkShift> GetById(int id, int companyId) =>
         await _context.WorkShifts.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id && x.CompanyId == companyId) ??

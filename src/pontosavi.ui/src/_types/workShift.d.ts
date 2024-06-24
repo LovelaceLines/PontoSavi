@@ -1,3 +1,5 @@
+import { company, user } from "./index";
+
 export type workShiftFilter = {
   search?: string;
 
@@ -22,6 +24,8 @@ export type workShift = {
   checkOut: tymeonly;
   checkOutToleranceMinutes: number;
   description?: string;
+  user?: user;
+  company?: company;
   createdAt?: Date;
   updatedAt?: Date;
 }
