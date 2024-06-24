@@ -27,8 +27,6 @@ export const usePointsTable = ({ mode = "admin", filters }: { mode: "admin" | "b
   const status = useSelector(selectStatus);
   const isLoading = () => status === "loading";
 
-  console.log("points", points);
-
   const onSubmit = () => dispatch(getPoints({
     id: columnFilters.find(f => f.id === "id")?.value as number || undefined,
     userId: filters?.userId ?? columnFilters.find(f => f.id === "userId")?.value as number ?? undefined,

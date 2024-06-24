@@ -1,13 +1,9 @@
 "use client";
 
 import { Typography } from "@mui/material";
-import dynamic from "next/dynamic";
-
-import { Loading } from "@/_components";
 import Link from "next/link";
 
-const CompanyAndUserForm = dynamic(() => import("./companyAndUserForm").then(mod => mod.CompanyAndUserForm),
-  { ssr: false, loading: () => <Loading /> });
+import { CompanyAndUserForm } from "./companyAndUserForm";
 
 export default function Page() {
   return (

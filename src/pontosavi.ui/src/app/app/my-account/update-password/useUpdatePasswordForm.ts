@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { useSnackbar } from "@/_contexts";
 import { selectError, selectStatus } from "@/_redux/features/user/slice";
-import { updatePassword } from "@/_redux/features/user/thunks";
+import { putUserPassword } from "@/_redux/features/user/thunks";
 import { AppDispatch } from "@/_redux/store";
 import { formDataSchema, Schema } from "./schema";
 
@@ -27,7 +27,7 @@ export const useUpdatePassword = () => {
   useEffect(() => { if (error) Snackbar(error); }, [error]);
 
   const onSubmit = ({ newPassword, oldPassword }: Schema) =>
-    dispatch(updatePassword({ newPassword, oldPassword }));
+    dispatch(putUserPassword({ newPassword, oldPassword }));
 
   return ({
     register,

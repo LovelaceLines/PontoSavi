@@ -1,41 +1,31 @@
 "use client";
 
 import { Typography } from "@mui/material";
-import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Loading } from "@/_components";
-import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch } from "@/_redux/store";
+import { DayOffForm } from "./dayOffForm";
+import { selectDayOff, selectStatus } from "@/_redux/features/dayOff/slice";
 import { getDayOffById } from "@/_redux/features/dayOff/thunks";
-import { dayOff } from "@/_types";
-import { selectStatus } from "@/_redux/features/dayOff/slice";
-
-const DayOffForm = dynamic(() => import("./dayOffForm").then(mod => mod.DayOffForm),
-  { ssr: false, loading: () => <Loading /> });
+import { AppDispatch } from "@/_redux/store";
 
 export default function Page({ params }: { params: { id?: number } }) {
   const dispatch = useDispatch<AppDispatch>();
+  const dayOff = useSelector(selectDayOff);
   const status = useSelector(selectStatus);
-  const [dayOff, setDayOff] = useState<dayOff | undefined>(undefined);
 
   useEffect(() => {
     if (!params.id) return;
-
-    dispatch(getDayOffById(params.id))
-      .then(action => {
-        if (getDayOffById.fulfilled.match(action)) {
-          setDayOff(action.payload);
-        }
-      });
+    dispatch(getDayOffById(params.id));
   }, [params.id]);
 
-  if (status === "loading") return <Loading />;
+  if (status === "loading") return <Loading height="auto" />;
 
   return (
     <>
       <Typography variant="h5" mb={2}>DayOff</Typography>
-      <DayOffForm dayOff={dayOff} />
+      <DayOffForm dayOff={params.id ? dayOff : undefined} />
     </>
   );
 }

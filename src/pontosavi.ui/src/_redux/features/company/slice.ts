@@ -24,6 +24,7 @@ const companySlice = createSlice({
   },
   extraReducers: builder => {
     builder.addCase(getCompany.pending, (state) => {
+      state.company = null;
       state.status = "loading";
     });
     builder.addCase(getCompany.fulfilled, (state, action) => {
@@ -31,6 +32,7 @@ const companySlice = createSlice({
       state.status = "idle";
     });
     builder.addCase(getCompany.rejected, (state, action) => {
+      state.company = null;
       state.status = "failed";
       state.error = action.error.message || null;
     });
@@ -38,7 +40,8 @@ const companySlice = createSlice({
     builder.addCase(putCompany.pending, (state) => {
       state.status = "loading";
     });
-    builder.addCase(putCompany.fulfilled, (state) => {
+    builder.addCase(putCompany.fulfilled, (state, action) => {
+      state.company = action.payload;
       state.status = "succeeded";
     });
     builder.addCase(putCompany.rejected, (state, action) => {

@@ -52,8 +52,6 @@ public class CompanyController : ControllerBase
     {
         var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
         companyWorkShift.CompanyId = currentCompanyId;
-        companyWorkShift = await _companyWorkShiftService.Delete(companyWorkShift);
-        await _workShiftService.Delete(new WorkShift { Id = companyWorkShift.WorkShiftId, CompanyId = currentCompanyId });
-        return companyWorkShift;
+        return await _companyWorkShiftService.Delete(companyWorkShift);
     }
 }

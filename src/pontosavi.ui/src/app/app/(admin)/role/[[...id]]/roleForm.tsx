@@ -6,7 +6,12 @@ import { role } from "@/_types";
 import { useRoleForm } from "./useRoleForm";
 
 export const RoleForm = ({ role }: { role?: role }) => {
-  const { errors, handleSubmit, onSubmit, register } = useRoleForm({ role });
+  const {
+    errors,
+    handleSubmit,
+    onSubmit,
+    register,
+  } = useRoleForm({ role });
 
   return (
     <Grid container component="form" onSubmit={handleSubmit(onSubmit)} spacing={2} alignItems="center">

@@ -1,37 +1,31 @@
 "use client";
 
 import { Typography } from "@mui/material";
-import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Loading } from "@/_components";
-import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/_redux/store";
+import { selectRole, selectStatus } from "@/_redux/features/role/slice";
 import { getRoleById } from "@/_redux/features/role/thunks";
-import { role } from "@/_types";
-
-const RoleForm = dynamic(() => import("./roleForm").then(mod => mod.RoleForm),
-  { ssr: false, loading: () => <Loading /> });
+import { RoleForm } from "./roleForm";
 
 export default function Page({ params }: { params: { id?: number } }) {
   const dispatch = useDispatch<AppDispatch>();
-  const [role, setRole] = useState<role | undefined>(undefined);
+  const role = useSelector(selectRole);
+  const status = useSelector(selectStatus);
 
   useEffect(() => {
     if (!params.id) return;
-
-    dispatch(getRoleById(params.id))
-      .then(action => {
-        if (getRoleById.fulfilled.match(action)) {
-          setRole(action.payload);
-        }
-      });
+    dispatch(getRoleById(params.id));
   }, [params.id]);
+
+  if (status === "loading") return <Loading height="auto" />;
 
   return (
     <>
       <Typography variant="h5" mb={2}>Role</Typography>
-      <RoleForm role={role} />
+      <RoleForm role={params.id ? role : undefined} />
     </>
   );
 }

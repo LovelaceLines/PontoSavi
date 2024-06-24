@@ -85,8 +85,24 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
             },
             new UserRole
             {
+                UserId = 2,
+                RoleId = 5,
+                CompanyId = 1,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
+            },
+            new UserRole
+            {
                 UserId = 3,
                 RoleId = 4,
+                CompanyId = 1,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now
+            },
+            new UserRole
+            {
+                UserId = 3,
+                RoleId = 5,
                 CompanyId = 1,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now

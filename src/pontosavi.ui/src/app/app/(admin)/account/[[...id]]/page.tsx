@@ -1,37 +1,31 @@
 "use client";
 
 import { Typography } from "@mui/material";
-import dynamic from "next/dynamic";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 
 import { Loading } from "@/_components";
-import { useDispatch } from "react-redux";
+import { AccountForm } from "@/_forms";
 import { AppDispatch } from "@/_redux/store";
+import { selectStatus, selectUser } from "@/_redux/features/user/slice";
 import { getUserById } from "@/_redux/features/user/thunks";
-import { user } from "@/_types";
-
-const AccountForm = dynamic(() => import("@/_forms").then(mod => mod.AccountForm),
-  { ssr: false, loading: () => <Loading /> });
 
 export default function Page({ params }: { params: { id?: number } }) {
   const dispatch = useDispatch<AppDispatch>();
-  const [user, setUser] = useState<user | undefined>(undefined);
+  const user = useSelector(selectUser);
+  const status = useSelector(selectStatus);
 
   useEffect(() => {
     if (!params.id) return;
-
-    dispatch(getUserById(params.id))
-      .then(action => {
-        if (getUserById.fulfilled.match(action)) {
-          setUser(action.payload);
-        }
-      });
+    dispatch(getUserById(params.id));
   }, [params.id]);
+
+  if (status === "loading") return <Loading height="auto" />;
 
   return (
     <>
       <Typography variant="h5" mb={2}>Account</Typography>
-      <AccountForm user={user} />
+      <AccountForm user={params.id ? user : undefined} />
     </>
   );
 }

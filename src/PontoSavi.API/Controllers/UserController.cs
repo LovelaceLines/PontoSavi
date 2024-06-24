@@ -176,8 +176,6 @@ public class UserController : ControllerBase
     {
         var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
         userWorkShift.CompanyId = currentCompanyId;
-        userWorkShift = await _userWorkShiftService.Delete(userWorkShift);
-        await _workShiftService.Delete(new WorkShift { Id = userWorkShift.WorkShiftId, CompanyId = currentCompanyId });
-        return userWorkShift;
+        return await _userWorkShiftService.Delete(userWorkShift);
     }
 }

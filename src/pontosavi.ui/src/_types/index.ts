@@ -1,5 +1,5 @@
 export type { authToken, jwtPayload, login, userToken } from "./auth.d.ts";
-export type { company, companyFilter, companyAndUser } from "./company.d.ts";
+export type { company, companyAndUser, companyFilter, companyWorkShift } from "./company.d.ts";
 export type { dayOff, dayOffFilter } from "./dayOff.d.ts";
 export type { apiException, badRequestException } from "./exception.d.ts";
 export type { queryResult } from "./query.d.ts";

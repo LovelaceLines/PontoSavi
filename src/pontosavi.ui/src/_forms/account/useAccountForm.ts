@@ -10,7 +10,7 @@ import { selectUser as selectAuthUser } from "@/_redux/features/auth/slice";
 import { selectRoles } from "@/_redux/features/role/slice";
 import { getRoles } from "@/_redux/features/role/thunks";
 import { selectError, selectStatus } from "@/_redux/features/user/slice";
-import { postUser, updateUser } from "@/_redux/features/user/thunks";
+import { postUser, putUser } from "@/_redux/features/user/thunks";
 import { AppDispatch } from "@/_redux/store";
 import { user, role } from "@/_types";
 import { formDataSchema, Schema } from "./schema";
@@ -38,7 +38,7 @@ export const useAccountForm = ({ user }: { user?: user }) => {
 
   const onSubmit = ({ password, ...data }: Schema) =>
     !user ? dispatch(postUser({ password: password ?? "", ...data })) :
-      dispatch(updateUser({ oldUser: user, newUser: { password: password ?? "", ...data } }));
+      dispatch(putUser({ oldUser: user, newUser: { password: password ?? "", ...data } }));
 
   const handleRoleAdd = (role: role) => {
     if (getValues().roles?.map(r => r.name).includes(role.name)) return;

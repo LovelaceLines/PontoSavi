@@ -4,7 +4,7 @@ import { type MRT_ColumnDef } from "material-react-table";
 import { ContentCopy } from "@mui/icons-material";
 import { useMemo } from "react";
 
-import { useDefaultMaterialReactTable } from "@/_tables";
+import { DateTimeToStr, useDefaultMaterialReactTable } from "@/_tables";
 import { role } from "@/_types";
 import { useRolesTable } from "./useRolesTable";
 
@@ -43,6 +43,16 @@ export const RolesTable = () => {
     {
       accessorKey: "name",
       header: "Name",
+    },
+    {
+      accessorKey: "createdAt",
+      header: "Created At",
+      Cell: ({ cell }) => <DateTimeToStr date={cell.getValue() as Date} />,
+    },
+    {
+      accessorKey: "updatedAt",
+      header: "Updated At",
+      Cell: ({ cell }) => <DateTimeToStr date={cell.getValue() as Date} />,
     },
   ], []);
 

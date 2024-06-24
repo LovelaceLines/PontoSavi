@@ -1,11 +1,11 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import { deleteUser, deleteWorkShift, getUserById, getUsers, postAddWorkShift, postUser, updatePassword, updateUser } from "./thunks";
+import { deleteUser, deleteWorkShift, getUserById, getUsers, postAddWorkShift, postUser, putUser, putUserPassword } from "./thunks";
 import { user } from "@/_types";
 import { getUser, setUser } from "@/_services";
 
 interface initialStateProps {
-  user: user | null;
+  user: user | undefined;
   users: user[] | null;
   totalCount: number | null;
   status: "idle" | "loading" | "succeeded" | "failed";
@@ -13,7 +13,7 @@ interface initialStateProps {
 }
 
 const initialState: initialStateProps = {
-  user: null,
+  user: undefined,
   users: null,
   totalCount: null,
   status: "idle",
@@ -28,11 +28,13 @@ const userSlice = createSlice({
   extraReducers: builder => {
     builder.addCase(getUsers.pending, (state) => {
       state.status = "loading";
+      state.error = null;
     });
     builder.addCase(getUsers.fulfilled, (state, action) => {
       state.users = action.payload.items;
       state.totalCount = action.payload.totalCount;
       state.status = "idle";
+      state.error = null;
     });
     builder.addCase(getUsers.rejected, (state, action) => {
       state.status = "failed";
@@ -40,64 +42,70 @@ const userSlice = createSlice({
     });
 
     builder.addCase(getUserById.pending, (state) => {
+      state.user = undefined;
       state.status = "loading";
+      state.error = null;
     });
     builder.addCase(getUserById.fulfilled, (state, action) => {
       state.user = action.payload;
       state.status = "idle";
+      state.error = null;
     });
     builder.addCase(getUserById.rejected, (state, action) => {
+      state.user = undefined;
       state.status = "failed";
       state.error = action.error.message || null;
     });
 
     builder.addCase(postUser.pending, (state) => {
-      state.status = "loading";
+      state.error = null;
     });
     builder.addCase(postUser.fulfilled, (state, action) => {
       state.user = action.payload;
       state.status = "succeeded";
+      state.error = null;
     });
     builder.addCase(postUser.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error.message || null;
     });
 
-    builder.addCase(updateUser.pending, (state) => {
-      state.status = "loading";
+    builder.addCase(putUser.pending, (state) => {
+      state.error = null;
     });
-    builder.addCase(updateUser.fulfilled, (state, action) => {
+    builder.addCase(putUser.fulfilled, (state, action) => {
       state.user = action.payload;
 
       if (action.payload.id == getUser().id)
         setUser(action.payload);
 
       state.status = "succeeded";
+      state.error = null;
     });
-    builder.addCase(updateUser.rejected, (state, action) => {
+    builder.addCase(putUser.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error.message || null;
     });
 
-    builder.addCase(updatePassword.pending, (state) => {
-      state.status = "loading";
+    builder.addCase(putUserPassword.pending, (state) => {
+      state.error = null;
     });
-    builder.addCase(updatePassword.fulfilled, (state, action) => {
+    builder.addCase(putUserPassword.fulfilled, (state, action) => {
       state.user = action.payload;
-
       state.status = "succeeded";
+      state.error = null;
     });
-    builder.addCase(updatePassword.rejected, (state, action) => {
+    builder.addCase(putUserPassword.rejected, (state, action) => {
       state.status = "failed";
       state.error = action.error.message || null;
     });
 
     builder.addCase(deleteUser.pending, (state) => {
-      state.status = "loading";
+      state.error = null;
     });
-    builder.addCase(deleteUser.fulfilled, (state, action) => {
-      state.user = action.payload;
+    builder.addCase(deleteUser.fulfilled, (state) => {
       state.status = "succeeded";
+      state.error = null;
     });
     builder.addCase(deleteUser.rejected, (state, action) => {
       state.status = "failed";
@@ -105,10 +113,11 @@ const userSlice = createSlice({
     });
 
     builder.addCase(postAddWorkShift.pending, (state) => {
-      state.status = "loading";
+      state.error = null;
     });
     builder.addCase(postAddWorkShift.fulfilled, (state) => {
       state.status = "succeeded";
+      state.error = null;
     });
     builder.addCase(postAddWorkShift.rejected, (state, action) => {
       state.status = "failed";
@@ -116,10 +125,11 @@ const userSlice = createSlice({
     });
 
     builder.addCase(deleteWorkShift.pending, (state) => {
-      state.status = "loading";
+      state.error = null;
     });
     builder.addCase(deleteWorkShift.fulfilled, (state) => {
       state.status = "succeeded";
+      state.error = null;
     });
     builder.addCase(deleteWorkShift.rejected, (state, action) => {
       state.status = "failed";

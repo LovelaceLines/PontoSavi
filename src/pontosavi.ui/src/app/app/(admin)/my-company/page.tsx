@@ -9,7 +9,7 @@ import { Loading } from "@/_components";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/_redux/store";
 import { getCompany } from "@/_redux/features/company/thunks";
-import { selectCompany } from "@/_redux/features/company/slice";
+import { selectCompany, selectStatus } from "@/_redux/features/company/slice";
 
 const CompanyForm = dynamic(() => import("./companyForm").then(mod => mod.CompanyForm),
   { ssr: false, loading: () => <Loading /> });
@@ -17,12 +17,13 @@ const CompanyForm = dynamic(() => import("./companyForm").then(mod => mod.Compan
 export default function Page() {
   const dispatch = useDispatch<AppDispatch>();
   const currentCompany = useSelector(selectCompany);
+  const status = useSelector(selectStatus);
 
   useEffect(() => {
     dispatch(getCompany());
   }, []);
 
-  if (currentCompany === null) return <Loading />;
+  if (currentCompany === null || status === "loading") return <Loading />;
 
   return (
     <>

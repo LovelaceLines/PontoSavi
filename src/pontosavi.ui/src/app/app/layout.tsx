@@ -1,7 +1,7 @@
 "use client";
 
 import { Box, Container } from "@mui/material";
-import { AccessTime, AccountCircle, AddBusiness, CalendarToday, ControlPointDuplicate, Group, GroupAdd, GroupWork, PersonAdd, Settings, Store, WorkHistory } from "@mui/icons-material";
+import { AccessTime, AccountCircle, CalendarToday, ControlPointDuplicate, Group, GroupAdd, GroupWork, PersonAdd, Settings, Store, WorkHistory } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 
 import { AuthWrapper } from "@/app/auth-wrapper";
@@ -12,7 +12,6 @@ import { getBaseUserRoles, getCEOUserRoles, getSuperUserRoles } from "@/globalSe
 const buttonList: ISideBarProps[][] = [
   [
     { text: "Companies", to: "/app/companies", icon: <Store />, allowRoles: getCEOUserRoles() },
-    { text: "Add Company", to: "/app/company-and-user", icon: <AddBusiness />, allowRoles: getCEOUserRoles() },
     { text: "Add User", to: "/app/add-user-company", icon: <PersonAdd />, allowRoles: getCEOUserRoles() },
     { text: "Add Role", to: "/app/add-role-company", icon: <GroupAdd />, allowRoles: getCEOUserRoles() },
   ],

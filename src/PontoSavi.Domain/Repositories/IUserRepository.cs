@@ -12,7 +12,6 @@ public interface IUserRepository : IBaseRepository<User>
     Task<bool> ExistsByUserName(string userName);
     Task<User> GetById(int id, int companyId);
     Task<User> GetByUserName(string userName);
-    // TODO refactor
     Task<List<Role>> GetRoles(User user);
     Task<bool> CheckPassword(User user, string password);
     Task<User> Add(User user, string password);

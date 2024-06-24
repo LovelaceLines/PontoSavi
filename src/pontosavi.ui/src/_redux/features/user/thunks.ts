@@ -41,9 +41,8 @@ export const postUser = createAsyncThunk(
   }
 );
 
-// TODO putUser
-export const updateUser = createAsyncThunk(
-  "user/updateUser",
+export const putUser = createAsyncThunk(
+  "user/putUser",
   async ({ oldUser, newUser }: { oldUser: user, newUser: user }): Promise<user> => {
     if (oldUser.name !== newUser.name || oldUser.userName !== newUser.userName || oldUser.email !== newUser.email || oldUser.phoneNumber !== newUser.phoneNumber) {
       await Axios.put<user>(USER, newUser);
@@ -67,9 +66,8 @@ export const updateUser = createAsyncThunk(
   }
 );
 
-// TODO putUserPassword
-export const updatePassword = createAsyncThunk(
-  "user/updatePassword",
+export const putUserPassword = createAsyncThunk(
+  "user/putUserPassword",
   async (password: updatedPassword): Promise<user> => {
     const res = await Axios.put<user>(USER_PASSWORD, password);
     return res.data as user;
