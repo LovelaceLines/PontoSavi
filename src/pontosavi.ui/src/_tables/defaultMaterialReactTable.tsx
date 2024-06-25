@@ -185,9 +185,10 @@ export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
 
   return (
     <>
+      {/* TODO - Multiplas renderizações */}
       <DownloadExportDisplay
         fileName={props.title}
-        head={table.getVisibleFlatColumns().map(c => c.columnDef).map(c => ({ id: c.id ?? "", value: c.header?.toString() ?? "" })).filter(c => c.id !== "mrt-row-select")}
+        head={table.getVisibleFlatColumns().map(c => c.columnDef).map(c => ({ id: c.id ?? "", value: c.header?.toString() ?? "" })).filter(c => c.id !== "mrt-row-select" && c.id !== "mrt-row-actions")}
         allRows={table.getRowModel().rows.map(r => r.original)}
         selectedRows={table.getSelectedRowModel().rows.map(r => r.original)}
       />

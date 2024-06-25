@@ -9,16 +9,19 @@ import { exportDataToCSV, exportDataToJSON, exportDataToPDF, exportDataToXLSX } 
 interface DownloadExportDisplayProps {
   fileName?: string;
   head: { id: string, value: string }[];
-  allRows: { [key: string]: string }[];
-  selectedRows: { [key: string]: string }[];
+  allRows: { [key: string]: any }[];
+  selectedRows: { [key: string]: any }[];
 }
+
+const getValue = (obj: any, path: string) =>
+  path.split(".").reduce((acc, part) => acc && acc[part], obj);
 
 export const DownloadExportDisplay = (props: DownloadExportDisplayProps) => {
   const fileName = props.fileName ?? "table";
   const headId: string[] = props.head.map(({ id }) => id);
   const headValue: string[] = props.head.map(({ value }) => value);
-  const allRows: string[][] = props.allRows.map(row => props.head.map(({ id }) => row[id]));
-  const selectedRows: string[][] = props.selectedRows.map(row => props.head.map(({ id }) => row[id]));
+  const allRows: string[][] = props.allRows.map(row => props.head.map(({ id }) => getValue(row, id)));
+  const selectedRows: string[][] = props.selectedRows.map(row => props.head.map(({ id }) => getValue(row, id)));
 
   const [rowsMode, setRowsMode] = useState<"selected" | "all">("all");
 
