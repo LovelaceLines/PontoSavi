@@ -2,7 +2,7 @@
 
 "use client";
 
-import { MaterialReactTable, MRT_ColumnFiltersState, MRT_PaginationState, MRT_RowSelectionState, MRT_ShowHideColumnsButton, MRT_SortingState, MRT_TableInstance, MRT_TableState, MRT_ToggleDensePaddingButton, MRT_ToggleFiltersButton, MRT_ToggleFullScreenButton, MRT_ToggleGlobalFilterButton, useMaterialReactTable, type MRT_ColumnDef, type MRT_RowData, type MRT_TableOptions, } from "material-react-table";
+import { MaterialReactTable, MRT_ColumnFiltersState, MRT_PaginationState, MRT_RowSelectionState, MRT_ShowHideColumnsButton, MRT_SortingState, MRT_TableInstance, MRT_TableState, MRT_ToggleDensePaddingButton, MRT_ToggleFiltersButton, MRT_ToggleFullScreenButton, MRT_ToggleGlobalFilterButton, MRT_VisibilityState, useMaterialReactTable, type MRT_ColumnDef, type MRT_RowData, type MRT_TableOptions, } from "material-react-table";
 import { Add, ClearAll, Delete, Edit, FileDownload, Share } from "@mui/icons-material";
 import { Box, Button, IconButton, Tooltip } from "@mui/material";
 import Link from "next/link";
@@ -10,6 +10,7 @@ import React, { Dispatch, SetStateAction, useCallback, useState } from "react";
 
 import { useSnackbar, useModal } from "@/_contexts";
 import { DownloadExportDisplay } from "./components/DownloadExportDisplay/downloadExportDisplay";
+import { getStorageValue, setStorageValue } from "@/_services";
 import { colors, useThemeContext } from "@/_theme";
 
 interface Props<TData extends MRT_RowData> extends MRT_TableOptions<TData> {
@@ -35,11 +36,17 @@ export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
   { columns, data, ...props }: Props<TData>
 ) => {
 
+  const [columnVisibility, setColumnVisibility] = useState<MRT_VisibilityState>(getStorageValue(`mrt-column-visibility-${props.title}`, {}));
   const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
 
   const { Snackbar } = useSnackbar();
   const { handleModalOpen, isOpen } = useModal();
   const { themeName } = useThemeContext();
+
+  const handleColumnVisibility: Dispatch<SetStateAction<MRT_VisibilityState>> = useCallback((value: SetStateAction<MRT_VisibilityState>) => {
+    setStorageValue(`mrt-column-visibility-${props.title}`, (value as (state: MRT_VisibilityState) => MRT_VisibilityState)(columnVisibility));
+    return setColumnVisibility(value);
+  }, [columnVisibility]);
 
   const handleShare = useCallback(() => {
     const url = typeof window === "undefined" ? "" : `${window.location.href}`;
@@ -58,16 +65,16 @@ export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
     handleModalOpen("download-export-display");
   }, []);
 
-  const handleDelete = useCallback(() => {
+  const handleDelete = useCallback(async () => {
     if (!Object.keys(rowSelection).length) {
       Snackbar("Select a row to delete");
       return;
     }
 
     const id = parseInt(Object.keys(rowSelection)[0] ?? 0);
-    setRowSelection({});
-    props.handleDelete && props.handleDelete(id);
-    Snackbar("Record deleted! Update the page to see the changes.");
+    props.handleDelete && await props.handleDelete(id);
+    props.onSubmit && props.onSubmit();
+    Snackbar("Record deleted!");
   }, [rowSelection]);
 
   const renderTopToolbarCustomActions = ({ table }: { table: MRT_TableInstance<TData> }) => (
@@ -115,15 +122,19 @@ export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
     getRowId: row => row.id ?? "",
     onRowSelectionChange: setRowSelection,
 
+    onColumnVisibilityChange: handleColumnVisibility,
+
     initialState: {
       showColumnFilters: true,
       density: "compact",
+      columnVisibility,
       ...props.initialState,
     },
 
     state: {
       isLoading: props.isLoading ? props.isLoading() : false,
       rowSelection,
+      columnVisibility,
       ...props.state,
     },
 

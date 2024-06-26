@@ -127,7 +127,7 @@ export const PointsTable = ({ mode = "admin", filters }: { mode: "admin" | "base
   return useDefaultMaterialReactTable({
     columns,
     data: points || [],
-    title: "Accounts",
+    title: "Points",
 
     setGlobalFilter,
     setColumnFilters,
