@@ -11,7 +11,7 @@ import { point } from "@/_types";
 
 export const usePointActions = ({ row }: { row: point }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const Snackbar = useSnackbar();
+  const { Snackbar } = useSnackbar();
 
   const status = useSelector(selectStatus);
   const error = useSelector(selectError);

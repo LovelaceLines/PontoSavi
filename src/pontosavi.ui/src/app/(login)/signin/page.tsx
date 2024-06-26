@@ -28,7 +28,7 @@ export default function SingIn() {
   const dispatch = useDispatch<AppDispatch>();
   const error = useSelector(selectError);
   const status = useSelector(selectStatus);
-  const snackbar = useSnackbar();
+  const { Snackbar } = useSnackbar();
 
   const { register, handleSubmit } = useForm<login>();
 
@@ -36,7 +36,7 @@ export default function SingIn() {
     dispatch(loginUser(data));
 
   useEffect(() => {
-    if (status === "failed" && error) snackbar(error);
+    if (status === "failed" && error) Snackbar(error);
     if (status === "succeeded") push("/app");
   }, [status]);
 

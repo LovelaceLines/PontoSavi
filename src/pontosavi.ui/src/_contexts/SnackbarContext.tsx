@@ -55,7 +55,4 @@ export const SnackbarProvider = ({ children }: Readonly<{ children: React.ReactN
   );
 };
 
-export const useSnackbar = () => {
-  const { Snackbar } = useContext(SnackbarContext);
-  return Snackbar;
-};
+export const useSnackbar = () => useContext(SnackbarContext);

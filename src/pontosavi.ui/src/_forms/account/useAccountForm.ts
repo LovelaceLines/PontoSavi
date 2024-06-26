@@ -18,7 +18,7 @@ import { formDataSchema, Schema } from "./schema";
 export const useAccountForm = ({ user }: { user?: user }) => {
   const dispatch = useDispatch<AppDispatch>();
 
-  const Snackbar = useSnackbar();
+  const { Snackbar } = useSnackbar();
   const error = useSelector(selectError);
   const status = useSelector(selectStatus);
 

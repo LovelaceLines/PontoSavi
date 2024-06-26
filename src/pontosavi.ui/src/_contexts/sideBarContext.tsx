@@ -26,7 +26,4 @@ export const SideBarProvider = ({ children }: Readonly<{ children: React.ReactNo
   );
 };
 
-export const useSideBar = () => {
-  const { open, toggleSideBar } = useContext(SideBarContext);
-  return { open, toggleSideBar };
-};
+export const useSideBar = () => useContext(SideBarContext);

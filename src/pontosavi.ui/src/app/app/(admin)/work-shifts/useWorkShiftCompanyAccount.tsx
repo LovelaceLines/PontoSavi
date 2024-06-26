@@ -13,7 +13,7 @@ import { workShift } from "@/_types";
 
 export const useWorkShiftCompanyAccount = ({ row }: { row: workShift }) => {
   const { handleModalOpen } = useModal();
-  const Snackbar = useSnackbar();
+  const { Snackbar } = useSnackbar();
 
   const dispatch = useDispatch<AppDispatch>();
 

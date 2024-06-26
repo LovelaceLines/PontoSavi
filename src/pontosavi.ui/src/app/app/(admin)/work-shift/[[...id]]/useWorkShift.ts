@@ -14,7 +14,7 @@ import { formDataSchema, Schema } from "./schema";
 import { workShift } from "@/_types";
 
 export const useWorkShiftForm = ({ workShift }: { workShift?: workShift }) => {
-  const Snackbar = useSnackbar();
+  const { Snackbar } = useSnackbar();
 
   const dispatch = useDispatch<AppDispatch>();
   const error = useSelector(selectError);

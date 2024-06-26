@@ -14,7 +14,7 @@ import { formDataSchema, Schema } from "./schema";
 import { dayOff } from "@/_types";
 
 export const useDayOffForm = ({ dayOff }: { dayOff?: dayOff }) => {
-  const Snackbar = useSnackbar();
+  const { Snackbar } = useSnackbar();
 
   const dispatch = useDispatch<AppDispatch>();
   const error = useSelector(selectError);

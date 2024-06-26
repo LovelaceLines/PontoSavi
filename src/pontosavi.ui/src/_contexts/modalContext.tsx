@@ -32,7 +32,4 @@ export const ModalProvider = ({ children }: Readonly<{ children: React.ReactNode
   );
 };
 
-export const useModal = () => {
-  const { ...props } = useContext(ModalContext);
-  return props;
-};
+export const useModal = () => useContext(ModalContext);

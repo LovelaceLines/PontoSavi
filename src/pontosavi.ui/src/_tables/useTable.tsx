@@ -77,6 +77,4 @@ export const TableProvider = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export const useTable = () => {
-  return useContext(TableContext);
-};
+export const useTable = () => useContext(TableContext);

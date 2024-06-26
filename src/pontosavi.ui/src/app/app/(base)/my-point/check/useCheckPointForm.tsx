@@ -14,7 +14,7 @@ import { transformDateTime } from "@/_schemas";
 import { point } from "@/_types";
 
 export const useCheckPointForm = ({ point, auto }: { point?: point, auto: boolean }) => {
-  const Snackbar = useSnackbar();
+  const { Snackbar } = useSnackbar();
 
   const dispatch = useDispatch<AppDispatch>();
   const error = useSelector(selectError);

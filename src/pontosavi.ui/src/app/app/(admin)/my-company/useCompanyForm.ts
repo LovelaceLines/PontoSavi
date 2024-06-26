@@ -13,7 +13,7 @@ import { formDataSchema, Schema } from "./schema";
 import { company } from "@/_types";
 
 export const useCompanyForm = ({ company }: { company?: company }) => {
-  const Snackbar = useSnackbar();
+  const { Snackbar } = useSnackbar();
 
   const dispatch = useDispatch<AppDispatch>();
   const error = useSelector(selectError);

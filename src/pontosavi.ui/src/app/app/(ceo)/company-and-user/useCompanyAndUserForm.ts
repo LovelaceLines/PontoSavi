@@ -12,7 +12,7 @@ import { AppDispatch } from "@/_redux/store";
 import { formDataSchema, Schema } from "./schema";
 
 export const useCompanyAndUserForm = () => {
-  const Snackbar = useSnackbar();
+  const { Snackbar } = useSnackbar();
 
   const dispatch = useDispatch<AppDispatch>();
   const error = useSelector(selectError);

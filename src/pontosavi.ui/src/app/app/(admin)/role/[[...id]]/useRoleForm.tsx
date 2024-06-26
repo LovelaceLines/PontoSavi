@@ -13,7 +13,7 @@ import { formDataSchema, Schema } from "./schema";
 import { role } from "@/_types";
 
 export const useRoleForm = ({ role }: { role?: role }) => {
-  const Snackbar = useSnackbar();
+  const { Snackbar } = useSnackbar();
 
   const dispatch = useDispatch<AppDispatch>();
   const error = useSelector(selectError);

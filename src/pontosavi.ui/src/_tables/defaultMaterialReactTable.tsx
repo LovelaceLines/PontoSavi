@@ -37,7 +37,7 @@ export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
 
   const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
 
-  const snackbar = useSnackbar();
+  const { Snackbar } = useSnackbar();
   const { handleModalOpen } = useModal();
   const { themeName } = useThemeContext();
 
@@ -45,7 +45,7 @@ export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
     const url = typeof window === "undefined" ? "" : `${window.location.href}`;
 
     navigator.clipboard.writeText(url)
-      .then(() => snackbar("Link copied to clipboard"));
+      .then(() => Snackbar("Link copied to clipboard"));
   }, []);
 
   const handleClearFilters = useCallback(() => {
@@ -60,14 +60,14 @@ export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
 
   const handleDelete = useCallback(() => {
     if (!Object.keys(rowSelection).length) {
-      snackbar("Select a row to delete");
+      Snackbar("Select a row to delete");
       return;
     }
 
     const id = parseInt(Object.keys(rowSelection)[0] ?? 0);
     setRowSelection({});
     props.handleDelete && props.handleDelete(id);
-    snackbar("Record deleted! Update the page to see the changes.");
+    Snackbar("Record deleted! Update the page to see the changes.");
   }, [rowSelection]);
 
   const renderTopToolbarCustomActions = ({ table }: { table: MRT_TableInstance<TData> }) => (
