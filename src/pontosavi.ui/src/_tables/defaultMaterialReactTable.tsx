@@ -6,11 +6,11 @@ import { MaterialReactTable, MRT_ColumnFiltersState, MRT_PaginationState, MRT_Ro
 import { Add, ClearAll, Delete, Edit, FileDownload, Share } from "@mui/icons-material";
 import { Box, Button, IconButton, Tooltip } from "@mui/material";
 import Link from "next/link";
-import React, { Dispatch, SetStateAction, useCallback, useContext, useState } from "react";
+import React, { Dispatch, SetStateAction, useCallback, useState } from "react";
 
 import { useSnackbar, useModal } from "@/_contexts";
-import { colors, useThemeContext } from "@/_theme";
 import { DownloadExportDisplay } from "./components/DownloadExportDisplay/downloadExportDisplay";
+import { colors, useThemeContext } from "@/_theme";
 
 interface Props<TData extends MRT_RowData> extends MRT_TableOptions<TData> {
   columns: MRT_ColumnDef<TData>[];
@@ -38,7 +38,7 @@ export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
   const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
 
   const { Snackbar } = useSnackbar();
-  const { handleModalOpen } = useModal();
+  const { handleModalOpen, isOpen } = useModal();
   const { themeName } = useThemeContext();
 
   const handleShare = useCallback(() => {
@@ -185,14 +185,13 @@ export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
 
   return (
     <>
-      {/* TODO - Multiplas renderizações */}
-      <DownloadExportDisplay
+      <MaterialReactTable table={table} />
+      {isOpen("download-export-display") && <DownloadExportDisplay
         fileName={props.title}
         head={table.getVisibleFlatColumns().map(c => c.columnDef).map(c => ({ id: c.id ?? "", value: c.header?.toString() ?? "" })).filter(c => c.id !== "mrt-row-select" && c.id !== "mrt-row-actions")}
         allRows={table.getRowModel().rows.map(r => r.original)}
         selectedRows={table.getSelectedRowModel().rows.map(r => r.original)}
-      />
-      <MaterialReactTable table={table} />
+      />}
     </>
   );
 };
