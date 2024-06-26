@@ -28,6 +28,7 @@
   <ItemGroup>
     <ProjectReference Include="..\PontoSavi.Domain\PontoSavi.Domain.csproj" />
     <ProjectReference Include="..\PontoSavi.API\PontoSavi.API.csproj" />
+    <ProjectReference Include="..\PontoSavi.Application\PontoSavi.Application.csproj" />
     <!-- <ProjectReference Include="..\..\PontoSavi.csproj" /> -->
   </ItemGroup>
 

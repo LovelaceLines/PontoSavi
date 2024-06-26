@@ -96,7 +96,7 @@ public class PointService : IPointService
                 await _userWorkShiftRepository.GetWorkShiftByUserId(userId, companyId) :
                 await _companyWorkShiftRepository.GetWorkShiftByCompanyId(companyId);
 
-            if (isStatusApproved(point, workShifts))
+            if (IsStatusApproved(point, workShifts))
             {
                 point.CheckInStatus = PointStatus.Approved;
                 point.CheckOutStatus = PointStatus.Approved;
@@ -106,7 +106,7 @@ public class PointService : IPointService
         return await _repository.Update(point);
     }
 
-    static private bool isStatusApproved(Point point, List<WorkShift> workShifts)
+    public static bool IsStatusApproved(Point point, List<WorkShift> workShifts)
     {
         if (point.CheckIn > point.CheckOut || point.CheckIn.Day != point.CheckOut!.Value.Day ||
             point.CheckIn.Month != point.CheckOut!.Value.Month || point.CheckIn.Year != point.CheckOut!.Value.Year)
