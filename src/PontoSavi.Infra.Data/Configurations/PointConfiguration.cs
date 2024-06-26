@@ -20,9 +20,9 @@ public class PointConfiguration : IEntityTypeConfiguration<Point>
             .HasForeignKey(p => p.ManagerId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        builder.HasOne(p => p.Company)
+        builder.HasOne(p => p.Tenant)
             .WithMany()
-            .HasForeignKey(p => p.CompanyId);
+            .HasForeignKey(p => p.TenantId);
 
         builder.Property(p => p.CreatedAt)
             .ValueGeneratedOnAdd()

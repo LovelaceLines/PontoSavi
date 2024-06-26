@@ -22,8 +22,8 @@ public class PointController : ControllerBase
     [Authorize(Policy = "SuperUserRolesPolicy")]
     public async Task<ActionResult<QueryResult<Point>>> Get([FromQuery] PointFilter filter)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        filter.CompanyId = currentCompanyId;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        filter.TenantId = currentTenantId;
         return await _service.Query(filter);
     }
 
@@ -31,8 +31,8 @@ public class PointController : ControllerBase
     [Authorize(Policy = "BaseUserRolesPolicy")]
     public async Task<ActionResult<Point>> GetById(int id)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        return await _service.GetById(id, currentCompanyId);
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        return await _service.GetById(id, currentTenantId);
     }
 
     [HttpGet("current")]
@@ -40,8 +40,8 @@ public class PointController : ControllerBase
     public async Task<ActionResult<Point>> GetCurrent()
     {
         var currentUserId = (int)HttpContext.Items["CurrentUserId"]!;
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        return await _service.GetOpenPoint(currentUserId, currentCompanyId);
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        return await _service.GetOpenPoint(currentUserId, currentTenantId);
     }
 
     [HttpPost("auto")]
@@ -49,8 +49,8 @@ public class PointController : ControllerBase
     public async Task<ActionResult<Point>> AutoCheckIn([FromBody] string? description)
     {
         var currentUserId = (int)HttpContext.Items["CurrentUserId"]!;
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        return await _service.AutoCheckIn(currentUserId, currentCompanyId, description);
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        return await _service.AutoCheckIn(currentUserId, currentTenantId, description);
     }
 
     [HttpPut("auto")]
@@ -58,8 +58,8 @@ public class PointController : ControllerBase
     public async Task<ActionResult<Point>> AutoCheckOut([FromBody] string? description)
     {
         var currentUserId = (int)HttpContext.Items["CurrentUserId"]!;
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        return await _service.AutoCheckOut(currentUserId, currentCompanyId, description);
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        return await _service.AutoCheckOut(currentUserId, currentTenantId, description);
     }
 
     [HttpPost("manual")]
@@ -67,9 +67,9 @@ public class PointController : ControllerBase
     public async Task<ActionResult<Point>> ManualCheckIn([FromBody] Point point)
     {
         var currentUserId = (int)HttpContext.Items["CurrentUserId"]!;
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
         point.UserId = currentUserId;
-        point.CompanyId = currentCompanyId;
+        point.TenantId = currentTenantId;
         return await _service.ManualCheckIn(point);
     }
 
@@ -78,9 +78,9 @@ public class PointController : ControllerBase
     public async Task<ActionResult<Point>> ManualCheckOut([FromBody] Point point)
     {
         var currentUserId = (int)HttpContext.Items["CurrentUserId"]!;
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
         point.UserId = currentUserId;
-        point.CompanyId = currentCompanyId;
+        point.TenantId = currentTenantId;
         return await _service.ManualCheckOut(point);
     }
 
@@ -89,9 +89,9 @@ public class PointController : ControllerBase
     public async Task<ActionResult<Point>> UpdateDescription([FromBody] Point point)
     {
         var currentUserId = (int)HttpContext.Items["CurrentUserId"]!;
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
         point.UserId = currentUserId;
-        point.CompanyId = currentCompanyId;
+        point.TenantId = currentTenantId;
         return await _service.UpdateDescription(point);
     }
 
@@ -100,9 +100,9 @@ public class PointController : ControllerBase
     public async Task<ActionResult<Point>> UpdateFull([FromBody] Point point)
     {
         var currentUserId = (int)HttpContext.Items["CurrentUserId"]!;
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
         point.ManagerId = currentUserId;
-        point.CompanyId = currentCompanyId;
+        point.TenantId = currentTenantId;
         return await _service.UpdateFull(point);
     }
 
@@ -110,17 +110,17 @@ public class PointController : ControllerBase
     [Authorize(Policy = "SuperUserRolesPolicy")]
     public async Task<ActionResult<Point>> Approve([FromBody] int id)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
         var currentManagerUserId = (int)HttpContext.Items["CurrentUserId"]!;
-        return await _service.Approve(id, currentManagerUserId, currentCompanyId);
+        return await _service.Approve(id, currentManagerUserId, currentTenantId);
     }
 
     [HttpPost("reject")]
     [Authorize(Policy = "SuperUserRolesPolicy")]
     public async Task<ActionResult<Point>> Reject([FromBody] int id)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
         var currentManagerUserId = (int)HttpContext.Items["CurrentUserId"]!;
-        return await _service.Reject(id, currentManagerUserId, currentCompanyId);
+        return await _service.Reject(id, currentManagerUserId, currentTenantId);
     }
 }

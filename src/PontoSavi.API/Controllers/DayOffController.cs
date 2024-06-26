@@ -21,24 +21,24 @@ public class DayOffController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<QueryResult<DayOff>>> Query([FromQuery] DayOffFilter filter)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        filter.CompanyId = currentCompanyId;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        filter.TenantId = currentTenantId;
         return await _dayOffService.Query(filter);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<DayOff>> GetById(int id)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        return await _dayOffService.GetById(id, currentCompanyId);
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        return await _dayOffService.GetById(id, currentTenantId);
     }
 
     [HttpPost]
     [Authorize(Policy = "SuperUserRolesPolicy")]
     public async Task<ActionResult<DayOff>> Post(DayOff dayOff)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        dayOff.CompanyId = currentCompanyId;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        dayOff.TenantId = currentTenantId;
         return await _dayOffService.Create(dayOff);
     }
 
@@ -46,8 +46,8 @@ public class DayOffController : ControllerBase
     [Authorize(Policy = "SuperUserRolesPolicy")]
     public async Task<ActionResult<DayOff>> Put(DayOff dayOff)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        dayOff.CompanyId = currentCompanyId;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        dayOff.TenantId = currentTenantId;
         return await _dayOffService.Update(dayOff);
     }
 
@@ -55,8 +55,8 @@ public class DayOffController : ControllerBase
     [Authorize(Policy = "SuperUserRolesPolicy")]
     public async Task<ActionResult<DayOff>> Delete(int id)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        var dayOff = await _dayOffService.GetById(id, currentCompanyId);
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        var dayOff = await _dayOffService.GetById(id, currentTenantId);
         return await _dayOffService.Delete(dayOff);
     }
 }

@@ -12,7 +12,7 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
     {
         builder.ToTable("UserRoles");
 
-        builder.HasKey(ur => new { ur.UserId, ur.RoleId, ur.CompanyId });
+        builder.HasKey(ur => new { ur.UserId, ur.RoleId, ur.TenantId });
 
         builder.HasOne(ur => ur.Role)
             .WithMany()
@@ -22,9 +22,9 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
             .WithMany()
             .HasForeignKey(ur => ur.UserId);
 
-        builder.HasOne(ur => ur.Company)
+        builder.HasOne(ur => ur.Tenant)
             .WithMany()
-            .HasForeignKey(ur => ur.CompanyId);
+            .HasForeignKey(ur => ur.TenantId);
 
         builder.Property(p => p.CreatedAt)
             .ValueGeneratedOnAdd()
@@ -39,7 +39,7 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
             {
                 UserId = 1,
                 RoleId = 1,
-                CompanyId = 1,
+                TenantId = 1,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             },
@@ -47,7 +47,7 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
             {
                 UserId = 1,
                 RoleId = 2,
-                CompanyId = 1,
+                TenantId = 1,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             },
@@ -55,7 +55,7 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
             {
                 UserId = 1,
                 RoleId = 3,
-                CompanyId = 1,
+                TenantId = 1,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             },
@@ -63,7 +63,7 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
             {
                 UserId = 1,
                 RoleId = 4,
-                CompanyId = 1,
+                TenantId = 1,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             },
@@ -71,7 +71,7 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
             {
                 UserId = 1,
                 RoleId = 5,
-                CompanyId = 1,
+                TenantId = 1,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             },
@@ -79,7 +79,7 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
             {
                 UserId = 2,
                 RoleId = 3,
-                CompanyId = 1,
+                TenantId = 1,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             },
@@ -87,7 +87,7 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
             {
                 UserId = 2,
                 RoleId = 5,
-                CompanyId = 1,
+                TenantId = 1,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             },
@@ -95,7 +95,7 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
             {
                 UserId = 3,
                 RoleId = 4,
-                CompanyId = 1,
+                TenantId = 1,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             },
@@ -103,7 +103,7 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
             {
                 UserId = 3,
                 RoleId = 5,
-                CompanyId = 1,
+                TenantId = 1,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             },
@@ -111,7 +111,7 @@ public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
             {
                 UserId = 4,
                 RoleId = 5,
-                CompanyId = 1,
+                TenantId = 1,
                 CreatedAt = DateTime.Now,
                 UpdatedAt = DateTime.Now
             }

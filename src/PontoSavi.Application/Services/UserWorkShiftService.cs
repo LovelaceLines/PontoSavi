@@ -14,12 +14,12 @@ public class UserWorkShiftService : IUserWorkShiftService
     public UserWorkShiftService(IUserWorkShiftRepository repository) =>
         _repository = repository;
 
-    public async Task<List<WorkShift>> GetByUserId(int userId, int companyId) =>
-        await _repository.GetWorkShiftByUserId(userId, companyId);
+    public async Task<List<WorkShift>> GetByUserId(int userId, int tenantId) =>
+        await _repository.GetWorkShiftByUserId(userId, tenantId);
 
     public async Task<UserWorkShift> Create(UserWorkShift userWorkShift)
     {
-        if (await _repository.ExistsById(userWorkShift.UserId, userWorkShift.WorkShiftId, userWorkShift.CompanyId))
+        if (await _repository.ExistsById(userWorkShift.UserId, userWorkShift.WorkShiftId, userWorkShift.TenantId))
             throw new AppException("Configuração de turno de trabalho já existe!", HttpStatusCode.Conflict);
 
         return await _repository.Add(userWorkShift);
@@ -27,7 +27,7 @@ public class UserWorkShiftService : IUserWorkShiftService
 
     public async Task<UserWorkShift> Delete(UserWorkShift userWorkShift)
     {
-        if (!await _repository.ExistsById(userWorkShift.UserId, userWorkShift.WorkShiftId, userWorkShift.CompanyId))
+        if (!await _repository.ExistsById(userWorkShift.UserId, userWorkShift.WorkShiftId, userWorkShift.TenantId))
             throw new AppException("Configuração de turno de trabalho não encontrada!", HttpStatusCode.NotFound);
 
         return await _repository.Remove(userWorkShift);

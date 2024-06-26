@@ -18,15 +18,15 @@ public class DayOffService : IDayOffService
     public async Task<QueryResult<DayOff>> Query(DayOffFilter filter) =>
         await _repository.Query(filter);
 
-    public async Task<DayOff> GetById(int id, int companyId) =>
-        await _repository.GetById(id, companyId);
+    public async Task<DayOff> GetById(int id, int tenantId) =>
+        await _repository.GetById(id, tenantId);
 
-    public async Task<DayOff> GetByDate(DateTime date, int companyId) =>
-        await _repository.GetByDate(date, companyId);
+    public async Task<DayOff> GetByDate(DateTime date, int tenantId) =>
+        await _repository.GetByDate(date, tenantId);
 
     public async Task<DayOff> Create(DayOff dayOff)
     {
-        if (await _repository.ExistsByDate(dayOff.Date, dayOff.CompanyId))
+        if (await _repository.ExistsByDate(dayOff.Date, dayOff.TenantId))
             throw new AppException("Já existe uma folga cadastrada para esta data!", HttpStatusCode.BadRequest);
 
         return await _repository.Add(dayOff);
@@ -36,7 +36,7 @@ public class DayOffService : IDayOffService
     {
         var oldDayOff = await _repository.GetById(newDayOff.Id);
 
-        if (oldDayOff.Date != newDayOff.Date && await _repository.ExistsByDate(newDayOff.Date, oldDayOff.CompanyId))
+        if (oldDayOff.Date != newDayOff.Date && await _repository.ExistsByDate(newDayOff.Date, oldDayOff.TenantId))
             throw new AppException("Já existe uma folga cadastrada para esta data!", HttpStatusCode.BadRequest);
 
         oldDayOff.Date = newDayOff.Date;

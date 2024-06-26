@@ -203,7 +203,7 @@ public class UserControllerTests : GlobalClientRequest
     public async Task Delete_RemoveFromRole_InvalidRole_ReturnsNotFoundResult()
     {
         var user = await GetUser();
-        var userRole = new UserRoleIM { UserId = user.Id, RoleId = new Random().Next(1, 1000) };
+        var userRole = new UserRoleIM { UserId = user.Id, RoleId = new Random().Next(1, 1000), TenantId = user.TenantId };
 
         var result = await DeleteFromBody<AppHttpResponse>(_removeUserFromRoleClient, userRole);
 

@@ -27,31 +27,31 @@ public class CompanyController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<Company>> Get()
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        return await _companyService.GetById(currentCompanyId);
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        return await _companyService.GetById(currentTenantId);
     }
 
     [HttpPut]
     public async Task<ActionResult<Company>> Put([FromBody] Company company)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        company.Id = currentCompanyId;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        company.Id = currentTenantId;
         return await _companyService.Update(company);
     }
 
     [HttpPost("add-work-shift")]
     public async Task<ActionResult<CompanyWorkShift>> AddWorkShift([FromBody] CompanyWorkShift companyWorkShift)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        companyWorkShift.CompanyId = currentCompanyId;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        companyWorkShift.TenantId = currentTenantId;
         return await _companyWorkShiftService.Create(companyWorkShift);
     }
 
     [HttpDelete("remove-work-shift")]
     public async Task<ActionResult<CompanyWorkShift>> RemoveWorkShift([FromBody] CompanyWorkShift companyWorkShift)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        companyWorkShift.CompanyId = currentCompanyId;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        companyWorkShift.TenantId = currentTenantId;
         return await _companyWorkShiftService.Delete(companyWorkShift);
     }
 }

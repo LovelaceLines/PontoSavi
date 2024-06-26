@@ -27,7 +27,7 @@ export type user = {
   roles?: role[];
   createdAt?: Date;
   updatedAt?: Date;
-  companyId?: int;
+  tenantId?: int;
 };
 
 export type updatedPassword = {
@@ -40,7 +40,7 @@ export type role = {
   name: string;
   createdAt?: Date;
   updatedAt?: Date;
-  companyId?: int;
+  tenantId?: int;
 };
 
 export class roleFilter {

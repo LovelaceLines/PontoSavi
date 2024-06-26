@@ -11,11 +11,11 @@ public class DayOffConfiguration : IEntityTypeConfiguration<DayOff>
     {
         builder.HasKey(x => x.Id);
 
-        builder.HasOne(x => x.Company)
+        builder.HasOne(x => x.Tenant)
             .WithMany()
-            .HasForeignKey(x => x.CompanyId);
+            .HasForeignKey(x => x.TenantId);
 
-        builder.HasIndex(x => new { x.Date, x.CompanyId })
+        builder.HasIndex(x => new { x.Date, x.TenantId })
             .IsUnique();
 
         builder.Property(p => p.CreatedAt)

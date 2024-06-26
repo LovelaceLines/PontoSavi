@@ -28,8 +28,8 @@ public class UserService : IUserService
     public async Task<QueryResult<UserDTO>> Query(UserFilter filter) =>
         await _userRepository.Query(filter);
 
-    public async Task<User> GetById(int id, int companyId) =>
-        await _userRepository.GetById(id, companyId);
+    public async Task<User> GetById(int id, int tenantId) =>
+        await _userRepository.GetById(id, tenantId);
 
     public async Task<User> GetByUserName(string userName) =>
         await _userRepository.GetByUserName(userName);

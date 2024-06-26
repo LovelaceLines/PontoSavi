@@ -12,5 +12,5 @@ public class RoleFilter
 
     public bool? NameDescOrderSort { get; set; }
 
-    public int CompanyId { get; set; }
+    public int TenantId { get; set; }
 }

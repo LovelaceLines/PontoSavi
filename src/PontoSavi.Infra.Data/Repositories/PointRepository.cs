@@ -21,7 +21,7 @@ public class PointRepository : BaseRepository<Point>, IPointRepository
     {
         var query = _context.Points.AsQueryable();
 
-        query = query.Where(p => p.CompanyId == filter.CompanyId);
+        query = query.Where(p => p.TenantId == filter.TenantId);
 
         if (!filter.Search.IsNullOrEmpty())
             query = query.Where(d =>
@@ -52,17 +52,17 @@ public class PointRepository : BaseRepository<Point>, IPointRepository
         return new QueryResult<Point>(points, totalCount);
     }
 
-    public async Task<bool> ExistsById(int id, int companyId) =>
-        await _context.Points.AsNoTracking().AnyAsync(p => p.Id == id && p.CompanyId == companyId);
+    public async Task<bool> ExistsById(int id, int tenantId) =>
+        await _context.Points.AsNoTracking().AnyAsync(p => p.Id == id && p.TenantId == tenantId);
 
-    public async Task<bool> ExistsOpenPointByUserId(int userId, int companyId) =>
-        await _context.Points.AsNoTracking().AnyAsync(p => p.UserId == userId && p.CompanyId == companyId && p.CheckOut == null);
+    public async Task<bool> ExistsOpenPointByUserId(int userId, int tenantId) =>
+        await _context.Points.AsNoTracking().AnyAsync(p => p.UserId == userId && p.TenantId == tenantId && p.CheckOut == null);
 
-    public async Task<Point> GetById(int id, int companyId) =>
-        await _context.Points.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id && p.CompanyId == companyId) ??
+    public async Task<Point> GetById(int id, int tenantId) =>
+        await _context.Points.AsNoTracking().FirstOrDefaultAsync(p => p.Id == id && p.TenantId == tenantId) ??
             throw new AppException("Ponto não encontrado!", HttpStatusCode.NotFound);
 
-    public async Task<Point> GetOpenPointByUserId(int userId, int companyId) =>
-        await _context.Points.AsNoTracking().FirstOrDefaultAsync(p => p.UserId == userId && p.CompanyId == companyId && p.CheckOut == null) ??
+    public async Task<Point> GetOpenPointByUserId(int userId, int tenantId) =>
+        await _context.Points.AsNoTracking().FirstOrDefaultAsync(p => p.UserId == userId && p.TenantId == tenantId && p.CheckOut == null) ??
             throw new AppException("Nenhum ponto aberto encontrado!", HttpStatusCode.NotFound);
 }

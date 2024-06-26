@@ -1,6 +1,6 @@
 ﻿namespace PontoSavi.Domain.Entities;
 
-public class WorkShift
+public class WorkShift : Base
 {
     public int Id { get; set; }
     public TimeOnly CheckIn { get; set; }
@@ -8,10 +8,4 @@ public class WorkShift
     public TimeOnly CheckOut { get; set; }
     public int CheckOutToleranceMinutes { get; set; }
     public string? Description { get; set; }
-
-    public DateTime CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; }
-
-    public int CompanyId { get; set; }
-    public Company? Company { get; set; }
 }

@@ -47,8 +47,8 @@ public class UserController : ControllerBase
     [Authorize(Policy = "SuperUserRolesPolicy")]
     public async Task<ActionResult<QueryResult<UserDTO>>> Query([FromQuery] UserFilter filter)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        filter.CompanyId = currentCompanyId;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        filter.TenantId = currentTenantId;
         return Ok(await _userService.Query(filter));
     }
 
@@ -59,9 +59,9 @@ public class UserController : ControllerBase
     [Authorize(Policy = "SuperUserRolesPolicy")]
     public async Task<ActionResult<UserDTO>> GetById(int id)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        var user = await _userService.GetById(id, currentCompanyId);
-        var roles = await _roleService.GetByUser(user.Id, user.CompanyId);
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        var user = await _userService.GetById(id, currentTenantId);
+        var roles = await _roleService.GetByUser(user.Id, user.TenantId);
 
         return new UserDTO(user, roles);
     }
@@ -73,15 +73,15 @@ public class UserController : ControllerBase
     [Authorize(Policy = "SuperUserRolesPolicy")]
     public async Task<ActionResult<User>> Post([FromBody] UserAndPassword userAndPassword)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
 
         User user = userAndPassword;
-        user.CompanyId = currentCompanyId;
+        user.TenantId = currentTenantId;
         user = await _userService.Create(user, userAndPassword.Password);
 
         foreach (var roleName in _rolesSettingsService.GetBaseUserRoles())
         {
-            var role = await _roleService.GetByName(roleName, user.CompanyId);
+            var role = await _roleService.GetByName(roleName, user.TenantId);
             await _userRoleService.AddToRole(user, role);
         }
 
@@ -98,8 +98,8 @@ public class UserController : ControllerBase
 
         if (user.Id != currentUserId) throw new AppException("Você não tem permissão para alterar este usuário!", HttpStatusCode.Forbidden);
 
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        user.CompanyId = currentCompanyId;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        user.TenantId = currentTenantId;
 
         return await _userService.Update(user);
     }
@@ -111,8 +111,8 @@ public class UserController : ControllerBase
     public async Task<ActionResult<User>> Put([FromBody] UpdatePasswordIM model)
     {
         var currentUserId = (int)HttpContext.Items["CurrentUserId"]!;
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        var user = await _userService.GetById(currentUserId, currentCompanyId);
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        var user = await _userService.GetById(currentUserId, currentTenantId);
         await _userService.UpdatePassword(user, model.OldPassword, model.NewPassword);
         return user;
     }
@@ -124,8 +124,8 @@ public class UserController : ControllerBase
     [Authorize(Roles = "Desenvolvedor,Administrador")]
     public async Task<ActionResult<User>> Delete(int id)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        var user = await _userService.GetById(id, currentCompanyId);
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        var user = await _userService.GetById(id, currentTenantId);
         return await _userService.Delete(user);
     }
 
@@ -136,9 +136,9 @@ public class UserController : ControllerBase
     [Authorize(Policy = "SuperUserRolesPolicy")]
     public async Task<ActionResult<bool>> AddToRole([FromBody] UserRoleIM model)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        var user = await _userService.GetById(model.UserId, currentCompanyId);
-        var role = await _roleService.GetById(model.RoleId, currentCompanyId);
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        var user = await _userService.GetById(model.UserId, currentTenantId);
+        var role = await _roleService.GetById(model.RoleId, currentTenantId);
 
         await _userRoleService.AddToRole(user, role);
 
@@ -152,9 +152,9 @@ public class UserController : ControllerBase
     [Authorize(Policy = "SuperUserRolesPolicy")]
     public async Task<ActionResult<bool>> RemoveFromRole([FromBody] UserRoleIM model)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        var user = await _userService.GetById(model.UserId, currentCompanyId);
-        var role = await _roleService.GetById(model.RoleId, currentCompanyId);
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        var user = await _userService.GetById(model.UserId, currentTenantId);
+        var role = await _roleService.GetById(model.RoleId, currentTenantId);
 
         await _userRoleService.RemoveFromRole(user, role);
 
@@ -165,8 +165,8 @@ public class UserController : ControllerBase
     [Authorize(Policy = "SuperUserRolesPolicy")]
     public async Task<ActionResult<UserWorkShift>> AddWorkShift([FromBody] UserWorkShift userWorkShift)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        userWorkShift.CompanyId = currentCompanyId;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        userWorkShift.TenantId = currentTenantId;
         return await _userWorkShiftService.Create(userWorkShift);
     }
 
@@ -174,8 +174,8 @@ public class UserController : ControllerBase
     [Authorize(Policy = "SuperUserRolesPolicy")]
     public async Task<ActionResult<UserWorkShift>> RemoveWorkShift([FromBody] UserWorkShift userWorkShift)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        userWorkShift.CompanyId = currentCompanyId;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        userWorkShift.TenantId = currentTenantId;
         return await _userWorkShiftService.Delete(userWorkShift);
     }
 }

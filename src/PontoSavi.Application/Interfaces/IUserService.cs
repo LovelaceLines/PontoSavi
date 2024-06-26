@@ -7,7 +7,7 @@ namespace PontoSavi.Application.Interfaces;
 public interface IUserService
 {
     Task<QueryResult<UserDTO>> Query(UserFilter filter);
-    Task<User> GetById(int id, int companyId);
+    Task<User> GetById(int id, int tenantId);
     Task<User> GetByUserName(string userName);
     Task<User> Create(User user, string password);
     Task<User> Update(User user);

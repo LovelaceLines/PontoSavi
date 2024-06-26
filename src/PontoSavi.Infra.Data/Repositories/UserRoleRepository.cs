@@ -16,20 +16,20 @@ public class UserRoleRepository : BaseRepository<UserRole>, IUserRoleRepository
     public UserRoleRepository(AppDbContext context, UserManager<User> userManager) : base(context) =>
         _context = context;
 
-    public async Task<bool> Exists(int userId, int roleId, int companyId) =>
-        await _context.UserRoles.AsNoTracking().AnyAsync(ur => ur.UserId == userId && ur.RoleId == roleId && ur.CompanyId == companyId);
+    public async Task<bool> Exists(int userId, int roleId, int tenantId) =>
+        await _context.UserRoles.AsNoTracking().AnyAsync(ur => ur.UserId == userId && ur.RoleId == roleId && ur.TenantId == tenantId);
 
-    public async Task<UserRole> Get(int userId, int roleId, int companyId) =>
-        await _context.UserRoles.AsNoTracking().FirstOrDefaultAsync(ur => ur.UserId == userId && ur.RoleId == roleId && ur.CompanyId == companyId) ??
+    public async Task<UserRole> Get(int userId, int roleId, int tenantId) =>
+        await _context.UserRoles.AsNoTracking().FirstOrDefaultAsync(ur => ur.UserId == userId && ur.RoleId == roleId && ur.TenantId == tenantId) ??
             throw new AppException("Relação não encontrada!", HttpStatusCode.NotFound);
 
-    public async Task<UserRole> Add(int userId, int roleId, int companyId)
+    public async Task<UserRole> Add(int userId, int roleId, int tenantId)
     {
         UserRole userRole = new()
         {
             UserId = userId,
             RoleId = roleId,
-            CompanyId = companyId
+            TenantId = tenantId
         };
 
         return await Add(userRole);

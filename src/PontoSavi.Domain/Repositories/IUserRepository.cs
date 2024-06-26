@@ -8,9 +8,9 @@ public interface IUserRepository : IBaseRepository<User>
 {
     Task<QueryResult<UserDTO>> Query(UserFilter filter);
     Task<User> Auth(string userName, string password);
-    Task<bool> ExistsById(int id, int companyId);
+    Task<bool> ExistsById(int id, int tenantId);
     Task<bool> ExistsByUserName(string userName);
-    Task<User> GetById(int id, int companyId);
+    Task<User> GetById(int id, int tenantId);
     Task<User> GetByUserName(string userName);
     Task<List<Role>> GetRoles(User user);
     Task<bool> CheckPassword(User user, string password);

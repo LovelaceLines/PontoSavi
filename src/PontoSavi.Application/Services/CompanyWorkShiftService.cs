@@ -19,7 +19,7 @@ public class CompanyWorkShiftService : ICompanyWorkShiftService
 
     public async Task<CompanyWorkShift> Create(CompanyWorkShift companyWorkShift)
     {
-        if (await _repository.ExistsById(companyWorkShift.WorkShiftId, companyWorkShift.CompanyId))
+        if (await _repository.ExistsById(companyWorkShift.WorkShiftId, companyWorkShift.TenantId))
             throw new AppException("Configuração de turno de trabalho já existe!", HttpStatusCode.BadRequest);
 
         return await _repository.Add(companyWorkShift);
@@ -27,7 +27,7 @@ public class CompanyWorkShiftService : ICompanyWorkShiftService
 
     public async Task<CompanyWorkShift> Delete(CompanyWorkShift companyWorkShift)
     {
-        if (!await _repository.ExistsById(companyWorkShift.WorkShiftId, companyWorkShift.CompanyId))
+        if (!await _repository.ExistsById(companyWorkShift.WorkShiftId, companyWorkShift.TenantId))
             throw new AppException("Configuração de turno de trabalho não encontrada!", HttpStatusCode.NotFound);
 
         return await _repository.Remove(companyWorkShift);

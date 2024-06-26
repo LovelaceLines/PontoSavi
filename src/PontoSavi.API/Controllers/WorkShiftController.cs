@@ -22,39 +22,39 @@ public class WorkShiftController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<QueryResult<WorkShiftDTO>>> Get([FromQuery] WorkShiftFilter filter)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        filter.CompanyId = currentCompanyId;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        filter.TenantId = currentTenantId;
         return await _service.Query(filter);
     }
 
     [HttpGet("{id}")]
     public async Task<ActionResult<WorkShift>> GetById(int id)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        return await _service.GetById(id, currentCompanyId);
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        return await _service.GetById(id, currentTenantId);
     }
 
     [HttpPost]
     public async Task<ActionResult<WorkShift>> Post([FromBody] WorkShift workShift)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        workShift.CompanyId = currentCompanyId;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        workShift.TenantId = currentTenantId;
         return await _service.Create(workShift);
     }
 
     [HttpPut]
     public async Task<ActionResult<WorkShift>> Put([FromBody] WorkShift workShift)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        workShift.CompanyId = currentCompanyId;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        workShift.TenantId = currentTenantId;
         return await _service.Update(workShift);
     }
 
     [HttpDelete("{id}")]
     public async Task<ActionResult<WorkShift>> Delete(int id)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        var workShift = await _service.GetById(id, currentCompanyId);
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        var workShift = await _service.GetById(id, currentTenantId);
         return await _service.Delete(workShift);
     }
 }

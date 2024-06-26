@@ -21,7 +21,7 @@ public class DayOffRepository : BaseRepository<DayOff>, IDayOffRepository
     {
         var query = _context.DaysOff.AsNoTracking().AsQueryable();
 
-        query = query.Where(d => d.CompanyId == filter.CompanyId);
+        query = query.Where(d => d.TenantId == filter.TenantId);
 
         if (!filter.Search.IsNullOrEmpty()) query = query.Where(d => d.Description!.ToLower().Contains(filter.Search!.ToLower()));
 
@@ -44,17 +44,17 @@ public class DayOffRepository : BaseRepository<DayOff>, IDayOffRepository
         return new QueryResult<DayOff>(daysoff, totalCount);
     }
 
-    public async Task<bool> ExistsByDate(DateTime date, int companyId) =>
-        await _context.DaysOff.AsNoTracking().AnyAsync(d => d.Date == date && d.CompanyId == companyId);
+    public async Task<bool> ExistsByDate(DateTime date, int tenantId) =>
+        await _context.DaysOff.AsNoTracking().AnyAsync(d => d.Date == date && d.TenantId == tenantId);
 
-    public async Task<bool> ExistsById(int id, int companyId) =>
-        await _context.DaysOff.AsNoTracking().AnyAsync(d => d.Id == id && d.CompanyId == companyId);
+    public async Task<bool> ExistsById(int id, int tenantId) =>
+        await _context.DaysOff.AsNoTracking().AnyAsync(d => d.Id == id && d.TenantId == tenantId);
 
-    public async Task<DayOff> GetByDate(DateTime date, int companyId) =>
-        await _context.DaysOff.AsNoTracking().FirstOrDefaultAsync(d => d.Date == date && d.CompanyId == companyId) ??
+    public async Task<DayOff> GetByDate(DateTime date, int tenantId) =>
+        await _context.DaysOff.AsNoTracking().FirstOrDefaultAsync(d => d.Date == date && d.TenantId == tenantId) ??
             throw new AppException("Folga não encontrada!", HttpStatusCode.NotFound);
 
-    public async Task<DayOff> GetById(int id, int companyId) =>
-        await _context.DaysOff.AsNoTracking().FirstOrDefaultAsync(d => d.Id == id && d.CompanyId == companyId) ??
+    public async Task<DayOff> GetById(int id, int tenantId) =>
+        await _context.DaysOff.AsNoTracking().FirstOrDefaultAsync(d => d.Id == id && d.TenantId == tenantId) ??
             throw new AppException("Folga não encontrada!", HttpStatusCode.NotFound);
 }

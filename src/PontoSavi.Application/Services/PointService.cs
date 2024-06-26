@@ -26,15 +26,15 @@ public class PointService : IPointService
     public async Task<QueryResult<Point>> Query(PointFilter filter) =>
         await _repository.Query(filter);
 
-    public async Task<Point> GetById(int id, int companyId) =>
-        await _repository.GetById(id, companyId);
+    public async Task<Point> GetById(int id, int tenantId) =>
+        await _repository.GetById(id, tenantId);
 
-    public async Task<Point> GetOpenPoint(int userId, int companyId) =>
-        await _repository.GetOpenPointByUserId(userId, companyId);
+    public async Task<Point> GetOpenPoint(int userId, int tenantId) =>
+        await _repository.GetOpenPointByUserId(userId, tenantId);
 
     public async Task<Point> ManualCheckIn(Point point)
     {
-        if (await _repository.ExistsOpenPointByUserId(point.UserId, point.CompanyId))
+        if (await _repository.ExistsOpenPointByUserId(point.UserId, point.TenantId))
             throw new AppException("Usuário já possui um ponto aberto!", HttpStatusCode.BadRequest);
 
         point.CheckInStatus = PointStatus.ManualCheck;
@@ -48,10 +48,10 @@ public class PointService : IPointService
 
     public async Task<Point> ManualCheckOut(Point newPoint)
     {
-        if (!await _repository.ExistsOpenPointByUserId(newPoint.UserId, newPoint.CompanyId))
+        if (!await _repository.ExistsOpenPointByUserId(newPoint.UserId, newPoint.TenantId))
             throw new AppException("Usuário não possui um ponto aberto!", HttpStatusCode.BadRequest);
 
-        var oldPoint = await _repository.GetById(newPoint.Id, newPoint.CompanyId);
+        var oldPoint = await _repository.GetById(newPoint.Id, newPoint.TenantId);
 
         oldPoint.CheckOut = newPoint.CheckOut;
         oldPoint.CheckOutAt = DateTime.Now;
@@ -61,9 +61,9 @@ public class PointService : IPointService
         return await _repository.Update(oldPoint);
     }
 
-    public async Task<Point> AutoCheckIn(int userId, int companyId, string? description)
+    public async Task<Point> AutoCheckIn(int userId, int tenantId, string? description)
     {
-        if (await _repository.ExistsOpenPointByUserId(userId, companyId))
+        if (await _repository.ExistsOpenPointByUserId(userId, tenantId))
             throw new AppException("Usuário já possui um ponto aberto!", HttpStatusCode.BadRequest);
 
         var point = new Point
@@ -72,18 +72,18 @@ public class PointService : IPointService
             CheckIn = DateTime.Now,
             CheckInStatus = PointStatus.AutoCheck,
             CheckInDescription = description,
-            CompanyId = companyId,
+            TenantId = tenantId,
         };
 
         return await _repository.Add(point);
     }
 
-    public async Task<Point> AutoCheckOut(int userId, int companyId, string? description)
+    public async Task<Point> AutoCheckOut(int userId, int tenantId, string? description)
     {
-        if (!await _repository.ExistsOpenPointByUserId(userId, companyId))
+        if (!await _repository.ExistsOpenPointByUserId(userId, tenantId))
             throw new AppException("Usuário não possui um ponto aberto!", HttpStatusCode.BadRequest);
 
-        var point = await _repository.GetOpenPointByUserId(userId, companyId);
+        var point = await _repository.GetOpenPointByUserId(userId, tenantId);
 
         point.CheckOut = DateTime.Now;
         point.CheckOutAt = DateTime.Now;
@@ -92,9 +92,9 @@ public class PointService : IPointService
 
         if (point.CheckInStatus == PointStatus.AutoCheck)
         {
-            List<WorkShift> workShifts = await _userWorkShiftRepository.ExistsById(userId, companyId) ?
-                await _userWorkShiftRepository.GetWorkShiftByUserId(userId, companyId) :
-                await _companyWorkShiftRepository.GetWorkShiftByCompanyId(companyId);
+            List<WorkShift> workShifts = await _userWorkShiftRepository.ExistsById(userId, tenantId) ?
+                await _userWorkShiftRepository.GetWorkShiftByUserId(userId, tenantId) :
+                await _companyWorkShiftRepository.GetWorkShiftByCompanyId(tenantId);
 
             if (IsStatusApproved(point, workShifts))
             {
@@ -134,7 +134,7 @@ public class PointService : IPointService
 
     public async Task<Point> UpdateDescription(Point newPoint)
     {
-        var oldPoint = await _repository.GetById(newPoint.Id, newPoint.CompanyId);
+        var oldPoint = await _repository.GetById(newPoint.Id, newPoint.TenantId);
 
         oldPoint.CheckInDescription = newPoint.CheckInDescription ?? oldPoint.CheckInDescription;
         oldPoint.CheckOutDescription = newPoint.CheckOutDescription ?? oldPoint.CheckOutDescription;
@@ -144,7 +144,7 @@ public class PointService : IPointService
 
     public async Task<Point> UpdateFull(Point newPoint)
     {
-        var oldPoint = await _repository.GetById(newPoint.Id, newPoint.CompanyId);
+        var oldPoint = await _repository.GetById(newPoint.Id, newPoint.TenantId);
 
         oldPoint.ManagerId = newPoint.ManagerId ?? oldPoint.ManagerId;
         oldPoint.CheckIn = newPoint.CheckIn;
@@ -158,9 +158,9 @@ public class PointService : IPointService
         return await _repository.Update(oldPoint);
     }
 
-    public async Task<Point> Approve(int id, int managerId, int companyId)
+    public async Task<Point> Approve(int id, int managerId, int tenantId)
     {
-        var point = await _repository.GetById(id, companyId);
+        var point = await _repository.GetById(id, tenantId);
 
         point.CheckInStatus = PointStatus.Approved;
         point.CheckOutStatus = PointStatus.Approved;
@@ -169,9 +169,9 @@ public class PointService : IPointService
         return await _repository.Update(point);
     }
 
-    public async Task<Point> Reject(int id, int managerId, int companyId)
+    public async Task<Point> Reject(int id, int managerId, int tenantId)
     {
-        var point = await _repository.GetById(id, companyId);
+        var point = await _repository.GetById(id, tenantId);
 
         point.CheckInStatus = PointStatus.Rejected;
         point.CheckOutStatus = PointStatus.Rejected;

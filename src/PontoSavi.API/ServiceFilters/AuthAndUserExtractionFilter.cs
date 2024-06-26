@@ -22,11 +22,11 @@ public class AuthAndUserExtractionFilter : IAsyncActionFilter
         var auth = context.HttpContext.Request.Headers.Authorization.ToString();
         auth = AuthUtil.ExtractTokenFromHeader(auth);
 
-        (var userId, var userRoles, var companyId) = _authService.GetUserIds(auth).Result;
+        (var userId, var userRoles, var tenantId) = _authService.GetUserIds(auth).Result;
 
         context.HttpContext.Items.Add("CurrentUserId", userId);
         context.HttpContext.Items.Add("CurrentUserRoles", userRoles);
-        context.HttpContext.Items.Add("CurrentCompanyId", companyId);
+        context.HttpContext.Items.Add("CurrentTenantId", tenantId);
 
         return next();
     }

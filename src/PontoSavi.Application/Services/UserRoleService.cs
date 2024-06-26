@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Identity;
 using System.Net;
 
 using PontoSavi.Application.Interfaces;
@@ -17,20 +16,20 @@ public class UserRoleService : IUserRoleService
 
     public async Task<bool> AddToRole(User user, Role role)
     {
-        if (await _repository.Exists(user.Id, role.Id, user.CompanyId))
+        if (await _repository.Exists(user.Id, role.Id, user.TenantId))
             throw new AppException("Usuário já está nesta função!", HttpStatusCode.BadRequest);
 
-        await _repository.Add(user.Id, role.Id, user.CompanyId);
+        await _repository.Add(user.Id, role.Id, user.TenantId);
 
         return true;
     }
 
     public async Task<bool> RemoveFromRole(User user, Role role)
     {
-        if (!await _repository.Exists(user.Id, role.Id, user.CompanyId))
+        if (!await _repository.Exists(user.Id, role.Id, user.TenantId))
             throw new AppException("Usuário não está nesta função!", HttpStatusCode.BadRequest);
 
-        var userRole = await _repository.Get(user.Id, role.Id, user.CompanyId);
+        var userRole = await _repository.Get(user.Id, role.Id, user.TenantId);
 
         await _repository.Remove(userRole);
 

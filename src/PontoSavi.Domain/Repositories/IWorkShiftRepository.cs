@@ -7,7 +7,7 @@ namespace PontoSavi.Domain.Repositories;
 public interface IWorkShiftRepository : IBaseRepository<WorkShift>
 {
     Task<QueryResult<WorkShiftDTO>> Query(WorkShiftFilter filter);
-    Task<bool> ExistsById(int id, int companyId);
-    Task<bool> ExistsByCheckInAndCheckOut(TimeOnly checkIn, TimeOnly checkOut, int companyId);
-    Task<WorkShift> GetById(int id, int companyId);
+    Task<bool> ExistsById(int id, int tenantId);
+    Task<bool> ExistsByCheckInAndCheckOut(TimeOnly checkIn, TimeOnly checkOut, int tenantId);
+    Task<WorkShift> GetById(int id, int tenantId);
 }

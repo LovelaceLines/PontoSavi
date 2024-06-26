@@ -15,19 +15,18 @@ public class CompanyWorkShiftRepository : BaseRepository<CompanyWorkShift>, ICom
     public CompanyWorkShiftRepository(AppDbContext context) : base(context) =>
         _context = context;
 
-    public async Task<bool> ExistsById(int workShiftId, int companyId) =>
+    public async Task<bool> ExistsById(int workShiftId, int tenantId) =>
         await _context.CompanyWorkShifts.AsNoTracking()
-            .AnyAsync(x => x.WorkShiftId == workShiftId && x.CompanyId == companyId);
+            .AnyAsync(x => x.WorkShiftId == workShiftId && x.TenantId == tenantId);
 
-    public async Task<CompanyWorkShift> GetById(int workShiftId, int companyId) =>
+    public async Task<CompanyWorkShift> GetById(int workShiftId, int tenantId) =>
         await _context.CompanyWorkShifts.AsNoTracking()
-            .FirstOrDefaultAsync(x => x.WorkShiftId == workShiftId && x.CompanyId == companyId) ??
+            .FirstOrDefaultAsync(x => x.WorkShiftId == workShiftId && x.TenantId == tenantId) ??
                 throw new AppException("Configuração de turno de trabalho não encontrada!", HttpStatusCode.NotFound);
 
     public async Task<List<WorkShift>> GetWorkShiftByCompanyId(int companyId) =>
         await _context.CompanyWorkShifts.AsNoTracking()
-            .Where(x => x.CompanyId == companyId)
+            .Where(x => x.TenantId == companyId)
             .Join(_context.WorkShifts, x => x.WorkShift, y => y, (x, y) => y)
-            .Select(x => x)
             .ToListAsync();
 }

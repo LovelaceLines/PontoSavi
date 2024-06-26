@@ -34,8 +34,8 @@ export const useWorkShiftCompanyAccount = ({ row }: { row: workShift }) => {
 
   useEffect(() => { dispatch(getUsers({ nameDescOrderSort: false })); }, []);
 
-  const handleDeleteCompanyFromWorkShift = () => dispatch(deleteCompanyFromWorkShift({ workShiftId: row.id, companyId: row.company?.id }));
-  const handlePostCompanyToWorkShift = () => dispatch(postCompanyToWorkShift({ workShiftId: row.id, companyId: row.company?.id }));
+  const handleDeleteCompanyFromWorkShift = () => dispatch(deleteCompanyFromWorkShift({ workShiftId: row.id, tenantId: row.company?.id }));
+  const handlePostCompanyToWorkShift = () => dispatch(postCompanyToWorkShift({ workShiftId: row.id, tenantId: row.company?.id }));
 
   const handleDeleteUserFromWorkShift = () => dispatch(deleteUserFromWorkShift({ workShiftId: row.id, userId: selectedUserId }));
   const handlePostUserToWorkShift = () => dispatch(postUserToWorkShift({ workShiftId: row.id, userId: selectedUserId }));

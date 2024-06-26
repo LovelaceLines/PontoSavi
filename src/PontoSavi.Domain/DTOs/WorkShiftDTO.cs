@@ -5,6 +5,7 @@ namespace PontoSavi.Domain.DTOs;
 public class WorkShiftDTO : WorkShift
 {
     public UserDTO? User { get; set; }
+    public Company? Company { get; set; }
 
     public WorkShiftDTO(WorkShift workShift)
     {
@@ -16,7 +17,7 @@ public class WorkShiftDTO : WorkShift
         Description = workShift.Description;
         CreatedAt = workShift.CreatedAt;
         UpdatedAt = workShift.UpdatedAt;
-        CompanyId = workShift.CompanyId;
+        TenantId = workShift.TenantId;
     }
 
     public WorkShiftDTO(WorkShift workShift, User? user, Company? company) : this(workShift)

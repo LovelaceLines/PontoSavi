@@ -10,10 +10,9 @@ public class Role : IdentityRole<int>
     public DateTime CreatedAt { get; set; }
     public DateTime? UpdatedAt { get; set; }
 
-    // [JsonIgnore]
-    public int CompanyId { get; set; }
+    public int TenantId { get; set; }
     [JsonIgnore]
-    public Company? Company { get; set; } = null;
+    public Company? Tenant { get; set; } = null;
 
     public Role() { }
 
@@ -26,8 +25,8 @@ public class Role : IdentityRole<int>
     {
         Id = role.Id;
         Name = role.Name;
-        CompanyId = role.CompanyId;
-        Company = role.Company;
+        TenantId = role.TenantId;
+        Tenant = role.Tenant;
     }
 
     [JsonIgnore]

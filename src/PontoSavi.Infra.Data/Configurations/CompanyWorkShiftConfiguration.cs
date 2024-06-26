@@ -11,12 +11,16 @@ public class CompanyWorkShiftConfiguration : IEntityTypeConfiguration<CompanyWor
     {
         builder.HasKey(x => x.WorkShiftId);
 
-        builder.HasIndex(x => new { x.WorkShiftId, x.CompanyId })
+        builder.HasIndex(x => new { x.WorkShiftId, x.TenantId })
             .IsUnique();
 
         builder.HasOne(x => x.WorkShift)
             .WithOne()
             .HasForeignKey<CompanyWorkShift>(x => x.WorkShiftId);
+
+        builder.HasOne(x => x.Tenant)
+            .WithMany()
+            .HasForeignKey(x => x.TenantId);
 
         builder.Property(x => x.CreatedAt)
             .ValueGeneratedOnAdd()

@@ -1,8 +1,6 @@
-﻿using System.Text.Json.Serialization;
+﻿namespace PontoSavi.Domain.Entities;
 
-namespace PontoSavi.Domain.Entities;
-
-public class Point
+public class Point : Base
 {
     public int Id { get; set; }
     public int UserId { get; set; }
@@ -17,14 +15,6 @@ public class Point
     public DateTime? CheckOutAt { get; set; }
     public PointStatus? CheckOutStatus { get; set; }
     public string? CheckOutDescription { get; set; }
-
-    public DateTime CreatedAt { get; set; }
-    public DateTime? UpdatedAt { get; set; }
-
-    [JsonIgnore]
-    public int CompanyId { get; set; }
-    [JsonIgnore]
-    public Company? Company { get; set; }
 }
 
 public enum PointStatus

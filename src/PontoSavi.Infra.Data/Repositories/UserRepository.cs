@@ -27,7 +27,7 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     {
         var query = _context.Users.AsNoTracking().AsQueryable();
 
-        query = query.Where(u => u.CompanyId == filter.CompanyId);
+        query = query.Where(u => u.TenantId == filter.TenantId);
 
         if (!filter.Search.IsNullOrEmpty())
             query = query.Where(u =>
@@ -76,7 +76,8 @@ public class UserRepository : BaseRepository<User>, IUserRepository
 
         if (!await CheckPassword(user, password)) throw new AppException("Erro ao fazer login!", HttpStatusCode.Unauthorized);
 
-        user.Company = await GetCompanyByUserId(user.Id);
+        // TODO refactor to tenantId
+        user.Tenant = await GetCompanyByUserId(user.Id);
 
         return user;
     }
@@ -84,14 +85,14 @@ public class UserRepository : BaseRepository<User>, IUserRepository
     public async Task<bool> CheckPassword(User user, string password) =>
         await _userManager.CheckPasswordAsync(user, password);
 
-    public async Task<bool> ExistsById(int id, int companyId) =>
-        await _userManager.Users.AsNoTracking().AnyAsync(u => u.Id == id && u.CompanyId == companyId);
+    public async Task<bool> ExistsById(int id, int tenantId) =>
+        await _userManager.Users.AsNoTracking().AnyAsync(u => u.Id == id && u.TenantId == tenantId);
 
     public async Task<bool> ExistsByUserName(string userName) =>
         await _userManager.Users.AsNoTracking().AnyAsync(u => u.UserName == userName);
 
-    public async Task<User> GetById(int id, int companyId) =>
-        await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id && u.CompanyId == companyId) ??
+    public async Task<User> GetById(int id, int tenantId) =>
+        await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id && u.TenantId == tenantId) ??
             throw new AppException("Usuário não encontrado!", HttpStatusCode.NotFound);
 
     public async Task<User> GetByUserName(string userName) =>
@@ -105,8 +106,10 @@ public class UserRepository : BaseRepository<User>, IUserRepository
             .ToListAsync();
 
     public async Task<Company> GetCompanyByUserId(int userId) =>
-        await _context.Companies.AsNoTracking()
-            .Join(_context.Users, c => c.Id, u => u.CompanyId, (c, u) => c)
+        await _context.Users.AsNoTracking()
+            .Where(u => u.Id == userId)
+            .Include(u => u.Tenant)
+            .Select(u => u.Tenant)
             .FirstOrDefaultAsync() ?? throw new AppException("Empresa não encontrada!", HttpStatusCode.NotFound);
 
     public async Task<User> Add(User user, string password)

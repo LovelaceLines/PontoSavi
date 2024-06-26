@@ -89,9 +89,9 @@ public class CEOControllerTest : GlobalClientRequest
     public async Task Post_AddToRole_ValidUser_ReturnsOkResult()
     {
         var company = await GetCompany();
-        var user = await GetUserByCEO(new UserFake(companyId: company.Id).Generate());
-        var role = await GetRoleByCEO(new RoleFake(companyId: company.Id).Generate());
-        var model = new UserRoleIM { UserId = user.Id, RoleId = role.Id, CompanyId = company.Id };
+        var user = await GetUserByCEO(new UserFake(tenantId: company.Id).Generate());
+        var role = await GetRoleByCEO(new RoleFake(tenantId: company.Id).Generate());
+        var model = new UserRoleIM { UserId = user.Id, RoleId = role.Id, TenantId = company.Id };
 
         var result = await PostFromBody<AppHttpResponse>(_CEOUserAddToRoleClient, model);
 

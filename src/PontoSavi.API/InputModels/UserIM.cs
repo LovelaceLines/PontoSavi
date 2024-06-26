@@ -11,7 +11,7 @@ public class UserRoleIM
 {
     public int UserId { get; set; }
     public int RoleId { get; set; }
-    public int CompanyId { get; set; }
+    public int TenantId { get; set; }
 }
 
 public class UpdatePasswordIM

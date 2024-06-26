@@ -14,10 +14,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.HasKey(u => u.Id);
 
-        builder.HasOne(u => u.Company)
-            .WithMany()
-            .HasForeignKey(u => u.CompanyId);
-
         builder.Property(u => u.UserName)
             .IsUnicode();
 
@@ -28,6 +24,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         // TODO
         // builder.Property(u => u.Email)
         //     .IsUnicode();
+
+        builder.HasOne(u => u.Tenant)
+            .WithMany()
+            .HasForeignKey(u => u.TenantId);
 
         builder.Property(p => p.CreatedAt)
             .ValueGeneratedOnAdd()
@@ -41,7 +41,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             new User
             {
                 Id = 1,
-                CompanyId = 1,
+                TenantId = 1,
                 UserName = "dev",
                 Name = "Developer",
                 NormalizedUserName = "DEV",
@@ -57,7 +57,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             new User
             {
                 Id = 2,
-                CompanyId = 1,
+                TenantId = 1,
                 UserName = "admin",
                 Name = "Administrator",
                 NormalizedUserName = "ADMIN",
@@ -73,7 +73,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             new User
             {
                 Id = 3,
-                CompanyId = 1,
+                TenantId = 1,
                 UserName = "super",
                 Name = "Supervisor",
                 NormalizedUserName = "SUPER",
@@ -89,7 +89,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             new User
             {
                 Id = 4,
-                CompanyId = 1,
+                TenantId = 1,
                 UserName = "base",
                 Name = "Base",
                 NormalizedUserName = "BASE",

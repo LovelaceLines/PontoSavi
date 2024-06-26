@@ -25,8 +25,8 @@ public class RoleController : ControllerBase
     [Authorize(Policy = "SuperUserRolesPolicy")]
     public async Task<ActionResult<QueryResult<Role>>> Query([FromQuery] RoleFilter filter)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        filter.CompanyId = currentCompanyId;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        filter.TenantId = currentTenantId;
         return await _service.Query(filter);
     }
 
@@ -37,8 +37,8 @@ public class RoleController : ControllerBase
     [Authorize(Policy = "SuperUserRolesPolicy")]
     public async Task<ActionResult<Role>> GetById(int id)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        return await _service.GetById(id, currentCompanyId);
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        return await _service.GetById(id, currentTenantId);
     }
 
     /// <summary>
@@ -48,8 +48,8 @@ public class RoleController : ControllerBase
     [Authorize(Policy = "SuperUserRolesPolicy")]
     public async Task<ActionResult<Role>> Post([FromBody] Role role)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        role.CompanyId = currentCompanyId;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        role.TenantId = currentTenantId;
         return await _service.Create(role);
     }
 
@@ -60,8 +60,8 @@ public class RoleController : ControllerBase
     [Authorize(Policy = "SuperUserRolesPolicy")]
     public async Task<ActionResult<Role>> Put([FromBody] Role role)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        role.CompanyId = currentCompanyId;
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        role.TenantId = currentTenantId;
         return await _service.Update(role);
     }
 
@@ -72,8 +72,8 @@ public class RoleController : ControllerBase
     [Authorize(Policy = "AdminUserRolesPolicy")]
     public async Task<ActionResult<Role>> Delete(int id)
     {
-        var currentCompanyId = (int)HttpContext.Items["CurrentCompanyId"]!;
-        var role = await _service.GetById(id, currentCompanyId);
+        var currentTenantId = (int)HttpContext.Items["CurrentTenantId"]!;
+        var role = await _service.GetById(id, currentTenantId);
         return await _service.Delete(role);
     }
 }

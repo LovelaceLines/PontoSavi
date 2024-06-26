@@ -14,5 +14,5 @@ public class DayOffFilter
     public bool? IdDescOrderSort { get; set; }
     public bool? DateDescOrderSort { get; set; }
 
-    public int CompanyId { get; set; }
+    public int TenantId { get; set; }
 }

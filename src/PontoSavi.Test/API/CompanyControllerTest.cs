@@ -6,7 +6,7 @@ namespace PontoSavi.Test.API;
 public class CompanyControllerTests : GlobalClientRequest
 {
     [Fact]
-    public async Task Get_GetByCurrentCompanyId_ReturnsOk()
+    public async Task Get_GetByCurrentTenantId_ReturnsOk()
     {
         var result = await Get<Company>(_companyClient);
 

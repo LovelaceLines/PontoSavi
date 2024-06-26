@@ -38,16 +38,16 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     Date = table.Column<DateTime>(type: "TEXT", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    CompanyId = table.Column<int>(type: "INTEGER", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_DaysOff", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_DaysOff_Companies_CompanyId",
-                        column: x => x.CompanyId,
+                        name: "FK_DaysOff_Companies_TenantId",
+                        column: x => x.TenantId,
                         principalTable: "Companies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -62,7 +62,7 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                     Name = table.Column<string>(type: "TEXT", maxLength: 256, nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    CompanyId = table.Column<int>(type: "INTEGER", nullable: false),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: false),
                     NormalizedName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "TEXT", nullable: false)
                 },
@@ -70,8 +70,8 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 {
                     table.PrimaryKey("PK_Roles", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Roles_Companies_CompanyId",
-                        column: x => x.CompanyId,
+                        name: "FK_Roles_Companies_TenantId",
+                        column: x => x.TenantId,
                         principalTable: "Companies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -89,7 +89,7 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                     PhoneNumber = table.Column<string>(type: "TEXT", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    CompanyId = table.Column<int>(type: "INTEGER", nullable: false),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: false),
                     NormalizedUserName = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     NormalizedEmail = table.Column<string>(type: "TEXT", maxLength: 256, nullable: true),
                     EmailConfirmed = table.Column<bool>(type: "INTEGER", nullable: false),
@@ -106,8 +106,8 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Users_Companies_CompanyId",
-                        column: x => x.CompanyId,
+                        name: "FK_Users_Companies_TenantId",
+                        column: x => x.TenantId,
                         principalTable: "Companies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -124,16 +124,16 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                     CheckOut = table.Column<TimeOnly>(type: "TEXT", nullable: false),
                     CheckOutToleranceMinutes = table.Column<int>(type: "INTEGER", nullable: false),
                     Description = table.Column<string>(type: "TEXT", nullable: true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    CompanyId = table.Column<int>(type: "INTEGER", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WorkShifts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_WorkShifts_Companies_CompanyId",
-                        column: x => x.CompanyId,
+                        name: "FK_WorkShifts_Companies_TenantId",
+                        column: x => x.TenantId,
                         principalTable: "Companies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -154,16 +154,16 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                     CheckOutAt = table.Column<DateTime>(type: "TEXT", nullable: true),
                     CheckOutStatus = table.Column<int>(type: "INTEGER", nullable: true),
                     CheckOutDescription = table.Column<string>(type: "TEXT", nullable: true),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    CompanyId = table.Column<int>(type: "INTEGER", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Points", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Points_Companies_CompanyId",
-                        column: x => x.CompanyId,
+                        name: "FK_Points_Companies_TenantId",
+                        column: x => x.TenantId,
                         principalTable: "Companies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -186,16 +186,16 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 {
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
                     RoleId = table.Column<int>(type: "INTEGER", nullable: false),
-                    CompanyId = table.Column<int>(type: "INTEGER", nullable: false),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserRoles", x => new { x.UserId, x.RoleId, x.CompanyId });
+                    table.PrimaryKey("PK_UserRoles", x => new { x.UserId, x.RoleId, x.TenantId });
                     table.ForeignKey(
-                        name: "FK_UserRoles_Companies_CompanyId",
-                        column: x => x.CompanyId,
+                        name: "FK_UserRoles_Companies_TenantId",
+                        column: x => x.TenantId,
                         principalTable: "Companies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -218,16 +218,16 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 columns: table => new
                 {
                     WorkShiftId = table.Column<int>(type: "INTEGER", nullable: false),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    CompanyId = table.Column<int>(type: "INTEGER", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_CompanyWorkShifts", x => x.WorkShiftId);
                     table.ForeignKey(
-                        name: "FK_CompanyWorkShifts_Companies_CompanyId",
-                        column: x => x.CompanyId,
+                        name: "FK_CompanyWorkShifts_Companies_TenantId",
+                        column: x => x.TenantId,
                         principalTable: "Companies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -245,16 +245,16 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 {
                     UserId = table.Column<int>(type: "INTEGER", nullable: false),
                     WorkShiftId = table.Column<int>(type: "INTEGER", nullable: false),
+                    TenantId = table.Column<int>(type: "INTEGER", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true),
-                    CompanyId = table.Column<int>(type: "INTEGER", nullable: false)
+                    UpdatedAt = table.Column<DateTime>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_UserWorkShifts", x => new { x.UserId, x.WorkShiftId });
                     table.ForeignKey(
-                        name: "FK_UserWorkShifts_Companies_CompanyId",
-                        column: x => x.CompanyId,
+                        name: "FK_UserWorkShifts_Companies_TenantId",
+                        column: x => x.TenantId,
                         principalTable: "Companies",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -275,74 +275,69 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
             migrationBuilder.InsertData(
                 table: "Companies",
                 columns: new[] { "Id", "CNPJ", "CreatedAt", "Name", "TradeName" },
-                values: new object[] { 1, "00000000000000", new DateTime(2024, 6, 20, 21, 5, 47, 276, DateTimeKind.Local).AddTicks(364), "Ponto Savi", "Ponto Savi" });
+                values: new object[] { 1, "00000000000000", new DateTime(2024, 6, 26, 20, 47, 10, 157, DateTimeKind.Local).AddTicks(1889), "Ponto Savi", "Ponto Savi" });
 
             migrationBuilder.InsertData(
                 table: "Roles",
-                columns: new[] { "Id", "CompanyId", "ConcurrencyStamp", "CreatedAt", "Name", "NormalizedName" },
+                columns: new[] { "Id", "ConcurrencyStamp", "CreatedAt", "Name", "NormalizedName", "TenantId" },
                 values: new object[,]
                 {
-                    { 1, 1, "655ba2ee-8920-44c8-b2a0-cdfabe0ed649", new DateTime(2024, 6, 20, 21, 5, 47, 599, DateTimeKind.Local).AddTicks(9048), "Desenvolvedor", "DESENVOLVEDOR" },
-                    { 2, 1, "106cd16c-fc98-407d-a8b1-c3e367631527", new DateTime(2024, 6, 20, 21, 5, 47, 599, DateTimeKind.Local).AddTicks(9065), "CEO", "CEO" },
-                    { 3, 1, "87ccfd78-a345-42c0-9a1e-a8406c780891", new DateTime(2024, 6, 20, 21, 5, 47, 599, DateTimeKind.Local).AddTicks(9070), "Administrador", "ADMINISTRADOR" },
-                    { 4, 1, "92bc3799-958a-4edf-9145-0efe4bdf0d1a", new DateTime(2024, 6, 20, 21, 5, 47, 599, DateTimeKind.Local).AddTicks(9084), "Supervisor", "SUPERVISOR" },
-                    { 5, 1, "1c7f231a-3f32-480c-a2cf-89bff796b9f3", new DateTime(2024, 6, 20, 21, 5, 47, 599, DateTimeKind.Local).AddTicks(9088), "Colaborador", "COLABORADOR" }
+                    { 1, "f7f54241-ceb7-4447-a82a-919bd79ad27c", new DateTime(2024, 6, 26, 20, 47, 10, 487, DateTimeKind.Local).AddTicks(423), "Desenvolvedor", "DESENVOLVEDOR", 1 },
+                    { 2, "b4739453-b334-43b5-ab84-32d38b5ef729", new DateTime(2024, 6, 26, 20, 47, 10, 487, DateTimeKind.Local).AddTicks(441), "CEO", "CEO", 1 },
+                    { 3, "0ac2e163-a52f-467d-8bc7-6cb38a3ae43b", new DateTime(2024, 6, 26, 20, 47, 10, 487, DateTimeKind.Local).AddTicks(447), "Administrador", "ADMINISTRADOR", 1 },
+                    { 4, "f0a9c551-e052-4250-8f99-2a66db1b274c", new DateTime(2024, 6, 26, 20, 47, 10, 487, DateTimeKind.Local).AddTicks(452), "Supervisor", "SUPERVISOR", 1 },
+                    { 5, "563e651f-5a63-4af5-a1f0-eb598178133e", new DateTime(2024, 6, 26, 20, 47, 10, 487, DateTimeKind.Local).AddTicks(466), "Colaborador", "COLABORADOR", 1 }
                 });
 
             migrationBuilder.InsertData(
                 table: "Users",
-                columns: new[] { "Id", "AccessFailedCount", "CompanyId", "ConcurrencyStamp", "CreatedAt", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TwoFactorEnabled", "UserName" },
+                columns: new[] { "Id", "AccessFailedCount", "ConcurrencyStamp", "CreatedAt", "Email", "EmailConfirmed", "LockoutEnabled", "LockoutEnd", "Name", "NormalizedEmail", "NormalizedUserName", "PasswordHash", "PhoneNumber", "PhoneNumberConfirmed", "SecurityStamp", "TenantId", "TwoFactorEnabled", "UserName" },
                 values: new object[,]
                 {
-                    { 1, 0, 1, "d9957b7f-1d5d-4815-81eb-302e794d6607", new DateTime(2024, 6, 20, 21, 5, 47, 356, DateTimeKind.Local).AddTicks(8274), "dev@gmail.com", false, false, null, "Developer", "DEV@GMAIL.COM", "DEV", "AQAAAAIAAYagAAAAEK+VdDfM5Wk4LV6mW1cwXkrc3P8vplwVFJav7I65eggvgOq7PP1KdG2JnqwEooIMMw==", "(55) 85 9 9999-9999", false, "55a0d3f2-256d-4680-8c5d-31e2188bf27f", false, "dev" },
-                    { 2, 0, 1, "99fa85cf-0ee2-41de-a522-55734c7d7cf6", new DateTime(2024, 6, 20, 21, 5, 47, 438, DateTimeKind.Local).AddTicks(6971), "admin@gmail.com", false, false, null, "Administrator", "ADMIN@GMAIL.COM", "ADMIN", "AQAAAAIAAYagAAAAENv7X5QOa1hGa+3LcGUNVI5W1tHz9sr7eEkfvVeWGnW+pc9b4wxTbB4qpt3pYz69YA==", "(55) 85 9 9999-9998", false, "95595c3f-f08c-4579-9cf3-d7d5ea8fc75a", false, "admin" },
-                    { 3, 0, 1, "5a91fd52-9cf5-4709-95d5-104e6232d7db", new DateTime(2024, 6, 20, 21, 5, 47, 518, DateTimeKind.Local).AddTicks(8296), "super@gmail.com", false, false, null, "Supervisor", "SUPER@GMAIL.COM", "SUPER", "AQAAAAIAAYagAAAAEHGZdTvSkUfIAQc4WpXYeKXEkLN6BN8ccpS2QP1i39bNI5QaZuUivWguxyjlA4UwVg==", "(55) 85 9 9999-9997", false, "4c035670-a214-4fae-94a7-823e77dac5b8", false, "super" },
-                    { 4, 0, 1, "91cd285f-b7cf-40dd-b812-569e99b1a3be", new DateTime(2024, 6, 20, 21, 5, 47, 598, DateTimeKind.Local).AddTicks(4717), "base@gmail.com", false, false, null, "Base", "BASE@GMAIL.COM", "BASE", "AQAAAAIAAYagAAAAEPiI74eabsVO8yZv2gs7ebl6hp6AVgtaA25YFWSKzVZdXM7WS1InvalfvMLIIin9tQ==", "(55) 85 9 9999-9997", false, "c9e960f1-0264-4481-99c4-2d20b9c94251", false, "base" }
+                    { 1, 0, "3282124a-d4e1-4d11-8921-71e210ff9f2f", new DateTime(2024, 6, 26, 20, 47, 10, 241, DateTimeKind.Local).AddTicks(6238), "dev@gmail.com", false, false, null, "Developer", "DEV@GMAIL.COM", "DEV", "AQAAAAIAAYagAAAAEJp7jwqZs+FcK7ICPK+c4/CaCsaLub+CCnv2jaODzKFE4wOdOAEdba/NYFdG98D5Pg==", "(55) 85 9 9999-9999", false, "e4b3bf2f-0ab2-47d9-9eca-6dab94c9e338", 1, false, "dev" },
+                    { 2, 0, "13a4d7be-9756-4226-8cee-1a35813c722e", new DateTime(2024, 6, 26, 20, 47, 10, 322, DateTimeKind.Local).AddTicks(5857), "admin@gmail.com", false, false, null, "Administrator", "ADMIN@GMAIL.COM", "ADMIN", "AQAAAAIAAYagAAAAEKuNRSgGfu0lNdxPn5tSaAjP7a7DOCTNgKF60VqIK8DBvMK+FUqDp/SaDiMWPXKSZQ==", "(55) 85 9 9999-9998", false, "fc4beede-36a5-4d8b-a402-9e01680012a6", 1, false, "admin" },
+                    { 3, 0, "c99b9da2-b8c7-4ce4-8a83-a9659bca23b7", new DateTime(2024, 6, 26, 20, 47, 10, 402, DateTimeKind.Local).AddTicks(6001), "super@gmail.com", false, false, null, "Supervisor", "SUPER@GMAIL.COM", "SUPER", "AQAAAAIAAYagAAAAENIo2H2QfbaI0bABDCUmg4WbwxAwdYLIGINfTcHHUpT1cCzWaijDBO7GRK/Hic4yVw==", "(55) 85 9 9999-9997", false, "36b24f13-6909-48cd-a6bd-86ed0904b519", 1, false, "super" },
+                    { 4, 0, "ddfafaae-f59f-422e-9ac8-6c922a4df7e5", new DateTime(2024, 6, 26, 20, 47, 10, 486, DateTimeKind.Local).AddTicks(56), "base@gmail.com", false, false, null, "Base", "BASE@GMAIL.COM", "BASE", "AQAAAAIAAYagAAAAEOxWFPcM92IUDHtS/XI/KjMhwiPCz899+tJZU8guodnFb1WsF+qZtCv74jrQ8A67Fw==", "(55) 85 9 9999-9997", false, "43646f1e-7e45-4596-93e9-f6e2e38a9ffa", 1, false, "base" }
                 });
 
             migrationBuilder.InsertData(
                 table: "UserRoles",
-                columns: new[] { "CompanyId", "RoleId", "UserId", "CreatedAt" },
+                columns: new[] { "RoleId", "TenantId", "UserId", "CreatedAt" },
                 values: new object[,]
                 {
-                    { 1, 1, 1, new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9806) },
-                    { 1, 2, 1, new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9814) },
-                    { 1, 3, 1, new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9816) },
-                    { 1, 4, 1, new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9818) },
-                    { 1, 5, 1, new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9889) },
-                    { 1, 3, 2, new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9892) },
-                    { 1, 5, 2, new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9893) },
-                    { 1, 4, 3, new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9905) },
-                    { 1, 5, 3, new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9907) },
-                    { 1, 5, 4, new DateTime(2024, 6, 20, 21, 5, 47, 602, DateTimeKind.Local).AddTicks(9909) }
+                    { 1, 1, 1, new DateTime(2024, 6, 26, 20, 47, 10, 495, DateTimeKind.Local).AddTicks(9035) },
+                    { 2, 1, 1, new DateTime(2024, 6, 26, 20, 47, 10, 495, DateTimeKind.Local).AddTicks(9052) },
+                    { 3, 1, 1, new DateTime(2024, 6, 26, 20, 47, 10, 495, DateTimeKind.Local).AddTicks(9054) },
+                    { 4, 1, 1, new DateTime(2024, 6, 26, 20, 47, 10, 495, DateTimeKind.Local).AddTicks(9056) },
+                    { 5, 1, 1, new DateTime(2024, 6, 26, 20, 47, 10, 495, DateTimeKind.Local).AddTicks(9058) },
+                    { 3, 1, 2, new DateTime(2024, 6, 26, 20, 47, 10, 495, DateTimeKind.Local).AddTicks(9060) },
+                    { 5, 1, 2, new DateTime(2024, 6, 26, 20, 47, 10, 495, DateTimeKind.Local).AddTicks(9062) },
+                    { 4, 1, 3, new DateTime(2024, 6, 26, 20, 47, 10, 495, DateTimeKind.Local).AddTicks(9081) },
+                    { 5, 1, 3, new DateTime(2024, 6, 26, 20, 47, 10, 495, DateTimeKind.Local).AddTicks(9083) },
+                    { 5, 1, 4, new DateTime(2024, 6, 26, 20, 47, 10, 495, DateTimeKind.Local).AddTicks(9086) }
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_CompanyWorkShifts_CompanyId",
+                name: "IX_CompanyWorkShifts_TenantId",
                 table: "CompanyWorkShifts",
-                column: "CompanyId");
+                column: "TenantId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_CompanyWorkShifts_WorkShiftId_CompanyId",
+                name: "IX_CompanyWorkShifts_WorkShiftId_TenantId",
                 table: "CompanyWorkShifts",
-                columns: new[] { "WorkShiftId", "CompanyId" },
+                columns: new[] { "WorkShiftId", "TenantId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_DaysOff_CompanyId",
+                name: "IX_DaysOff_Date_TenantId",
                 table: "DaysOff",
-                column: "CompanyId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DaysOff_Date_CompanyId",
-                table: "DaysOff",
-                columns: new[] { "Date", "CompanyId" },
+                columns: new[] { "Date", "TenantId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Points_CompanyId",
-                table: "Points",
-                column: "CompanyId");
+                name: "IX_DaysOff_TenantId",
+                table: "DaysOff",
+                column: "TenantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Points_ManagerId",
@@ -350,20 +345,25 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 column: "ManagerId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Points_TenantId",
+                table: "Points",
+                column: "TenantId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Points_UserId",
                 table: "Points",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Roles_CompanyId",
+                name: "IX_Roles_Name_TenantId",
                 table: "Roles",
-                column: "CompanyId");
+                columns: new[] { "Name", "TenantId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Roles_Name_CompanyId",
+                name: "IX_Roles_TenantId",
                 table: "Roles",
-                columns: new[] { "Name", "CompanyId" },
-                unique: true);
+                column: "TenantId");
 
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
@@ -372,14 +372,14 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserRoles_CompanyId",
-                table: "UserRoles",
-                column: "CompanyId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_UserRoles_RoleId",
                 table: "UserRoles",
                 column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRoles_TenantId",
+                table: "UserRoles",
+                column: "TenantId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
@@ -387,9 +387,9 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 column: "NormalizedEmail");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Users_CompanyId",
+                name: "IX_Users_TenantId",
                 table: "Users",
-                column: "CompanyId");
+                column: "TenantId");
 
             migrationBuilder.CreateIndex(
                 name: "UserNameIndex",
@@ -398,9 +398,9 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserWorkShifts_CompanyId",
+                name: "IX_UserWorkShifts_TenantId",
                 table: "UserWorkShifts",
-                column: "CompanyId");
+                column: "TenantId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserWorkShifts_WorkShiftId",
@@ -408,9 +408,9 @@ namespace PontoSavi.src.PontoSavi.Infra.Data.Migrations
                 column: "WorkShiftId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_WorkShifts_CompanyId",
+                name: "IX_WorkShifts_TenantId",
                 table: "WorkShifts",
-                column: "CompanyId");
+                column: "TenantId");
         }
 
         /// <inheritdoc />

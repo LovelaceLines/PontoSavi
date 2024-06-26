@@ -50,12 +50,12 @@ public class CEOController : ControllerBase
 
         foreach (var roleName in _rolesSettingsService.GetStandardUserRoles())
         {
-            var role = new Role(roleName) { CompanyId = company.Id };
+            var role = new Role(roleName) { TenantId = company.Id };
             role = await _roleService.Create(role);
             roles.Add(role);
         }
 
-        companyIM.User.CompanyId = company.Id;
+        companyIM.User.TenantId = company.Id;
         var user = await _userService.Create(companyIM.User, companyIM.User.Password);
 
         foreach (var role in roles)
@@ -74,8 +74,8 @@ public class CEOController : ControllerBase
     [HttpPost("user/add-to-role")]
     public async Task<ActionResult<bool>> AddToRole([FromBody] UserRoleIM model)
     {
-        var user = await _userService.GetById(model.UserId, model.CompanyId);
-        var role = await _roleService.GetById(model.RoleId, model.CompanyId);
+        var user = await _userService.GetById(model.UserId, model.TenantId);
+        var role = await _roleService.GetById(model.RoleId, model.TenantId);
 
         await _userRoleService.AddToRole(user, role);
 

@@ -21,7 +21,7 @@ public class WorkShiftRepository : BaseRepository<WorkShift>, IWorkShiftReposito
     {
         var query = _context.WorkShifts.AsQueryable();
 
-        query = query.Where(x => x.CompanyId == filter.CompanyId);
+        query = query.Where(x => x.TenantId == filter.TenantId);
 
         if (filter.Id.HasValue) query = query.Where(x => x.Id == filter.Id);
         if (filter.CheckIn.HasValue) query = query.Where(x => x.CheckIn == filter.CheckIn);
@@ -43,7 +43,7 @@ public class WorkShiftRepository : BaseRepository<WorkShift>, IWorkShiftReposito
             .SelectMany(x => x.u.DefaultIfEmpty(), (ws, u) => new { ws.ws, u })
             .GroupJoin(_context.CompanyWorkShifts, wsu => wsu.ws.Id, cws => cws.WorkShiftId, (wsu, cws) => new { wsu.ws, wsu.u, cws })
             .SelectMany(x => x.cws.DefaultIfEmpty(), (wsu, cws) => new { wsu.ws, wsu.u, cws })
-            .GroupJoin(_context.Companies, wsucws => wsucws.cws!.CompanyId, c => c.Id, (wsucws, c) => new { wsucws.ws, wsucws.u, c })
+            .GroupJoin(_context.Companies, wsucws => wsucws.cws!.TenantId, c => c.Id, (wsucws, c) => new { wsucws.ws, wsucws.u, c })
             .SelectMany(x => x.c.DefaultIfEmpty(), (wsuc, c) => new { wsuc.ws, wsuc.u, c });
 
         var totalCount = _query.Count();
@@ -57,13 +57,13 @@ public class WorkShiftRepository : BaseRepository<WorkShift>, IWorkShiftReposito
         return new QueryResult<WorkShiftDTO>(workShifts, totalCount);
     }
 
-    public async Task<bool> ExistsById(int id, int companyId) =>
-        await _context.WorkShifts.AsNoTracking().AnyAsync(x => x.Id == id && x.CompanyId == companyId);
+    public async Task<bool> ExistsById(int id, int tenantId) =>
+        await _context.WorkShifts.AsNoTracking().AnyAsync(x => x.Id == id && x.TenantId == tenantId);
 
-    public async Task<bool> ExistsByCheckInAndCheckOut(TimeOnly checkIn, TimeOnly checkOut, int companyId) =>
-        await _context.WorkShifts.AsNoTracking().AnyAsync(x => x.CheckIn == checkIn && x.CheckOut == checkOut && x.CompanyId == companyId);
+    public async Task<bool> ExistsByCheckInAndCheckOut(TimeOnly checkIn, TimeOnly checkOut, int tenantId) =>
+        await _context.WorkShifts.AsNoTracking().AnyAsync(x => x.CheckIn == checkIn && x.CheckOut == checkOut && x.TenantId == tenantId);
 
-    public async Task<WorkShift> GetById(int id, int companyId) =>
-        await _context.WorkShifts.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id && x.CompanyId == companyId) ??
+    public async Task<WorkShift> GetById(int id, int tenantId) =>
+        await _context.WorkShifts.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id && x.TenantId == tenantId) ??
             throw new AppException("Turno de trabalho não encontrado!", HttpStatusCode.NotFound);
 }

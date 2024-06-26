@@ -6,12 +6,11 @@ namespace PontoSavi.Domain.Repositories;
 public interface IRoleRepository : IBaseRepository<Role>
 {
     Task<QueryResult<Role>> Query(RoleFilter filter);
-    Task<bool> ExistsById(int id, int companyId);
-    Task<bool> ExistsByName(string name, int companyId);
-    Task<Role> GetById(int id, int companyId);
-    Task<Role> GetByName(string name, int companyId);
-    Task<List<Role>> GetByUser(int userId, int companyId);
-    // new Task<Role> Add(Role role);
+    Task<bool> ExistsById(int id, int tenantId);
+    Task<bool> ExistsByName(string name, int tenantId);
+    Task<Role> GetById(int id, int tenantId);
+    Task<Role> GetByName(string name, int tenantId);
+    Task<List<Role>> GetByUser(int userId, int tenantId);
     new Task<Role> Update(Role role);
     new Task<Role> Remove(Role role);
 }

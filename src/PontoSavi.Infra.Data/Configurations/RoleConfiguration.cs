@@ -13,12 +13,12 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
 
         builder.HasKey(r => r.Id);
 
-        builder.HasIndex(r => new { r.Name, r.CompanyId })
+        builder.HasIndex(r => new { r.Name, r.TenantId })
             .IsUnique();
 
-        builder.HasOne(r => r.Company)
+        builder.HasOne(r => r.Tenant)
             .WithMany()
-            .HasForeignKey(r => r.CompanyId);
+            .HasForeignKey(r => r.TenantId);
 
         builder.Property(r => r.ConcurrencyStamp)
             .IsConcurrencyToken();
@@ -35,7 +35,7 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
             new Role
             {
                 Id = 1,
-                CompanyId = 1,
+                TenantId = 1,
                 Name = "Desenvolvedor",
                 NormalizedName = "DESENVOLVEDOR",
                 ConcurrencyStamp = Guid.NewGuid().ToString(),
@@ -45,7 +45,7 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
             new Role
             {
                 Id = 2,
-                CompanyId = 1,
+                TenantId = 1,
                 Name = "CEO",
                 NormalizedName = "CEO",
                 ConcurrencyStamp = Guid.NewGuid().ToString(),
@@ -55,7 +55,7 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
             new Role
             {
                 Id = 3,
-                CompanyId = 1,
+                TenantId = 1,
                 Name = "Administrador",
                 NormalizedName = "ADMINISTRADOR",
                 ConcurrencyStamp = Guid.NewGuid().ToString(),
@@ -65,7 +65,7 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
             new Role
             {
                 Id = 4,
-                CompanyId = 1,
+                TenantId = 1,
                 Name = "Supervisor",
                 NormalizedName = "SUPERVISOR",
                 ConcurrencyStamp = Guid.NewGuid().ToString(),
@@ -75,7 +75,7 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
             new Role
             {
                 Id = 5,
-                CompanyId = 1,
+                TenantId = 1,
                 Name = "Colaborador",
                 NormalizedName = "COLABORADOR",
                 ConcurrencyStamp = Guid.NewGuid().ToString(),

@@ -24,18 +24,18 @@ public class RoleService : IRoleService
     public async Task<QueryResult<Role>> Query(RoleFilter filter) =>
         await _repository.Query(filter);
 
-    public async Task<Role> GetById(int id, int companyId) =>
-        await _repository.GetById(id, companyId);
+    public async Task<Role> GetById(int id, int tenantId) =>
+        await _repository.GetById(id, tenantId);
 
-    public async Task<Role> GetByName(string name, int companyId) =>
-        await _repository.GetByName(name, companyId);
+    public async Task<Role> GetByName(string name, int tenantId) =>
+        await _repository.GetByName(name, tenantId);
 
-    public async Task<List<Role>> GetByUser(int userId, int companyId) =>
-        await _repository.GetByUser(userId, companyId);
+    public async Task<List<Role>> GetByUser(int userId, int tenantId) =>
+        await _repository.GetByUser(userId, tenantId);
 
     public async Task<Role> Create(Role role)
     {
-        if (await _repository.ExistsByName(role.Name, role.CompanyId))
+        if (await _repository.ExistsByName(role.Name, role.TenantId))
             throw new AppException("Função já existe!", HttpStatusCode.Conflict);
 
         return await _repository.Add(role);
@@ -46,7 +46,7 @@ public class RoleService : IRoleService
         if (_rolesSettingsService.IsStandardUser(newRole.Name))
             throw new AppException("Não é possível alterar uma função padrão!", HttpStatusCode.BadRequest);
 
-        if (await _repository.ExistsByName(newRole.Name, newRole.CompanyId))
+        if (await _repository.ExistsByName(newRole.Name, newRole.TenantId))
             throw new AppException("Função já existe!", HttpStatusCode.Conflict);
 
         var oldRole = await _repository.GetById(newRole.Id);

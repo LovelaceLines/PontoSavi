@@ -14,9 +14,9 @@ public class WorkShifts : IEntityTypeConfiguration<WorkShift>
         builder.Property(x => x.Id)
             .ValueGeneratedOnAdd();
 
-        builder.HasOne(x => x.Company)
+        builder.HasOne(x => x.Tenant)
             .WithMany()
-            .HasForeignKey(x => x.CompanyId);
+            .HasForeignKey(x => x.TenantId);
 
         builder.Property(x => x.CreatedAt)
             .ValueGeneratedOnAdd()

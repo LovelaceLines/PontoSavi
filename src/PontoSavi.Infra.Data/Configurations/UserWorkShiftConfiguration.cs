@@ -15,13 +15,13 @@ public class UserWorkShiftConfiguration : IEntityTypeConfiguration<UserWorkShift
             .WithMany()
             .HasForeignKey(x => x.UserId);
 
-        builder.HasOne(x => x.Company)
-            .WithMany()
-            .HasForeignKey(x => x.CompanyId);
-
         builder.HasOne(x => x.WorkShift)
             .WithMany()
             .HasForeignKey(x => x.WorkShiftId);
+
+        builder.HasOne(x => x.Tenant)
+            .WithMany()
+            .HasForeignKey(x => x.TenantId);
 
         builder.Property(x => x.CreatedAt)
             .ValueGeneratedOnAdd()

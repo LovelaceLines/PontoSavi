@@ -26,7 +26,7 @@ public class RoleRepository : BaseRepository<Role>, IRoleRepository
     {
         var query = _context.Roles.AsNoTracking().AsQueryable();
 
-        query = query.Where(r => r.CompanyId == filter.CompanyId);
+        query = query.Where(r => r.TenantId == filter.TenantId);
 
         if (!filter.Search.IsNullOrEmpty())
             query = query.Where(r =>
@@ -48,24 +48,24 @@ public class RoleRepository : BaseRepository<Role>, IRoleRepository
         return new QueryResult<Role>(roles, totalCount);
     }
 
-    public async Task<bool> ExistsById(int id, int companyId) =>
-        await _context.Roles.AsNoTracking().AnyAsync(r => r.Id == id && r.CompanyId == companyId);
+    public async Task<bool> ExistsById(int id, int tenantId) =>
+        await _context.Roles.AsNoTracking().AnyAsync(r => r.Id == id && r.TenantId == tenantId);
 
-    public async Task<bool> ExistsByName(string name, int companyId) =>
-        await _context.Roles.AsNoTracking().AnyAsync(r => r.Name == name && r.CompanyId == companyId);
+    public async Task<bool> ExistsByName(string name, int tenantId) =>
+        await _context.Roles.AsNoTracking().AnyAsync(r => r.Name == name && r.TenantId == tenantId);
 
-    public async Task<Role> GetById(int id, int companyId) =>
-        await _context.Roles.AsNoTracking().FirstOrDefaultAsync(r => r.Id == id && r.CompanyId == companyId) ??
+    public async Task<Role> GetById(int id, int tenantId) =>
+        await _context.Roles.AsNoTracking().FirstOrDefaultAsync(r => r.Id == id && r.TenantId == tenantId) ??
             throw new AppException("Perfil não encontrado!", HttpStatusCode.NotFound);
 
-    public async Task<Role> GetByName(string name, int companyId) =>
-        await _context.Roles.AsNoTracking().FirstOrDefaultAsync(r => r.Name == name && r.CompanyId == companyId) ??
+    public async Task<Role> GetByName(string name, int tenantId) =>
+        await _context.Roles.AsNoTracking().FirstOrDefaultAsync(r => r.Name == name && r.TenantId == tenantId) ??
             throw new AppException("Perfil não encontrado!", HttpStatusCode.NotFound);
 
-    public async Task<List<Role>> GetByUser(int userId, int companyId) =>
+    public async Task<List<Role>> GetByUser(int userId, int tenantId) =>
         await _context.Roles.AsNoTracking()
             .Join(_context.UserRoles.AsNoTracking(), r => r.Id, ur => ur.RoleId, (r, ur) => new { r, ur })
-            .Where(rur => rur.ur.UserId == userId && rur.r.CompanyId == companyId)
+            .Where(rur => rur.ur.UserId == userId && rur.r.TenantId == tenantId)
             .Select(rur => rur.r)
             .ToListAsync();
 

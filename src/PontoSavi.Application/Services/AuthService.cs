@@ -112,7 +112,7 @@ public class AuthService : IAuthService
 
     public static class CustomClaimTypes
     {
-        public const string Company = "Company";
+        public const string Tenant = "Tenant";
     }
 
     private async Task<ClaimsIdentity> SubjectAccessToken(User user)
@@ -121,7 +121,7 @@ public class AuthService : IAuthService
         {
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new(ClaimTypes.Name, user.UserName!),
-            new(CustomClaimTypes.Company, user.CompanyId.ToString()),
+            new(CustomClaimTypes.Tenant, user.TenantId.ToString()),
         };
 
         var roles = await _userRepository.GetRoles(user);
@@ -177,9 +177,9 @@ public class AuthService : IAuthService
         var rolesSTR = result.Claims["role"].ToString() ?? throw new AppException("Claims Role not found!", HttpStatusCode.InternalServerError);
         var roles = rolesSTR.Split(',');
 
-        if (!int.TryParse(result.Claims[CustomClaimTypes.Company]?.ToString(), out var companyId))
-            throw new AppException("Claims Company not found!", HttpStatusCode.InternalServerError);
+        if (!int.TryParse(result.Claims[CustomClaimTypes.Tenant]?.ToString(), out var tenantId))
+            throw new AppException("Claims Tenant not found!", HttpStatusCode.InternalServerError);
 
-        return (userId, roles, companyId);
+        return (userId, roles, tenantId);
     }
 }

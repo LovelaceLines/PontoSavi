@@ -19,5 +19,5 @@ public class UserFilter
     public bool? UserNameDescOrderSort { get; set; }
     public bool? EmailDescOrderSort { get; set; }
 
-    public int CompanyId { get; set; }
+    public int TenantId { get; set; }
 }

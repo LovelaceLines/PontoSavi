@@ -34,6 +34,6 @@ export type companyAndUser = {
 }
 
 export type companyWorkShift = {
-  companyId?: int;
+  tenantId?: int;
   workShiftId: int;
 }
