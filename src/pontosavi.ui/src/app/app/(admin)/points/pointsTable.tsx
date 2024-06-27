@@ -96,7 +96,7 @@ export const PointsTable = ({ mode = "admin", filters }: { mode: "admin" | "base
     },
     {
       accessorKey: "checkInDescription",
-      header: "Check In Description",
+      header: "Description",
     },
     {
       accessorKey: "checkOut",
@@ -110,7 +110,7 @@ export const PointsTable = ({ mode = "admin", filters }: { mode: "admin" | "base
     },
     {
       accessorKey: "checkOutDescription",
-      header: "Check Out Description",
+      header: "Description",
     },
     {
       accessorKey: "createdAt",

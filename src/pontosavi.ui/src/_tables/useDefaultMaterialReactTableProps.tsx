@@ -40,7 +40,7 @@ export const useDefaultMaterialReactTableProps = <TData extends MRT_RowData>(
   const handleColumnVisibility: Dispatch<SetStateAction<MRT_VisibilityState>> = useCallback((value: SetStateAction<MRT_VisibilityState>) => {
     setStorageValue(`mrt-column-visibility-${props.title}`, (value as (state: MRT_VisibilityState) => MRT_VisibilityState)(columnVisibility));
     return setColumnVisibility(value);
-  }, [columnVisibility]);
+  }, []);
 
   const [rowSelection, setRowSelection] = useState<MRT_RowSelectionState>({});
 

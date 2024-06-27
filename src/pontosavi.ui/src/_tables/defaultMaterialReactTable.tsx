@@ -29,6 +29,7 @@ export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
   const table = useMaterialReactTable({
     columns,
     data,
+    ...props,
 
     renderTopToolbarCustomActions: props.renderTopToolbarCustomActions ?? renderTopToolbarCustomActions,
     renderToolbarInternalActions: props.renderToolbarInternalActions ?? renderToolbarInternalActions,
@@ -118,8 +119,6 @@ export const useDefaultMaterialReactTable = <TData extends MRT_RowData>(
     }),
 
     //#endregion
-
-    ...props,
 
   });
 
